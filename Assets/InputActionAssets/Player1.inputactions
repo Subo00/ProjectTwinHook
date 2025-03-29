@@ -1,0 +1,135 @@
+{
+    "name": "Player1",
+    "maps": [
+        {
+            "name": "default",
+            "id": "b0c854c5-73ca-4ddf-b885-dba9419bc38f",
+            "actions": [
+                {
+                    "name": "drag",
+                    "type": "Button",
+                    "id": "9f09b08f-37a5-4d02-9788-77890d6970ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "hold",
+                    "type": "Button",
+                    "id": "edf116aa-507b-4c1c-8bbe-a3891c46e40b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "move",
+                    "type": "Button",
+                    "id": "25b634cf-331b-447d-92e8-934a425d417e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7424a1eb-a8ae-44d0-9ffe-8621202d27a4",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d18f73d-7c7a-4186-8dc6-93eba0fda878",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9538961c-0dfe-4dcb-89bd-6fd4234d6cf2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9f7572c-416b-42f0-a849-031447a2729f",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d5b20b6d-2e79-4b33-a1e2-186a4b7045b4",
+                    "path": "<Keyboard>/w",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8ae32b4-c3bc-4a6a-9dff-584961242531",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50e009e7-f8ad-4b96-8066-23393d76d6f7",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb57a86e-d98e-4ba3-9898-9cda4677d0d8",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "gameplayPlayer1",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "gameplayPlayer1",
+            "bindingGroup": "gameplayPlayer1",
+            "devices": []
+        }
+    ]
+}

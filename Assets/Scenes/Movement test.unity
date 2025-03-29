@@ -475,6 +475,8 @@ GameObject:
   - component: {fileID: 1417005039}
   - component: {fileID: 1417005034}
   - component: {fileID: 1417005038}
+  - component: {fileID: 1417005041}
+  - component: {fileID: 1417005040}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -615,6 +617,53 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 64
   m_CollisionDetection: 1
+--- !u!114 &1417005040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417005033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26416b2b66bb73f42b5e65d2a1600229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grapplRange: 10
+  grappleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  grapplePoint: {fileID: 0}
+--- !u!114 &1417005041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417005033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 93727d14d3b0ed14484d0b8f81439049, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: gameplayPlayer1
+  m_DefaultActionMap: move
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1594492636
 GameObject:
   m_ObjectHideFlags: 0
