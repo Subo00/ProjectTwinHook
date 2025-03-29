@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
     protected GameObject interactionPrompt;
     protected GameObject timeText;
     protected Transform lastInteractPoint = null;
-    //protected MenuUI menuUI;
+    protected MenuUI menuUI;
 
 
     public static UIManager Instance;
@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     }
 
     protected virtual void Start(){
-        // menuUI = MenuUI.Instance;
+        menuUI = MenuUI.Instance;
         HideInteraction();
     }
 
@@ -94,12 +94,12 @@ public class UIManager : MonoBehaviour
 
         if (isMenuOpen)
         {
-            //menuUI.Toggle(isMenuOpen);
+            menuUI.Toggle(isMenuOpen);
             Time.timeScale = 0; //pause the game
         }
         else
         {
-            //menuUI.Toggle(isMenuOpen);
+            menuUI.Toggle(isMenuOpen);
             Time.timeScale = 1f;
         }
     }
