@@ -17,12 +17,10 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private LayerMask grappleLayer;
 
     public Transform grapplePoint;
-    private DistanceJoint2D joint;
     // Start is called before the first frame update
     void Start()
     {
-        joint = gameObject.GetComponent<DistanceJoint2D>();
-        joint.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -34,7 +32,7 @@ public class GrapplingHook : MonoBehaviour
         //doing the grappling promt here
         if(Input.GetKeyDown(KeyCode.E))
         {
-            Ray r = new Ray(grapplePoint.position, grapplePoint.forward);
+            Ray r = new Ray(grapplePoint.position, grapplePoint.right);
             if(Physics.Raycast(r, out RaycastHit hitInfo, grapplRange))
             {
                 if(hitInfo.collider.gameObject.TryGetComponent(out Grapple grappableObj))

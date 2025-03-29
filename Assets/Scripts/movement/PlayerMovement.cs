@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float horizontal;
+    private float horizontal1;
     private float speed = 5f;
     private float coyoteTime = 0.2f;
     private float jumpHeightFalloff = 0.1f;
@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        horizontal1 = Input.GetAxisRaw("Horizontal 1");
 
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
@@ -34,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector3(horizontal1 * speed, rb.velocity.y);
+        flip();
     }
 
     private bool isGrounded()
@@ -47,9 +48,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Flip()
+    private void flip()
     {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        if (isFacingRight && horizontal1 < 0f || !isFacingRight && horizontal1 > 0f)
         {
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
