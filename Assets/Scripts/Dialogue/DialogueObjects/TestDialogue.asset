@@ -10,7 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49d3e0cce093488448bef736668dc17c, type: 3}
-  m_Name: End
+  m_Name: TestDialogue
   m_EditorClassIdentifier: 
+  name: Axolotl
+  portrait: {fileID: 21300000, guid: e0948dc2457942e4794d1261084e7901, type: 3}
+  talkingClip: {fileID: 8300000, guid: 480aa9d6190be8145bc4c38c31678a8f, type: 3}
   dialogue:
-  - I guess that's that.
+  - yay yippee I love mail

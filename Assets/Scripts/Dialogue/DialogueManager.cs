@@ -8,6 +8,9 @@ using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour {
     public TMP_Text dialogueText;
+    public TMP_Text speakerName;
+    public Image portrait;
+
     public Button nextButton;
     public CanvasGroup canvasGroup;
 
@@ -23,6 +26,7 @@ public class DialogueManager : MonoBehaviour {
     Queue<string> sentences;
     bool canContinueToNextLine;
     AudioSource source;
+    AudioClip talkingClip;
 
     private void Start() {
         sentences = new Queue<string>();
@@ -54,8 +58,9 @@ public class DialogueManager : MonoBehaviour {
             Dialogue dialogue = dialogueNode.dialogue;
 
             //set panel
-            //speakerName.text = displayInfo.currentLanguage.languageDict[dialogue.speakerName];
-            //talkingClip = dialogue.talkingClip;
+            speakerName.text = dialogue.name;
+            talkingClip = dialogue.talkingClip;
+            portrait.sprite = dialogue.portrait;
 
             //set buttons
             nextButton.gameObject.SetActive(true);
@@ -96,9 +101,8 @@ public class DialogueManager : MonoBehaviour {
 
             dialogueText.maxVisibleCharacters++;
 
-            //dialogueText.text += letters[i];
             if (i % 4 == 0) {
-                source.Play();
+                source.PlayOneShot(talkingClip);
             }
             yield return new WaitForSeconds(textSpeed);
         }
