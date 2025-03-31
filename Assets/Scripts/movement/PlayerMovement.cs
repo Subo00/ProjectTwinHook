@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private float horizontal1;
     private float speed = 5f;
-    private float coyoteTime = 0.2f;
+    private float coyoteTime = 0.02f;
     private float jumpHeightFalloff = 0.1f;
     private float jumpingPower = 7f;
     private bool isFacingRight = true;
@@ -41,10 +41,12 @@ public class PlayerMovement : MonoBehaviour
         //    rb.velocity = Vector3.zero;
         //}
 
-        if (activeGrapple) return; // dont jump while grappling
 
 
-        horizontal1 = Input.GetAxisRaw("Horizontal 1"); // be able to move while grappling
+        if (activeGrapple) return; // dont jump OR move while grappling
+
+        horizontal1 = Input.GetAxisRaw("Horizontal 1"); //
+
 
 
         if (Input.GetButtonDown("Jump") && isGrounded())

@@ -118,6 +118,7 @@ public class GrapplingHook : MonoBehaviour
     void stopGrapple()
     {
         //pm.isFrozen = false;
+        pm.activeGrapple = false;
         grappling = false;
         grappleCooldownTimer = grappleCooldown;
         lineRenderer.enabled = false;
