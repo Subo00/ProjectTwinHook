@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class GrapplingAnker : MonoBehaviour, Grapple
 {
+    //raycast stuff
     public void Grapple()
     {
         Debug.Log("grapple");
     }
-    // Start is called before the first frame update
-    void Start()
+
+    //trigger collider
+    void OnTriggerEnter(Collider other)
     {
-        
+        //let it glow here
+        Debug.Log("anchor position: " + this.transform.position);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -10,16 +10,42 @@ public class PlayerMovement : MonoBehaviour
     private float jumpHeightFalloff = 0.1f;
     private float jumpingPower = 7f;
     private bool isFacingRight = true;
+    public bool isFrozen = false;
+    public bool activeGrapple = false;
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
+    public MovementState state;
+    public enum MovementState
+    {
+        freeze,
+        walking,
+        grappling,
+        air
+    }
+
+    public void StateHandler()
+    {
+        
+    }
 
     // Update is called once per frame
     void Update()
     {
-        horizontal1 = Input.GetAxisRaw("Horizontal 1");
+
+
+        //if (isFrozen) // freeze for a moment while grappling
+        //{
+        //    rb.velocity = Vector3.zero;
+        //}
+
+        if (activeGrapple) return; // dont jump while grappling
+
+
+        horizontal1 = Input.GetAxisRaw("Horizontal 1"); // be able to move while grappling
+
 
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
@@ -59,7 +85,32 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void jumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+    {
+        activeGrapple = true;
+        velocityToSet = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(setVelocity), 0.1f);
+    }
 
+    private Vector3 velocityToSet;
+
+    private void setVelocity()
+    {
+        rb.velocity = velocityToSet;
+    }
+
+
+    public Vector3 calculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+    {
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight/ gravity) + Mathf.Sqrt(2 * displacementY - trajectoryHeight/ gravity));
+
+        return velocityXZ + velocityY;
+    }
 
 
 }
