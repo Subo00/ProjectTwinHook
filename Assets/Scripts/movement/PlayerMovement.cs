@@ -65,14 +65,12 @@ namespace TwinHookController
 
         }
 
-        private bool grappling = false;
         private void gatherInput()
         {
             frameInput = new FrameInput
             {
                 JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
                 JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-                GrappleDown = Input.GetButtonDown("Grapple"),
                 Move = new Vector3(Input.GetAxisRaw("Horizontal 1"), Input.GetAxisRaw("Vertical 1"))
             };
 
@@ -80,11 +78,6 @@ namespace TwinHookController
             {
                 frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
                 frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
-            }
-
-            if (frameInput.GrappleDown)
-            {
-                grappling = !grappling;
             }
 
             if (frameInput.JumpDown)
@@ -99,6 +92,7 @@ namespace TwinHookController
         {
 
             checkCollisions();
+
             handleJump();
             handleDirection();
             handleGravity();
@@ -123,16 +117,20 @@ namespace TwinHookController
         }
 
         #region grappling
-        private Vector3 grapplingVelocity;
 
         public void jumpToPosition(Vector3 targetPosition, float trajectoryHeight)
         {
             activeGrapple = true;
-            grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-            Invoke(nameof(applyMovement), 0.1f);
+            velocityToSet = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+            Invoke(nameof(setVelocity), 0.1f);
         }
 
+        private Vector3 velocityToSet;
 
+        private void setVelocity()
+        {
+            rb.velocity = velocityToSet;
+        }
 
 
         public Vector3 calculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
@@ -181,7 +179,7 @@ namespace TwinHookController
             // Note: Unlike 2D, 3D raycasts always report a hit if starting inside a collider.
             // However, if your player's collider is on _stats.PlayerLayer and you are casting with ~_stats.PlayerLayer,
             // then your own collider will be automatically ignored.
-            bool groundHit = Physics.CapsuleCast(point1, point2, radius, Vector3.down, stats.grounderDistance, stats.playerLayer, QueryTriggerInteraction.Ignore);
+            bool groundHit = Physics.CapsuleCast(point1, point2, radius, Vector3.down, stats.grounderDistance, ~stats.playerLayer, QueryTriggerInteraction.Ignore);
             bool ceilingHit = Physics.CapsuleCast(point1, point2, radius, Vector3.up, stats.grounderDistance, stats.playerLayer, QueryTriggerInteraction.Ignore);
 
             // If a ceiling is hit, adjust the vertical velocity.
@@ -280,17 +278,7 @@ namespace TwinHookController
 
         #endregion
 
-        private void applyMovement()
-        {
-            if (activeGrapple)
-            {
-                rb.velocity = grapplingVelocity;
-            }
-            else rb.velocity = frameVelocity;
-
-
-        }
-
+        private void applyMovement() => rb.velocity = frameVelocity;
 
 #if UNITY_EDITOR  //wtf is this doing? Just a warning i guess?
         private void OnValidate()
@@ -305,7 +293,6 @@ namespace TwinHookController
     {
         public bool JumpDown;
         public bool JumpHeld;
-        public bool GrappleDown;
         public Vector3 Move;
     }
 
