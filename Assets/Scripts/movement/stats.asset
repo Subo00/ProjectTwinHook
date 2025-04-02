@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   snapInput: 1
   verticalDeadZoneThreshold: 0.3
   horizontalDeadZoneThreshold: 0.1
-  maxSpeed: 14
-  acceleration: 120
-  groundDeceleration: 60
+  maxSpeed: 22.3
+  acceleration: 179.9
+  groundDeceleration: 60.5
   airDeceleration: 30
-  groundingForce: -1.5
+  groundingForce: -1.03
   grounderDistance: 0.05
   jumpPower: 36
   maxFallSpeed: 40

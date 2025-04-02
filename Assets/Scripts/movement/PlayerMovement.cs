@@ -59,7 +59,7 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
-
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             time += Time.deltaTime;
             gatherInput();
 
@@ -82,6 +82,7 @@ namespace TwinHookController
 
             if (frameInput.JumpDown)
             {
+                Debug.Log("Jump pressed");
                 jumpToConsume = true;
                 timeJumpWasPressed = time;
             }
@@ -101,7 +102,7 @@ namespace TwinHookController
             flip(); // really need to overdo this shit
         }
 
-
+        float yRotation = 0f;
         private void flip()
         {
             // Use frameInput.Move.x instead of horizontal1 if horizontal1 isn’t being updated
@@ -110,7 +111,7 @@ namespace TwinHookController
             {
                 isFacingRight = !isFacingRight;
                 // Rotate around the Y-axis instead of scaling
-                float yRotation = isFacingRight ? 0f : 180f;
+                yRotation = isFacingRight ? 0f : 180f;
                 transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
         }

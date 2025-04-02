@@ -152,7 +152,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.48, z: 15}
-  m_LocalScale: {x: 50, y: 15, z: 1}
+  m_LocalScale: {x: 50, y: 32.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 333197295}
@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 1417005040}
   - component: {fileID: 1417005041}
   - component: {fileID: 1417005042}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,7 +680,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417005033}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0d70ca27fde9bf1459e4db091aada0e2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -775,6 +775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21a64c3c3cf1c7428e935ec4829be65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 84292d12aea88fb479622e44f341adcf, type: 2}
   isFrozen: 0
   activeGrapple: 0
   groundCheck: {fileID: 2025297886}
@@ -1096,13 +1097,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783843770}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 3.02, z: -9.86}
+  m_LocalRotation: {x: 0.22597122, y: 0, z: 0, w: 0.974134}
+  m_LocalPosition: {x: -0.01, y: 7.7, z: -9.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.12, y: 0, z: 0}
 --- !u!1 &2025297885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,11 +1149,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3499483136932924686, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.83
+      value: 2.84
       objectReference: {fileID: 0}
     - target: {fileID: 3499483136932924686, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.26
+      value: 4.52
       objectReference: {fileID: 0}
     - target: {fileID: 3499483136932924686, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
       propertyPath: m_LocalPosition.z
