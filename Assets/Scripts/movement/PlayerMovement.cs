@@ -43,9 +43,22 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+
+    }
+
+    private void FixedUpdate()
+    {
+
+        float horizontalInput = Input.GetAxis("Horizontal 1");
+
+        // If there's input, set the velocity; otherwise, you might want to gradually decelerate.
+        if (Mathf.Abs(horizontalInput) > 0.1f)
+        {
+            rb.velocity = new Vector3(horizontalInput * speed, rb.velocity.y, rb.velocity.z);
+        }
+
         if (activeGrapple) return; // dont jump OR move while grappling
 
-        horizontal1 = Input.GetAxisRaw("Horizontal 1"); //
 
 
 
@@ -58,11 +71,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * jumpHeightFalloff);
         }
-    }
 
-    private void FixedUpdate()
-    {
-        rb.velocity = new Vector3(horizontal1 * speed, rb.velocity.y);
+
         flip();
     }
 
@@ -106,12 +116,21 @@ public class PlayerMovement : MonoBehaviour
     {
         float gravity = Physics.gravity.y;
         float displacementY = endPoint.y - startPoint.y;
-        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
+        float displacementX = endPoint.x - startPoint.x;
+
+        if (Mathf.Approximately(displacementX, 0f))
+        {
+            displacementX = 1f;
+        }
+        Debug.Log("displacementX: " + displacementX);
+        float timeToApex = Mathf.Sqrt(-2 * trajectoryHeight / gravity);
+        float timeFromApex = Mathf.Sqrt(2 * displacementY - trajectoryHeight / -gravity);
+        float flightTime = timeToApex + timeFromApex;
 
         Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
-        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight/ gravity) + Mathf.Sqrt(2 * displacementY - trajectoryHeight/ gravity));
+        Vector3 velocityX = Vector3.right * displacementX / flightTime;
 
-        return velocityXZ + velocityY;
+        return velocityX + velocityY;
     }
 
 
