@@ -28,8 +28,6 @@ namespace TwinHookController
 
 
         private float horizontal1;
-        private float jumpHeightFalloff = 0.1f;
-        private float jumpingPower = 7f;
         private bool isFacingRight = true;
         public bool isFrozen = false;
         public bool activeGrapple = false;
@@ -74,8 +72,9 @@ namespace TwinHookController
             {
                 JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
                 JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-                Move = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
+                Move = new Vector3(Input.GetAxisRaw("Horizontal 1"), Input.GetAxisRaw("Vertical 1"))
             };
+            Debug.Log(frameInput.Move);
 
             if (stats.snapInput)
             {
@@ -222,7 +221,11 @@ namespace TwinHookController
 
             if (!jumpToConsume && !HasBufferedJump) return;
 
-            if (grounded || CanUseCoyote) executeJump();
+            if (grounded || CanUseCoyote)
+            {
+                executeJump();
+                Debug.Log("executed jump"); 
+            }
 
             jumpToConsume = false;
         }
