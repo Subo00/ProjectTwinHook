@@ -777,7 +777,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFrozen: 0
   activeGrapple: 0
-  rb: {fileID: 1417005039}
   groundCheck: {fileID: 2025297886}
   groundLayer:
     serializedVersion: 2
@@ -822,6 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26416b2b66bb73f42b5e65d2a1600229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pm: {fileID: 1417005038}
   grappleSphere: {fileID: 1417005042}
   grappleRange: 4
   grappleLayer:

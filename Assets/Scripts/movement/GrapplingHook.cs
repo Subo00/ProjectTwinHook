@@ -5,154 +5,158 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
-interface Grapple
+namespace TwinHookController
 {
-    public void Grapple();
-}
-public class GrapplingHook : MonoBehaviour
-{
-
-    private PlayerMovement pm;
-    [SerializeField] private Collider grappleSphere;
-    [SerializeField] private float grappleRange;
-    [SerializeField] private LayerMask grappleLayer;
-    [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private Transform guntip;
-
-
-
-    private float inputDelay = 2f;
-    private float inputDelayTimer = 0f;
-    private bool inRange = false;
-    private bool grappling = false;
-    private Transform grapplePoint;
-    private float grappleDelayTime;
-
-    [SerializeField] private float grappleCooldown;
-    [SerializeField] private float overshootY;
-    private float grappleCooldownTimer;
-
-
-    //TODO:
-    //prioritize the closest thing in range
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    interface Grapple
     {
-        pm = GetComponent<PlayerMovement>();
+        public void Grapple();
     }
-    void Update()
+    public class GrapplingHook : MonoBehaviour
     {
-        StartCoroutine(HandleInputs());
+
+        [SerializeField] private PlayerMovement pm;
+        [SerializeField] private Collider grappleSphere;
+        [SerializeField] private float grappleRange;
+        [SerializeField] private LayerMask grappleLayer;
+        [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private Transform guntip;
 
 
-        if (grappleCooldownTimer > 0)
+
+        private float inputDelay = 2f;
+        private float inputDelayTimer = 0f;
+        private bool inRange = false;
+        private bool grappling = false;
+        private Transform grapplePoint;
+        private float grappleDelayTime;
+
+        [SerializeField] private float grappleCooldown;
+        [SerializeField] private float overshootY;
+        private float grappleCooldownTimer;
+
+
+        //TODO:
+        //prioritize the closest thing in range
+
+
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            grappleCooldownTimer -= Time.deltaTime; // count down
+            pm = GetComponent<PlayerMovement>();
         }
-        
-    }
-
-    private void LateUpdate()
-    {
-        if (grappling)
+        void Update()
         {
-            lineRenderer.SetPosition(0, guntip.position);
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        inRange = true;
-        Debug.Log("this is colliding with " + other.name);
-        grapplePoint = other.transform; // finding the transform of the grappling hook TODO: handle more grappling hooks, maybe array
-
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        inRange = false;
-    }
-    // Update is called once per frame
-
-    void startGrapple()
-    {
-        //pm.isFrozen = true;
-        if (grappleCooldownTimer > 0) return; // return if we just grappled
-        grappling = true;
-        lineRenderer.enabled = true;         // turn on line
+            StartCoroutine(HandleInputs());
 
 
-        if (inRange)
-        {
-            Invoke(nameof(executeGrapple), grappleDelayTime); //invoke for delayTime
-        }
-        else // if there is nothing to grapple
-        {
-            Invoke(nameof(stopGrapple), grappleDelayTime); //invoke for delayTime
-
-        }
-        lineRenderer.SetPosition(1, grapplePoint.position); //endpoint of line
-    }
-
-    void executeGrapple()
-    {
-        //pm.isFrozen = false;
-        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
-
-        float grapplePointRelativeYPos = grapplePoint.position.y - lowestPoint.y;
-        float highestPointOnArc = grapplePointRelativeYPos + overshootY;
-
-        if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootY;
-
-        pm.jumpToPosition(grapplePoint.position, highestPointOnArc);
-
-
-        Invoke(nameof(stopGrapple), 1f);
-    }
-
-    void stopGrapple()
-    {
-        //pm.isFrozen = false;
-        pm.activeGrapple = false;
-        grappling = false;
-        grappleCooldownTimer = grappleCooldown;
-        lineRenderer.enabled = false;
-    }
-
-
-    IEnumerator HandleInputs()
-    {
-        if (inputDelayTimer < inputDelay)
-        {
-            if (grappling && Input.GetButtonDown("Grapple") && inRange)  
+            if (grappleCooldownTimer > 0)
             {
-                stopGrapple();  // if grappling and pressing again, stop grappling
-                inputDelayTimer = 0;
-                Debug.Log("let go");
-                yield break;
+                grappleCooldownTimer -= Time.deltaTime; // count down
             }
-            if (grappling && !inRange) stopGrapple(); //if not in range & still grappling
-            if (!grappling && Input.GetButtonDown("Grapple") && inRange)
+
+        }
+
+        private void LateUpdate()
+        {
+            if (grappling)
             {
-                startGrapple(); // grapple if: not grappling, pressing button and in range
-                inputDelayTimer = 0;
-                Debug.Log("grapple");
-                yield break;
+                lineRenderer.SetPosition(0, guntip.position);
             }
         }
-        else
+
+        void OnTriggerEnter(Collider other)
         {
-            inputDelayTimer += Time.deltaTime;
+            inRange = true;
+            Debug.Log("this is colliding with " + other.name);
+            grapplePoint = other.transform; // finding the transform of the grappling hook TODO: handle more grappling hooks, maybe array
+
         }
 
-        yield return null;
+        private void OnTriggerExit(Collider other)
+        {
+            inRange = false;
+        }
+        // Update is called once per frame
+
+        void startGrapple()
+        {
+            //pm.isFrozen = true;
+            if (grappleCooldownTimer > 0) return; // return if we just grappled
+            grappling = true;
+            lineRenderer.enabled = true;         // turn on line
+
+
+            if (inRange)
+            {
+                Invoke(nameof(executeGrapple), grappleDelayTime); //invoke for delayTime
+            }
+            else // if there is nothing to grapple
+            {
+                Invoke(nameof(stopGrapple), grappleDelayTime); //invoke for delayTime
+
+            }
+            lineRenderer.SetPosition(1, grapplePoint.position); //endpoint of line
+        }
+
+        void executeGrapple()
+        {
+            //pm.isFrozen = false;
+            Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+
+            float grapplePointRelativeYPos = grapplePoint.position.y - lowestPoint.y;
+            float highestPointOnArc = grapplePointRelativeYPos + overshootY;
+
+            if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootY;
+
+            pm.jumpToPosition(grapplePoint.position, highestPointOnArc);
+
+
+            Invoke(nameof(stopGrapple), 1f);
+        }
+
+        void stopGrapple()
+        {
+            //pm.isFrozen = false;
+            pm.activeGrapple = false;
+            grappling = false;
+            grappleCooldownTimer = grappleCooldown;
+            lineRenderer.enabled = false;
+        }
+
+
+        IEnumerator HandleInputs()
+        {
+            if (inputDelayTimer < inputDelay)
+            {
+                if (grappling && Input.GetButtonDown("Grapple") && inRange)
+                {
+                    stopGrapple();  // if grappling and pressing again, stop grappling
+                    inputDelayTimer = 0;
+                    Debug.Log("let go");
+                    yield break;
+                }
+                if (grappling && !inRange) stopGrapple(); //if not in range & still grappling
+                if (!grappling && Input.GetButtonDown("Grapple") && inRange)
+                {
+                    startGrapple(); // grapple if: not grappling, pressing button and in range
+                    inputDelayTimer = 0;
+                    Debug.Log("grapple");
+                    yield break;
+                }
+            }
+            else
+            {
+                inputDelayTimer += Time.deltaTime;
+            }
+
+            yield return null;
+        }
+
+
+
     }
 
-
-
 }
+
