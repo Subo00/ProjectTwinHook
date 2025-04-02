@@ -1,4 +1,4 @@
-using AgonController;
+using TwinHookController;
 using System;
 using UnityEngine;
 
@@ -82,7 +82,7 @@ namespace TwinHookController
 
             if (frameInput.JumpDown)
             {
-                Debug.Log("Jump pressed");
+                Debug.Log("Jump pressed and touching ground = " + grounded);
                 jumpToConsume = true;
                 timeJumpWasPressed = time;
             }
