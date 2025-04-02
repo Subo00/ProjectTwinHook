@@ -14,7 +14,6 @@ namespace TwinHookController
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
         private Vector3 frameVelocity; //2d -> 3d
-        private bool cachedQueryStartInColliders; //2d -> 3d
 
         #region Interface
 
@@ -54,7 +53,7 @@ namespace TwinHookController
             rb = GetComponent<Rigidbody>();
             playerCollider = GetComponent<CapsuleCollider>();
 
-            cachedQueryStartInColliders = Physics2D.queriesStartInColliders; //2D -> 3d
+            rb.centerOfMass = new Vector3(0, -transform.localScale.y / 2, 0);
         }
 
         // Update is called once per frame
@@ -74,7 +73,6 @@ namespace TwinHookController
                 JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
                 Move = new Vector3(Input.GetAxisRaw("Horizontal 1"), Input.GetAxisRaw("Vertical 1"))
             };
-            Debug.Log(frameInput.Move);
 
             if (stats.snapInput)
             {
@@ -106,12 +104,14 @@ namespace TwinHookController
 
         private void flip()
         {
-            if (isFacingRight && horizontal1 < 0f || !isFacingRight && horizontal1 > 0f)
+            // Use frameInput.Move.x instead of horizontal1 if horizontal1 isn’t being updated
+            float horizontal = frameInput.Move.x;
+            if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
             {
                 isFacingRight = !isFacingRight;
-                Vector3 localScale = transform.localScale;
-                localScale.x *= -1f;
-                transform.localScale = localScale;
+                // Rotate around the Y-axis instead of scaling
+                float yRotation = isFacingRight ? 0f : 180f;
+                transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
             }
         }
 
