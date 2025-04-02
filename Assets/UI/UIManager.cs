@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class UIManager : MonoBehaviour
 {
     protected Canvas canvas;
@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance;
 
-    private bool isMenuOpen = false;
+    private bool isMenuOpen = true;
+    private UIControls controls;
     /*
     bool isInventoryOpen = false;
      private enum UIType { None, Inventory, Crafting, Minigame, Menu, Dialog, Tutorial };
@@ -30,6 +31,9 @@ public class UIManager : MonoBehaviour
         interactionPrompt = transform.GetChild(0).GetChild(0)?.gameObject;
         timeText = transform.GetChild(0).GetChild(1)?.gameObject;
 
+        controls = new UIControls();
+        controls.UI.Menu.performed += ctx => ToggleMenu();
+
         if (!timeText || !interactionPrompt){
             Debug.LogError("GameObjects on UIManager are missing");
         }
@@ -37,7 +41,20 @@ public class UIManager : MonoBehaviour
 
     protected virtual void Start(){
         menuUI = MenuUI.Instance;
+        if ( menuUI != null){
+            ToggleMenu();
+        }
         HideInteraction();
+    }
+
+    private void OnEnable()
+    {
+        controls.UI.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.UI.Disable();
     }
 
     public void ShowInteractionOnObject(Transform interactPoint){
