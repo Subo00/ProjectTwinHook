@@ -23,7 +23,7 @@ MonoBehaviour:
   groundDeceleration: 60.5
   airDeceleration: 30
   groundingForce: -1.03
-  grounderDistance: 0.5
+  grounderDistance: 1.01
   jumpPower: 30
   maxFallSpeed: 40
   fallAcceleration: 110
