@@ -22,10 +22,10 @@ public class GameData
     public GameData()
     {
         playerPosition = Vector3.zero;
-        playerRotation = Vector3.zero;
-        sourcesTime = new SerializableDictionary<string, float>();
-        itemsStack = new SerializableDictionary<uint, uint>();
-        charactersDialog = new SerializableDictionary<string, uint>();
+        //playerRotation = Vector3.zero;
+       /// sourcesTime = new SerializableDictionary<string, float>();
+       // itemsStack = new SerializableDictionary<uint, uint>();
+        //charactersDialog = new SerializableDictionary<string, uint>();
     }
 
 }
