@@ -11,8 +11,7 @@ public class FileDataHandler
     private bool useEncryption = false;
     private string encryptionCodeWord = "password";
 
-    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
-    {
+    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption  = false){
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
         this.useEncryption = useEncryption;
@@ -39,6 +38,7 @@ public class FileDataHandler
 
             }
             catch (Exception e){
+                Debug.LogException(e);
             }
         }
         return loadedData;
