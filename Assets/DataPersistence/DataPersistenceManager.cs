@@ -17,8 +17,7 @@ public class DataPersistenceManager : MonoBehaviour
     private List<IDataPersistence> dataPersistenceObjects;
     public static DataPersistenceManager Instance {  get; private set; }
 
-    private void Awake()
-    {
+    private void Awake(){
         if(Instance != null)
         {
             Debug.LogError("There are more than one DataPersistenceManagers in the scene");
@@ -30,74 +29,62 @@ public class DataPersistenceManager : MonoBehaviour
     }
 
 
-    private void OnEnable()
-    {
+    private void OnEnable(){
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable(){
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
 
-    public void NewGame()
-    {
+    public void NewGame(){
         this.gameData = new GameData();
     }
 
-    public void LoadGame()
-    {
+    public void LoadGame(){
 
         this.gameData = dataHandler.Load();
 
 
-        if(this.gameData == null)
-        {
+        if(this.gameData == null){
             NewGame();
         }
 
-        foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
+        foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects){
             dataPersistenceObj.LoadData(gameData);
         }
 
     }
 
-    public void SaveGame()
-    {
-        foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
+    public void SaveGame(){
+        foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects){
             dataPersistenceObj.SaveData(ref gameData);
         }
 
         dataHandler.Save(gameData);
     }
 
-    private void OnApplicationQuit()
-    {
-        SaveGame();
+    private void OnApplicationQuit(){
+       // SaveGame();
     }
 
-    private List<IDataPersistence> FindAllDataPersistenceObjects()
-    {
+    private List<IDataPersistence> FindAllDataPersistenceObjects(){
         IEnumerable<IDataPersistence> dataPersistenceObjects = 
             FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>(); 
 
         return new List<IDataPersistence>(dataPersistenceObjects);
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-    {
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+    public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode){
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
 
-    public void OnSceneUnloaded(Scene scene)
-    {
+    public void OnSceneUnloaded(Scene scene){
         SaveGame();
     }
 
