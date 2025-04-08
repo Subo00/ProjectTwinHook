@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Playables;
 
-public class ThirdPersonMovement : MonoBehaviour{
+public class ThirdPersonMovement : MonoBehaviour, IDataPersistence{
 
     [SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
@@ -9,7 +8,7 @@ public class ThirdPersonMovement : MonoBehaviour{
     [SerializeField] private string horizontal = "Horizontal";
     [SerializeField] private string verticals = "Vertical";
 
-    //protected bool isUIActive = false;
+    protected bool isUIActive = false;
     //protected PlayerAnimationController animationController;
     protected Vector3 direction;
 
@@ -26,7 +25,7 @@ public class ThirdPersonMovement : MonoBehaviour{
 
     protected virtual void Update(){
 
-        //if (isUIActive) return;
+        if (isUIActive) return;
 
         //takes input from axis 
         float horiznotalAxis = Input.GetAxisRaw(horizontal);
@@ -49,20 +48,26 @@ public class ThirdPersonMovement : MonoBehaviour{
         }
 
     }
-    /*
+    
     public void ToggleUI(bool isActive){
         isUIActive = isActive;
     }
     
     public void LoadData(GameData data)
     {
-        //this.transform.position = data.playerPosition;
+
+        controller.enabled = false;
+        this.transform.position = data.playerPosition;
+        //this.transform.rotation = data.playerRotation;
+        controller.enabled = true;
+
     }
 
     public void SaveData(ref GameData data)
     {
-        //data.playerPosition = this.transform.position;
+        data.playerPosition = this.transform.position;
+        //data.playerRotation = this.transform.rotation;
     }
-    */
+    
 
 }
