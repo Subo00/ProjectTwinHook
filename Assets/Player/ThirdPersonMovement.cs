@@ -16,9 +16,12 @@ public class ThirdPersonMovement : MonoBehaviour{
     private CharacterController controller;
     private float turnSmoothVelocity;
 
+    protected virtual void Awake(){
+        controller = GetComponent<CharacterController>();
+    }
+
     protected virtual void Start(){
         //animationController = GetComponent<PlayerAnimationController>();
-        controller = GetComponent<CharacterController>();
     }
 
     protected virtual void Update(){
