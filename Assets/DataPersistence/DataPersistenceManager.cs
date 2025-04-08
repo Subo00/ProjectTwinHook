@@ -88,4 +88,10 @@ public class DataPersistenceManager : MonoBehaviour
         SaveGame();
     }
 
+    private void Start(){
+        //this.dataHandler = new FileDataHandler("C:\\Unity Projects\\Test Save", fileName);
+        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        LoadGame();
+        
+    }
 }
