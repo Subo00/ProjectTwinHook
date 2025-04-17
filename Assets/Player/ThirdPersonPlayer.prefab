@@ -149,6 +149,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1073913317486095026}
   - component: {fileID: 5906344976433343792}
+  - component: {fileID: 730592514839036201}
+  - component: {fileID: 1173611997870878464}
   m_Layer: 0
   m_Name: PlayerInteractable
   m_TagString: PlayerInteraction
@@ -192,6 +194,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &730592514839036201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959507056040811789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6bcecd664001294caa72880ccd5d6ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayerOne: 1
+--- !u!114 &1173611997870878464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959507056040811789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6bcecd664001294caa72880ccd5d6ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayerOne: 0
 --- !u!1 &6260935161289372093
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1020809414892726441}
   - component: {fileID: 5934378322845027403}
-  - component: {fileID: 5486368237833116821}
+  - component: {fileID: 4220737347317211515}
   m_Layer: 0
   m_Name: ThirdPersonPlayer
   m_TagString: PlayerController
@@ -254,7 +282,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: -0.45, z: 0}
---- !u!114 &5486368237833116821
+--- !u!114 &4220737347317211515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,13 +291,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6260935161289372093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac70f228e0a9df04f95a0060a5a52869, type: 3}
+  m_Script: {fileID: 11500000, guid: 905839591cfaea448965d508995d954d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
   turnSmoothTime: 0.1
-  horizontal: Horizontal 1
-  verticals: Vertical 1
+  horizontal: Horizontal 2
+  verticals: Vertical 2
+  isPlayerOne: 1
 --- !u!1 &6781440270858049152
 GameObject:
   m_ObjectHideFlags: 0
