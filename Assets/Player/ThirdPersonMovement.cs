@@ -5,8 +5,8 @@ public class ThirdPersonMovement : MonoBehaviour, IDataPersistence{
     [SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
 
-    [SerializeField] private string horizontal = "Horizontal";
-    [SerializeField] private string verticals = "Vertical";
+    [SerializeField] protected string horizontal = "Horizontal";
+    [SerializeField] protected string vertical = "Vertical";
 
     protected bool isUIActive = false;
     //protected PlayerAnimationController animationController;
@@ -29,7 +29,7 @@ public class ThirdPersonMovement : MonoBehaviour, IDataPersistence{
 
         //takes input from axis 
         float horiznotalAxis = Input.GetAxisRaw(horizontal);
-        float verticalAxis = Input.GetAxisRaw(verticals);
+        float verticalAxis = Input.GetAxisRaw(vertical);
 
         //normalize directions so that when its moving diagonaly the speed is not dubled
         direction = new Vector3(horiznotalAxis, 0f, verticalAxis).normalized;
