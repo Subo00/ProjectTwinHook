@@ -56,5 +56,10 @@ namespace TwinHookController
 
         [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
         public float jumpBuffer = .2f;
+
+
+        [Header("GRAPPLE")]
+        [Tooltip("The distance to the anchor to make it stop grappling")]
+        public float stopGrapplingAnchorDistance = 3f;
     }
 }

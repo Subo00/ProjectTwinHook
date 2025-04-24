@@ -30,3 +30,4 @@ MonoBehaviour:
   jumpEndEarlyGravityModifier: 3
   coyoteTime: 0.15
   jumpBuffer: 0.2
+  stopGrapplingAnchorDistance: 1.2

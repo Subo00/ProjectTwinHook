@@ -776,6 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 84292d12aea88fb479622e44f341adcf, type: 2}
+  grapplingHook: {fileID: 1417005040}
   isFrozen: 0
   activeGrapple: 0
   grapplePoint: {fileID: 0}
@@ -783,7 +784,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  state: 0
 --- !u!54 &1417005039
 Rigidbody:
   m_ObjectHideFlags: 0

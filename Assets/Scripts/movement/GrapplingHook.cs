@@ -122,6 +122,11 @@ namespace TwinHookController
             lineRenderer.enabled = false;
         }
 
+        public void ForceStopGrapple()
+        {
+            stopGrapple();
+        }
+
 
 
         IEnumerator HandleInputs()

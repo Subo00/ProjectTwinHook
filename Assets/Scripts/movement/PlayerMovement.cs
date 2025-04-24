@@ -10,6 +10,7 @@ namespace TwinHookController
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         [SerializeField] private Stats stats;
+        [SerializeField] private GrapplingHook grapplingHook;
         private Rigidbody rb;
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
@@ -35,19 +36,19 @@ namespace TwinHookController
         [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundLayer;
 
-        public MovementState state;
-        public enum MovementState
-        {
-            freeze,
-            walking,
-            grappling,
-            air
-        }
+     //   public MovementState state;
+      //  public enum MovementState
+      //  {
+      //      freeze,
+      //      walking,
+      //      grappling,
+      //      air
+      //  }
 
-        public void StateHandler()
-        {
+      //  public void StateHandler()
+      //  {
 
-        }
+      //  }
 
 
 
@@ -110,9 +111,10 @@ namespace TwinHookController
             flip(); // really need to overdo this shit
 
             // If grappling and close to the target, stop grappling
-            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < 1f)
+            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
             {
-                activeGrapple = false;  // Let momentum carry you
+                Debug.Log("grappleStop by proximity");
+                grapplingHook.ForceStopGrapple();  // Let momentum carry you 
             }
 
             // Optional: Lock to 2D axis
@@ -140,13 +142,18 @@ namespace TwinHookController
         {
             activeGrapple = true;
 
+            // Calculate launch velocity
             grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+
+            // Apply once — let physics do the rest
+            rb.velocity = grapplingVelocity;
         }
 
         public Vector3 calculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
         {
             float gravity = Mathf.Abs(Physics.gravity.y);
 
+            // Vertical velocity to reach arc
             float verticalVelocity = Mathf.Sqrt(2 * gravity * trajectoryHeight);
             float timeToApex = verticalVelocity / gravity;
 
@@ -157,8 +164,10 @@ namespace TwinHookController
             float deltaX = endPoint.x - startPoint.x;
             float horizontalVelocity = deltaX / totalTime;
 
+            Debug.Log("the grappling velocity: " + new Vector3(horizontalVelocity, verticalVelocity, 0));
             return new Vector3(horizontalVelocity, verticalVelocity, 0);
         }
+
 
 
         #endregion
@@ -308,7 +317,6 @@ namespace TwinHookController
             if (grounded && frameVelocity.y <= 0f)
             {
                 frameVelocity.y = stats.groundingForce;
-                Debug.Log("Grounded → grounding force applied: " + stats.groundingForce);
             }
             else
             {
@@ -322,7 +330,6 @@ namespace TwinHookController
                 if (frameVelocity.y < -stats.maxFallSpeed)
                     frameVelocity.y = -stats.maxFallSpeed;
 
-                Debug.Log("Falling → velocity: " + frameVelocity.y);
             }
         }
 
@@ -331,16 +338,14 @@ namespace TwinHookController
 
         #endregion
 
-        private void applyMovement()
+        private void applyMovement() // change grappling stuff here
         {
             if (activeGrapple)
             {
-                Debug.Log("Applying grapple velocity: " + grapplingVelocity);
-                rb.velocity = grapplingVelocity;
+                rb.velocity = grapplingVelocity + frameVelocity;
             }
             else
             {
-                Debug.Log("Applying frame velocity: " + frameVelocity);
                 rb.velocity = frameVelocity;
             }
         }
