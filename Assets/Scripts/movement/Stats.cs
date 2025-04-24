@@ -6,8 +6,8 @@ namespace TwinHookController
     public class Stats : ScriptableObject
     {
         [Header("LAYERS")]
-        [Tooltip("Set this to the layer your player is on")]
-        public LayerMask playerLayer;
+        [Tooltip("Set this to the layer your player is walking on")]
+        public LayerMask groundLayer;
 
         [Header("INPUT")]
         [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
@@ -27,7 +27,7 @@ namespace TwinHookController
         public float acceleration = 120;
 
         [Tooltip("The pace at which the player comes to a stop")]
-        public float groundDeceleration = 60;
+        public float groundDeceleration = 20;
 
         [Tooltip("Deceleration in air only after stopping input mid-air")]
         public float airDeceleration = 30;
@@ -46,7 +46,7 @@ namespace TwinHookController
         public float maxFallSpeed = 40;
 
         [Tooltip("The player's capacity to gain fall speed. a.k.a. In Air Gravity")]
-        public float fallAcceleration = 110;
+        public float fallAcceleration = 70;
 
         [Tooltip("The gravity multiplier added when jump is released early")]
         public float jumpEndEarlyGravityModifier = 3;

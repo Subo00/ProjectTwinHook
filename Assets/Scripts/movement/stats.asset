@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952ecdfb16cbf034480f4ab62ba2fcac, type: 3}
   m_Name: stats
   m_EditorClassIdentifier: 
-  playerLayer:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 64
   snapInput: 1
   verticalDeadZoneThreshold: 0.3
   horizontalDeadZoneThreshold: 0.1
-  maxSpeed: 22.3
-  acceleration: 179.9
-  groundDeceleration: 60.5
+  maxSpeed: 14
+  acceleration: 60
+  groundDeceleration: 100
   airDeceleration: 30
-  groundingForce: -1.03
-  grounderDistance: 1.01
-  jumpPower: 30
-  maxFallSpeed: 40
-  fallAcceleration: 110
+  groundingForce: -1.5
+  grounderDistance: 0.1
+  jumpPower: 14
+  maxFallSpeed: 30
+  fallAcceleration: 20
   jumpEndEarlyGravityModifier: 3
   coyoteTime: 0.15
   jumpBuffer: 0.2

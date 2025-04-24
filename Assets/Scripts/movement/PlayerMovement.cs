@@ -1,4 +1,4 @@
-using TwinHookController;
+﻿using TwinHookController;
 using System;
 using UnityEngine;
 
@@ -25,11 +25,12 @@ namespace TwinHookController
 
         private float time;
 
-
         private float horizontal1;
         private bool isFacingRight = true;
         public bool isFrozen = false;
         public bool activeGrapple = false;
+        public Transform grapplePoint;
+
 
         [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundLayer;
@@ -47,6 +48,12 @@ namespace TwinHookController
         {
 
         }
+
+
+
+
+
+
 
         private void Awake()
         {
@@ -82,18 +89,13 @@ namespace TwinHookController
                 frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
             }
 
-            if (frameInput.GrappleDown)
-            {
-                grappling = !grappling;
-            }
-
             if (frameInput.JumpDown)
             {
-                Debug.Log("Jump pressed and touching ground = " + grounded);
                 jumpToConsume = true;
                 timeJumpWasPressed = time;
             }
         }
+
 
         private void FixedUpdate()
         {
@@ -106,12 +108,21 @@ namespace TwinHookController
             applyMovement();
 
             flip(); // really need to overdo this shit
+
+            // If grappling and close to the target, stop grappling
+            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < 1f)
+            {
+                activeGrapple = false;  // Let momentum carry you
+            }
+
+            // Optional: Lock to 2D axis
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         }
 
         float yRotation = 0f;
         private void flip()
         {
-            // Use frameInput.Move.x instead of horizontal1 if horizontal1 isn�t being updated
+            // Use frameInput.Move.x instead of horizontal1 if horizontal1 isn’t being updated
             float horizontal = frameInput.Move.x;
             if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
             {
@@ -128,33 +139,28 @@ namespace TwinHookController
         public void jumpToPosition(Vector3 targetPosition, float trajectoryHeight)
         {
             activeGrapple = true;
+
             grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-            Invoke(nameof(applyMovement), 0.1f);
         }
-
-
-
 
         public Vector3 calculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
         {
-            float gravity = Physics.gravity.y;
-            float displacementY = endPoint.y - startPoint.y;
-            float displacementX = endPoint.x - startPoint.x;
+            float gravity = Mathf.Abs(Physics.gravity.y);
 
-            if (Mathf.Approximately(displacementX, 0f))
-            {
-                displacementX = 1f;
-            }
-            Debug.Log("displacementX: " + displacementX);
-            float timeToApex = Mathf.Sqrt(-2 * trajectoryHeight / gravity);
-            float timeFromApex = Mathf.Sqrt(2 * displacementY - trajectoryHeight / -gravity);
-            float flightTime = timeToApex + timeFromApex;
+            float verticalVelocity = Mathf.Sqrt(2 * gravity * trajectoryHeight);
+            float timeToApex = verticalVelocity / gravity;
 
-            Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
-            Vector3 velocityX = Vector3.right * displacementX / flightTime;
+            float deltaY = endPoint.y - startPoint.y;
+            float timeFromApex = Mathf.Sqrt(2 * Mathf.Abs(trajectoryHeight - deltaY) / gravity);
+            float totalTime = timeToApex + timeFromApex;
 
-            return velocityX + velocityY;
+            float deltaX = endPoint.x - startPoint.x;
+            float horizontalVelocity = deltaX / totalTime;
+
+            return new Vector3(horizontalVelocity, verticalVelocity, 0);
         }
+
+
         #endregion
 
         #region Collisions
@@ -162,48 +168,73 @@ namespace TwinHookController
         private float frameLeftGrounded = float.MinValue;
         private bool grounded;
 
+        private bool wasGroundedLastFrame;
+
+
+        // testing the damn ground controll
+        private void OnDrawGizmosSelected()
+        {
+#if UNITY_EDITOR
+            CapsuleCollider col = GetComponent<CapsuleCollider>();
+            if (!col) return;
+
+            Vector3 center = col.bounds.center;
+            float radius = col.radius;
+            float height = col.height;
+            float castDistance = 0.01f; // How far below the capsule to check for ground
+
+            Vector3 point1 = center + Vector3.up * (height / 2 - radius);
+            Vector3 point2 = center + Vector3.down * ((height / 2 - radius) + castDistance);
+
+
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(point1, radius);
+            Gizmos.DrawWireSphere(point2, radius);
+            Gizmos.DrawLine(point1 + Vector3.left * radius, point2 + Vector3.left * radius);
+            Gizmos.DrawLine(point1 + Vector3.right * radius, point2 + Vector3.right * radius);
+#endif
+        }
+
+
+
+
+
         private void checkCollisions()
         {
-            // Assume _col is your CapsuleCollider (3D)
-     
             Vector3 center = playerCollider.bounds.center;
+            float radius = playerCollider.radius * 0.9f; // Slightly shrink radius to prevent edge misses
+            float height = playerCollider.height;
+            float castDistance = 0.01f; // How far below the capsule to check for ground
 
-            // Calculate the effective segment length along the playerCollider's height.
-            // For a vertically oriented playerCollider, the segment length is (height/2 - radius).
-            float radius = playerCollider.radius;
-            float segment = Mathf.Max(0, playerCollider.height * 0.5f - radius);
-            Vector3 up = transform.up; // assuming "up" is the capsule's local up direction
-            Vector3 point1 = center + up * segment;
-            Vector3 point2 = center - up * segment;
+            Vector3 point1 = center + Vector3.up * (height / 2 - radius);
+            Vector3 point2 = center + Vector3.down * ((height / 2 - radius) + castDistance);
 
-            // Perform capsule casts in 3D.
-            // Use a layer mask that excludes the player�s own layer.
-            // Note: Unlike 2D, 3D raycasts always report a hit if starting inside a collider.
-            // However, if your player's collider is on _stats.PlayerLayer and you are casting with ~_stats.PlayerLayer,
-            // then your own collider will be automatically ignored.
-            bool groundHit = Physics.CapsuleCast(point1, point2, radius, Vector3.down, stats.grounderDistance, stats.playerLayer, QueryTriggerInteraction.Ignore);
-            bool ceilingHit = Physics.CapsuleCast(point1, point2, radius, Vector3.up, stats.grounderDistance, stats.playerLayer, QueryTriggerInteraction.Ignore);
 
-            // If a ceiling is hit, adjust the vertical velocity.
-            if (ceilingHit)
-                frameVelocity.y = Mathf.Min(0, frameVelocity.y);
+            grounded = Physics.CheckCapsule(point1, point2, radius, stats.groundLayer, QueryTriggerInteraction.Ignore);
 
-            // Ground collision: if we just landed, or we left the ground.
-            if (!grounded && groundHit)
+            if (grounded)
             {
-                grounded = true;
-                coyoteUsable = true;
-                bufferedJumpUsable = true;
-                endedJumpEarly = false;
-                GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
+                if (!wasGroundedLastFrame)
+                {
+                    coyoteUsable = true;
+                    bufferedJumpUsable = true;
+                    endedJumpEarly = false;
+                    GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
+                }
             }
-            else if (grounded && !groundHit)
+            else
             {
-                grounded = false;
-                frameLeftGrounded = time;
-                GroundedChanged?.Invoke(false, 0);
+                if (wasGroundedLastFrame)
+                {
+                    frameLeftGrounded = time;
+                    GroundedChanged?.Invoke(false, 0);
+                }
             }
+
+            wasGroundedLastFrame = grounded;
         }
+
+
 
         #endregion
 
@@ -220,28 +251,36 @@ namespace TwinHookController
 
         private void handleJump()
         {
-            if (!endedJumpEarly && !grounded && !frameInput.JumpHeld && rb.velocity.y > 0) endedJumpEarly = true;
+            // Cut jump short if released early
+            if (!endedJumpEarly && !grounded && !frameInput.JumpHeld && rb.velocity.y > 0)
+            {
+                endedJumpEarly = true;
+            }
 
+            // Only try to jump if there's a valid press
             if (!jumpToConsume && !HasBufferedJump) return;
 
+            // Must be on ground or within coyote time
             if (grounded || CanUseCoyote)
             {
                 executeJump();
-                Debug.Log("executed jump"); 
             }
 
+            // Always clear input consumption flag
             jumpToConsume = false;
         }
+
 
         private void executeJump()
         {
             endedJumpEarly = false;
-            timeJumpWasPressed = 0;
             bufferedJumpUsable = false;
             coyoteUsable = false;
+
             frameVelocity.y = stats.jumpPower;
             Jumped?.Invoke();
         }
+
 
         #endregion
 
@@ -269,14 +308,26 @@ namespace TwinHookController
             if (grounded && frameVelocity.y <= 0f)
             {
                 frameVelocity.y = stats.groundingForce;
+                Debug.Log("Grounded → grounding force applied: " + stats.groundingForce);
             }
             else
             {
-                var inAirGravity = stats.fallAcceleration;
-                if (endedJumpEarly && frameVelocity.y > 0) inAirGravity *= stats.jumpEndEarlyGravityModifier;
-                frameVelocity.y = Mathf.MoveTowards(frameVelocity.y, -stats.maxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+                float gravity = stats.fallAcceleration;
+                if (endedJumpEarly && frameVelocity.y > 0)
+                    gravity *= stats.jumpEndEarlyGravityModifier;
+
+                frameVelocity.y += -gravity * Time.fixedDeltaTime;
+
+                // Clamp to max fall speed
+                if (frameVelocity.y < -stats.maxFallSpeed)
+                    frameVelocity.y = -stats.maxFallSpeed;
+
+                Debug.Log("Falling → velocity: " + frameVelocity.y);
             }
         }
+
+
+
 
         #endregion
 
@@ -284,15 +335,20 @@ namespace TwinHookController
         {
             if (activeGrapple)
             {
+                Debug.Log("Applying grapple velocity: " + grapplingVelocity);
                 rb.velocity = grapplingVelocity;
             }
-            else rb.velocity = frameVelocity;
-
-
+            else
+            {
+                Debug.Log("Applying frame velocity: " + frameVelocity);
+                rb.velocity = frameVelocity;
+            }
         }
 
 
-#if UNITY_EDITOR  //wtf is this doing? Just a warning i guess?
+
+
+#if UNITY_EDITOR  
         private void OnValidate()
         {
             if (stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player Controller's Stats slot", this);

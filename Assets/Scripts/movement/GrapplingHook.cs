@@ -72,6 +72,7 @@ namespace TwinHookController
             Debug.Log("this is colliding with " + other.name);
             grapplePoint = other.transform; // finding the transform of the grappling hook TODO: handle more grappling hooks, maybe array
 
+            pm.grapplePoint = grapplePoint;
         }
 
         private void OnTriggerExit(Collider other)
@@ -103,14 +104,11 @@ namespace TwinHookController
         void executeGrapple()
         {
             //pm.isFrozen = false;
-            Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+            float displacementY = grapplePoint.position.y - transform.position.y;
+            float trajectoryHeight = displacementY > 0 ? displacementY + overshootY : overshootY;
 
-            float grapplePointRelativeYPos = grapplePoint.position.y - lowestPoint.y;
-            float highestPointOnArc = grapplePointRelativeYPos + overshootY;
 
-            if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootY;
-
-            pm.jumpToPosition(grapplePoint.position, highestPointOnArc);
+            pm.jumpToPosition(grapplePoint.position, trajectoryHeight);
 
 
             Invoke(nameof(stopGrapple), 1f);
@@ -118,12 +116,12 @@ namespace TwinHookController
 
         void stopGrapple()
         {
-            //pm.isFrozen = false;
             pm.activeGrapple = false;
             grappling = false;
             grappleCooldownTimer = grappleCooldown;
             lineRenderer.enabled = false;
         }
+
 
 
         IEnumerator HandleInputs()

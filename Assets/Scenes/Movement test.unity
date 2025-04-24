@@ -352,8 +352,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1594492640}
-  - {fileID: 1259318833}
   - {fileID: 74798216}
+  - {fileID: 1259318833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259318832
@@ -374,7 +374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1259318833
 Transform:
   m_ObjectHideFlags: 0
@@ -755,7 +755,7 @@ Transform:
   m_GameObject: {fileID: 1417005033}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -778,6 +778,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 84292d12aea88fb479622e44f341adcf, type: 2}
   isFrozen: 0
   activeGrapple: 0
+  grapplePoint: {fileID: 0}
   groundCheck: {fileID: 2025297886}
   groundLayer:
     serializedVersion: 2
