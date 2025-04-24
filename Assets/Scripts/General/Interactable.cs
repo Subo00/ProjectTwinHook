@@ -7,17 +7,26 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
     protected bool inUse = false;
     protected UIManager uiManager;
     protected Transform dropPoint = null;
-
+    protected bool isPlayerOneNear = false;
+    protected bool isPlayerTwoNear = false;
     protected abstract void OnUpdate();
     void IMyUpdate.MyUpdate(){
         OnUpdate();
     }
     protected void CommonLogic(){
         if (inUse){
-            uiManager.HideInteraction();
+            //add statments...
+            //TODO: think about can an object be interacted with both players
+            //if not, then just remove prompts,
+            //if so.... remove prompts from the player that is using it...
         }
         else{
-            uiManager.ShowInteractionOnObject(dropPoint);
+            if (isPlayerOneNear){
+                uiManager.camOne.ShowInteractionOnObject(dropPoint);
+            }
+            if (isPlayerTwoNear){
+                uiManager.camTwo.ShowInteractionOnObject(dropPoint);
+            }
         }
     }
 
@@ -35,17 +44,37 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
     //Make sure that the GO this script is attached to has a Collider
     private void OnTriggerEnter(Collider other){
         if (other.CompareTag("PlayerInteraction")){
-            UpdateManager.Instance.AddUpdatable(this);
-            inUse = false;
-            uiManager.SetInteractPoint(dropPoint);
+            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
+            SetBool(isOne, true);
+
+            //if both players are near, no need to add to updateable twice
+            if (isPlayerOneNear ^ isPlayerTwoNear){ 
+                UpdateManager.Instance.AddUpdatable(this);
+            }
+            //uiManager.SetInteractPoint(dropPoint);
         }
     }
 
     private void OnTriggerExit(Collider other){
         if (other.CompareTag("PlayerInteraction")){
-            uiManager.SetInteractPoint();
-            uiManager.HideInteraction();
-            UpdateManager.Instance.RemoveUpdatable(this);
+            //uiManager.SetInteractPoint();
+            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
+            SetBool(isOne, false);
+
+            if (!(isPlayerOneNear || isPlayerTwoNear)){
+                UpdateManager.Instance.RemoveUpdatable(this);
+            }
+            uiManager.HideInteraction(); //hide both interactions, because other cam will 
+                                         //update interaction on object
+        }
+    }
+
+    private void SetBool(bool isPlayerOne, bool value){
+        if (isPlayerOne){
+            isPlayerOneNear = value;
+        }
+        else{
+            isPlayerTwoNear = value;
         }
     }
 }

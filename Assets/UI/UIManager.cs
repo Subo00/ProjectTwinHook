@@ -3,14 +3,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class UIManager : MonoBehaviour
 {
-    protected Canvas canvas;
-    protected GameObject interactionPrompt;
-    protected GameObject timeText;
-    protected Transform lastInteractPoint = null;
-    protected MenuUI menuUI;
-
-
     public static UIManager Instance;
+
+    //Cameras
+    public PromptController camOne;
+    public PromptController camTwo;
+
+    protected MenuUI menuUI;
 
     private bool isMenuOpen = true;
     private UIControls controls;
@@ -27,16 +26,8 @@ public class UIManager : MonoBehaviour
         }
         Instance = this;
 
-        canvas = GetComponentInChildren<Canvas>();
-        interactionPrompt = transform.GetChild(0).GetChild(0)?.gameObject;
-        timeText = transform.GetChild(0).GetChild(1)?.gameObject;
-
         controls = new UIControls();
         controls.UI.Menu.performed += ctx => ToggleMenu();
-
-        if (!timeText || !interactionPrompt){
-            Debug.LogError("GameObjects on UIManager are missing");
-        }
     }
 
     protected virtual void Start(){
@@ -44,7 +35,6 @@ public class UIManager : MonoBehaviour
         if ( menuUI != null){
             ToggleMenu();
         }
-        HideInteraction();
     }
 
     private void OnEnable()
@@ -57,65 +47,37 @@ public class UIManager : MonoBehaviour
         controls.UI.Disable();
     }
 
-    public void ShowInteractionOnObject(Transform interactPoint){
-        // Convert the world point to screen point
-        Vector3 screenPoint = Camera.main.WorldToScreenPoint(interactPoint.position);
+    public void ShowInteractionOnObject(Transform interactPoint, bool isPlayerOne = false){
 
-        // Check if the point is in front of the camera
-        if (screenPoint.z > 0){
-            // Convert screen point to canvas space
-            Vector2 canvasPos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, screenPoint, canvas.worldCamera, out canvasPos);
-
-            // Set the position of the interact button
-            interactionPrompt.GetComponent<RectTransform>().anchoredPosition = canvasPos;
-
-            // Optionally, make the interact button active
-            interactionPrompt.SetActive(true);
+        if (isPlayerOne){
+            camOne.ShowInteractionOnObject(interactPoint);
+        }
+        else{
+            camTwo.ShowInteractionOnObject(interactPoint);
         }
     }
 
     public void ShowTimeOnObject(Transform interactPoint, float time){
 
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(interactPoint.position);
-        if (screenPoint.z > 0){
-            // Convert screen point to canvas space
-            Vector2 canvasPos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, screenPoint, canvas.worldCamera, out canvasPos);
-
-            // Set the position of the interact button
-            timeText.GetComponent<RectTransform>().anchoredPosition = canvasPos;
-            timeText.GetComponent<TextMeshProUGUI>().text = Mathf.Round(time).ToString();
-
-            if (time < 0.1f){
-                timeText.SetActive(false);
-            }
-            else{
-                timeText.SetActive(true);
-            }
-        }
-    }
-
-
-    public void SetInteractPoint(Transform interactPoint = null){
-        lastInteractPoint = interactPoint;
+        
     }
 
     public void HideInteraction(){
-        interactionPrompt.SetActive(false);
-        timeText.SetActive(false);
+        camOne.HideInteraction();
+        camTwo.HideInteraction();
     }
+
+  
 
     public virtual void ToggleMenu(){
         isMenuOpen = !isMenuOpen;
 
-        if (isMenuOpen)
-        {
+        if (isMenuOpen){
             menuUI.Toggle(isMenuOpen);
             Time.timeScale = 0; //pause the game
         }
-        else
-        {
+        else{
             menuUI.Toggle(isMenuOpen);
             Time.timeScale = 1f;
         }
