@@ -2828,6 +2828,10 @@ PrefabInstance:
       propertyPath: grappleCooldown
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8597101168624046670, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
+      propertyPath: grappleDelayTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8860897425654415280, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
       propertyPath: m_Layer
       value: 9

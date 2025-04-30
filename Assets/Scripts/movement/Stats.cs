@@ -61,5 +61,14 @@ namespace TwinHookController
         [Header("GRAPPLE")]
         [Tooltip("The distance to the anchor to make it stop grappling")]
         public float stopGrapplingAnchorDistance = 3f;
+
+        [Tooltip("time until the grapple can be executed again")]
+        public float grappleCooldown = .5f;
+
+        [Tooltip("time until the grapple is executed")]
+        public float grappleDelay = .5f;
+
+        [Tooltip("how far do we overshoot the anchor")]
+        public float overshootY = .5f;
     }
 }

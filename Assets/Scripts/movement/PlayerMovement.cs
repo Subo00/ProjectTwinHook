@@ -10,8 +10,9 @@ namespace TwinHookController
     [RequireComponent(typeof(Rigidbody), typeof(Collider))]
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
-        [SerializeField] private Stats stats;
+        [SerializeField] public Stats stats;
         [SerializeField] private GrapplingHook grapplingHook;
+
         //grappleAnchor
         [SerializeField] private GameObject anchorPrefab;
         private GameObject activeAnchor;
@@ -186,7 +187,7 @@ namespace TwinHookController
             // Calculate launch velocity
             grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
 
-            // Apply once — let physics do the rest
+            // Apply velocity
             rb.velocity = grapplingVelocity;
         }
 
@@ -205,7 +206,7 @@ namespace TwinHookController
             float deltaX = endPoint.x - startPoint.x;
             float horizontalVelocity = deltaX / totalTime;
 
-            Debug.Log("the grappling velocity: " + new Vector3(horizontalVelocity, verticalVelocity, 0));
+            Debug.Log("the grappling velocity: " + new Vector3(horizontalVelocity *2, verticalVelocity, 0)); //*2 because we want to overshoot this
             return new Vector3(horizontalVelocity, verticalVelocity, 0);
         }
 
@@ -355,6 +356,7 @@ namespace TwinHookController
 
         private void handleGravity()
         {
+            if(isFrozen) return;
             if (grounded && frameVelocity.y <= 0f)
             {
                 frameVelocity.y = stats.groundingForce;
@@ -392,12 +394,16 @@ namespace TwinHookController
                 }
                 return;
             }
-
-
             if (activeAnchor != null)
             {
                 Destroy(activeAnchor);
                 activeAnchor = null;
+            }
+
+            if (isFrozen)
+            {
+                rb.velocity= new Vector3(0f, 0f, 0f);
+                return;
             }
 
             if (activeGrapple)
@@ -409,6 +415,8 @@ namespace TwinHookController
                 rb.velocity = frameVelocity;
             }
         }
+
+
 
 
 

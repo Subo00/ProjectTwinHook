@@ -31,3 +31,6 @@ MonoBehaviour:
   coyoteTime: 0.15
   jumpBuffer: 0.2
   stopGrapplingAnchorDistance: 1.2
+  grappleCooldown: 0.1
+  grappleDelay: 0.1
+  overshootY: 2

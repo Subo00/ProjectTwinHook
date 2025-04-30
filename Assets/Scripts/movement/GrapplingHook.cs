@@ -12,8 +12,6 @@ namespace TwinHookController
         [SerializeField] private Transform guntip;
 
         [SerializeField] private float grappleCooldown = 1f;
-        [SerializeField] private float overshootY = 2f;
-        [SerializeField] private float grappleDelayTime = 0.1f;
 
         private List<Transform> grapplePoints = new List<Transform>();
         private Transform closest = null;
@@ -86,16 +84,17 @@ namespace TwinHookController
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(1, closest.position);
             pm.grapplePoint = closest;
-
-            Invoke(nameof(executeGrapple), grappleDelayTime);
+            pm.isFrozen = true;
+            Invoke(nameof(executeGrapple), pm.stats.grappleDelay);
         }
 
         private void executeGrapple()
         {
+            pm.isFrozen = false;    
             if (closest == null) return;
 
             float displacementY = closest.position.y - transform.position.y;
-            float trajectoryHeight = displacementY > 0 ? displacementY + overshootY : overshootY;
+            float trajectoryHeight = displacementY > 0 ? displacementY + pm.stats.overshootY : pm.stats.overshootY;
 
             pm.jumpToPosition(closest.position, trajectoryHeight);
 
@@ -106,7 +105,7 @@ namespace TwinHookController
         {
             grappling = false;
             pm.activeGrapple = false;
-            grappleCooldownTimer = grappleCooldown;
+            grappleCooldownTimer = pm.stats.grappleCooldown;
             lineRenderer.enabled = false;
         }
 
