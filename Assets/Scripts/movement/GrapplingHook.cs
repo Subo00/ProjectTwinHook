@@ -28,6 +28,7 @@ namespace TwinHookController
         private bool inRange = false;
         private bool grappling = false;
         private List<Transform> grapplePoints = new List<Transform>();
+        Collider[] hits;
         private Transform closest = null;
         private float grappleDelayTime;
 
@@ -55,6 +56,7 @@ namespace TwinHookController
         {
             StartCoroutine(HandleInputs());
 
+            FindClosestAnchor();
 
             if (grappleCooldownTimer > 0)
             {
@@ -100,43 +102,43 @@ namespace TwinHookController
         }
         // Update is called once per frame
 
-        void startGrapple()
-        {
-            if (grappleCooldownTimer > 0 || grapplePoints.Count == 0) return; // return if we just grappled
-                                                                              // Clean out null (destroyed) anchors
-            grapplePoints.RemoveAll(p => p == null);
 
-            // Find closest anchor
+        private void FindClosestAnchor()
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, grappleRange, LayerMask.GetMask("hookable"));
+            closest = null;
             float closestDist = Mathf.Infinity;
 
-            foreach (Transform point in grapplePoints)
+            foreach (var hit in hits)
             {
-                float dist = Vector3.Distance(transform.position, point.position);
+                float dist = Vector3.Distance(transform.position, hit.transform.position);
                 if (dist < closestDist)
                 {
+                    closest = hit.transform;
                     closestDist = dist;
-                    closest = point;
                 }
             }
+        }
 
-            if (closest != null)
-            {
-                grappling = true;
-                lineRenderer.enabled = true; // turn on line
-                lineRenderer.SetPosition(1, closest.position); //endpoint of line
-                pm.grapplePoint = closest;
+        void startGrapple()
+        {
+            if (grappleCooldownTimer > 0) return;
 
-                Invoke(nameof(executeGrapple), grappleDelayTime); //invoke for delayTime
-            }
-            else // if there is nothing to grapple
-            {
-                Invoke(nameof(stopGrapple), grappleDelayTime); //invoke for delayTime
-            }
+            if (closest == null) return;
+
+            grappling = true;
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(1, closest.position);
+            pm.grapplePoint = closest;
+
+            Invoke(nameof(executeGrapple), grappleDelayTime);
         }
 
 
         void executeGrapple()
         {
+            Debug.Log("closest anchor: " + closest.name);
+
             //pm.isFrozen = false;
             float displacementY = closest.position.y - transform.position.y;
             float trajectoryHeight = displacementY > 0 ? displacementY + overshootY : overshootY;
@@ -180,7 +182,7 @@ namespace TwinHookController
                 {
                     startGrapple(); // grapple if: not grappling, pressing button and in range
                     inputDelayTimer = 0;
-                    Debug.Log("grapple");
+                    Debug.Log("startGrapple");
                     yield break;
                 }
             }
