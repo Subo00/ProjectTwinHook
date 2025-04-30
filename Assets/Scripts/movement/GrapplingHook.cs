@@ -105,6 +105,7 @@ namespace TwinHookController
         {
             grappling = false;
             pm.activeGrapple = false;
+            pm.activeGrappleJustEnded = true;
             grappleCooldownTimer = pm.stats.grappleCooldown;
             lineRenderer.enabled = false;
         }

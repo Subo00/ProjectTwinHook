@@ -37,6 +37,7 @@ namespace TwinHookController
         private bool isFacingRight = true;
         public bool isFrozen = false;
         public bool activeGrapple = false;
+        public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
 
@@ -103,7 +104,6 @@ namespace TwinHookController
 
         }
 
-        private bool grappling = false;
         private void gatherInput()
         {
             frameInput = new FrameInput
@@ -186,8 +186,6 @@ namespace TwinHookController
 
             // Calculate launch velocity
             grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
-
-            // Apply velocity
             rb.velocity = grapplingVelocity;
         }
 
