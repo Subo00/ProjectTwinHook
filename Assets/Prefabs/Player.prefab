@@ -177,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 84292d12aea88fb479622e44f341adcf, type: 2}
   grapplingHook: {fileID: 8597101168624046670}
+  anchorPrefab: {fileID: 0}
   standStill: 0
   isFrozen: 0
   activeGrapple: 0
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
   grapplingHook: {fileID: 0}
+  anchorPrefab: {fileID: 1031044179190579511, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
   standStill: 0
   isFrozen: 0
   activeGrapple: 0

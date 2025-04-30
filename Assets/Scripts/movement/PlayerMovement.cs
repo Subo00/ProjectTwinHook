@@ -12,6 +12,10 @@ namespace TwinHookController
     {
         [SerializeField] private Stats stats;
         [SerializeField] private GrapplingHook grapplingHook;
+        //grappleAnchor
+        [SerializeField] private GameObject anchorPrefab;
+        private GameObject activeAnchor;
+
         private Rigidbody rb;
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
@@ -380,8 +384,22 @@ namespace TwinHookController
             if (standStill && grounded)
             {
                 rb.velocity = Vector3.zero;
+                if (activeAnchor == null)
+                {
+                    // Spawn anchor slightly below player (or wherever makes sense)
+                    Vector3 spawnPosition = transform.position; // tweak if needed
+                    activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
+                }
                 return;
             }
+
+
+            if (activeAnchor != null)
+            {
+                Destroy(activeAnchor);
+                activeAnchor = null;
+            }
+
             if (activeGrapple)
             {
                 rb.velocity = grapplingVelocity + frameVelocity;
