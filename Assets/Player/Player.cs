@@ -12,10 +12,12 @@ namespace TwinHookController
 
         protected override void Start()
         {
+            base.Start();
             horizontal = isPlayerOne ? "Horizontal 1" : "Horizontal 2";
             jump = isPlayerOne ? "Jump 1" : "Jump 2";
             duck = isPlayerOne ? "Duck 1" : "Duck 2";
             grapple = isPlayerOne ? "Grapple 1" : "Grapple 2";
+            Debug.Log("grapple is: " + grapple);
         }
 
 

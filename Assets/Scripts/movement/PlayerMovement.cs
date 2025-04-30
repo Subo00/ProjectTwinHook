@@ -1,6 +1,7 @@
 ﻿using TwinHookController;
 using System;
 using UnityEngine;
+using UnityEditor.UIElements;
 
 
 namespace TwinHookController
@@ -34,14 +35,13 @@ namespace TwinHookController
         public Transform grapplePoint;
 
 
-        [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundLayer;
 
 
-        [SerializeField] protected string horizontal = "Horizontal";
-        [SerializeField] protected string jump = "Jump";
-        [SerializeField] protected string duck = "Duck";
-        [SerializeField] protected string grapple = "Grapple";
+        [SerializeField] protected string horizontal = "Horizontal 1";
+        [SerializeField] protected string jump = "Jump 1";
+        [SerializeField] protected string duck = "Duck 1";
+        [SerializeField] public string grapple = "Grapple 1";
 
         //   public MovementState state;
         //  public enum MovementState
@@ -60,7 +60,22 @@ namespace TwinHookController
 
         protected virtual void Start()
         {
-            //animationController = GetComponent<PlayerAnimationController>();
+            if (stats == null)
+            {
+                stats = Resources.Load<Stats>("movementStats");
+                if (stats == null)
+                {
+                    Debug.LogError("Stats asset not found! Make sure it's at Resources/Stats.cs");
+                }
+            }
+            if (grapplingHook == null)
+            {
+                grapplingHook = GetComponent<GrapplingHook>();
+                if (grapplingHook == null)
+                {
+                    Debug.LogError("GrapplinHook script not found! Make sure it's on the Player");
+                }
+            }
         }
 
 
@@ -88,9 +103,10 @@ namespace TwinHookController
         {
             frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown("jump"),
+                JumpDown = Input.GetButtonDown(jump),
                 JumpHeld = Input.GetButton(jump),
                 DuckHeld = Input.GetButton(duck),
+                DuckReleased = Input.GetButtonUp(duck),
                 GrappleDown = Input.GetButtonDown(grapple),
                 Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
             };
@@ -111,6 +127,11 @@ namespace TwinHookController
             {
                 standStill = true;
             }
+            if (frameInput.DuckReleased)
+            {
+                standStill = false;
+            }
+
         }
 
 
@@ -356,9 +377,10 @@ namespace TwinHookController
 
         private void applyMovement() // change grappling stuff here
         {
-            if (standStill)
+            if (standStill && grounded)
             {
                 rb.velocity = Vector3.zero;
+                return;
             }
             if (activeGrapple)
             {
@@ -376,7 +398,7 @@ namespace TwinHookController
 #if UNITY_EDITOR  
         private void OnValidate()
         {
-            if (stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player Controller's Stats slot", this);
+            if (stats == null) Debug.LogWarning("Please assign a Stats asset to the Player Controller's Stats slot", this);
         }
 #endif
 
@@ -388,6 +410,7 @@ namespace TwinHookController
         public bool JumpHeld;
         public bool GrappleDown;
         public bool DuckHeld;
+        public bool DuckReleased;
         public Vector3 Move;
     }
 

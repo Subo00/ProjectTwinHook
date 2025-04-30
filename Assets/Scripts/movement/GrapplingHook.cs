@@ -14,7 +14,7 @@ namespace TwinHookController
     public class GrapplingHook : MonoBehaviour
     {
 
-        [SerializeField] private PlayerMovement pm;
+        [SerializeField] private Player pm;
         [SerializeField] private Collider grappleSphere;
         [SerializeField] private float grappleRange;
         [SerializeField] private LayerMask grappleLayer;
@@ -44,7 +44,8 @@ namespace TwinHookController
         // Start is called before the first frame update
         void Start()
         {
-            pm = GetComponent<PlayerMovement>();
+            pm = GetComponent<Player>();
+            Debug.Log(pm.grapple);
         }
         void Update()
         {
@@ -111,7 +112,7 @@ namespace TwinHookController
             pm.jumpToPosition(grapplePoint.position, trajectoryHeight);
 
 
-            Invoke(nameof(stopGrapple), 1f);
+            Invoke(nameof(stopGrapple), 1f); //change this if we dont want to stop by itself
         }
 
         void stopGrapple()
@@ -133,15 +134,16 @@ namespace TwinHookController
         {
             if (inputDelayTimer < inputDelay)
             {
-                if (grappling && Input.GetButtonDown("Grapple") && inRange)
+                if (grappling && Input.GetButtonDown(pm.grapple) && inRange)
                 {
+                    Debug.Log(pm.grapple);
                     stopGrapple();  // if grappling and pressing again, stop grappling
                     inputDelayTimer = 0;
                     Debug.Log("let go");
                     yield break;
                 }
                 if (grappling && !inRange) stopGrapple(); //if not in range & still grappling
-                if (!grappling && Input.GetButtonDown("Grapple") && inRange)
+                if (!grappling && Input.GetButtonDown(pm.grapple) && inRange)
                 {
                     startGrapple(); // grapple if: not grappling, pressing button and in range
                     inputDelayTimer = 0;
