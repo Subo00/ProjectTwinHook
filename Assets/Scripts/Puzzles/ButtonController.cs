@@ -19,12 +19,14 @@ public class ButtonController : MonoBehaviour {
     
 
     private void Start() {
+        //set the vectors that will be used to move the door and the button up and down
         moveTo = new Vector3(door.transform.position.x, door.transform.position.y, door.transform.position.z);
         moveButton = new Vector3(0, -0.2f, 0);
     }
 
     private void Update() {
 
+        //if we're standing on the button and the door isn't open, open it after a short delay
         if (onButton && !doorOpen) {
             holdTimer += Time.deltaTime;
         }
@@ -38,7 +40,6 @@ public class ButtonController : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Player" && !doorOpen) {
             onButton = true;
-            //OpenDoor();
 
             MoveButtonDown();
         }
@@ -57,9 +58,6 @@ public class ButtonController : MonoBehaviour {
     }
 
     private void OpenDoor() {
-        print("open door");
-        //transform.DOLocalMove(hidePanelPos, panelAnimationTime).OnComplete(() => { dialogueIsPlaying = false; });
-        //moveTo = new Vector3(door.transform.position.x,door.transform.position.y+raiseDoor,door.transform.position.z); //there's probably something something efficiency
         moveTo.y = door.transform.position.y + raiseDoor;
         door.transform.DOLocalMove(moveTo, 0.5f);
         doorOpen = true;
