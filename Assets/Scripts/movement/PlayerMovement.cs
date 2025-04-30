@@ -152,11 +152,11 @@ namespace TwinHookController
             flip(); // really need to overdo this shit
 
             // If grappling and close to the target, stop grappling
-            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-            {
-                Debug.Log("grappleStop by proximity");
-                grapplingHook.ForceStopGrapple();  // Let momentum carry you 
-            }
+            //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+            //{
+            //    Debug.Log("grappleStop by proximity");
+            //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+            //}
 
             // Optional: Lock to 2D axis
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
@@ -192,7 +192,7 @@ namespace TwinHookController
 
         public Vector3 calculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
         {
-            float gravity = Mathf.Abs(Physics.gravity.y);
+            float gravity = stats.fallAcceleration;
 
             // Vertical velocity to reach arc
             float verticalVelocity = Mathf.Sqrt(2 * gravity * trajectoryHeight);
@@ -252,7 +252,7 @@ namespace TwinHookController
         private void checkCollisions()
         {
             Vector3 center = playerCollider.bounds.center;
-            float radius = playerCollider.radius * 0.9f; // Slightly shrink radius to prevent edge misses
+            float radius = playerCollider.radius * 0.7f; // Slightly shrink radius to prevent edge misses
             float height = playerCollider.height;
             float castDistance = 0.01f; // How far below the capsule to check for ground
 

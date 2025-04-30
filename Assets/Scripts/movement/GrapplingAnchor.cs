@@ -4,13 +4,9 @@ using UnityEngine;
 
 namespace TwinHookController
 {
-    public class GrapplingAnker : MonoBehaviour, Grapple
+    public class GrapplingAnker : MonoBehaviour
     {
-        //raycast stuff
-        public void Grapple()
-        {
-            Debug.Log("grapple");
-        }
+
 
         //trigger collider
         void OnTriggerEnter(Collider other)
