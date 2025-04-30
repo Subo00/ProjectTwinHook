@@ -400,7 +400,8 @@ namespace TwinHookController
 
             if (isFrozen)
             {
-                rb.velocity= new Vector3(0f, 0f, 0f);
+                rb.velocity= Vector3.zero;
+                frameVelocity = Vector3.zero;
                 return;
             }
 
