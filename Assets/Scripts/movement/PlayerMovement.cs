@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEditor.UIElements;
+using System.Collections;
 
 
 namespace TwinHookController
@@ -100,6 +101,11 @@ namespace TwinHookController
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             time += Time.deltaTime;
+            if (activeGrappleJustEnded)
+            {
+                activeGrappleJustEnded = false;
+                StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+            }
             gatherInput();
 
         }
@@ -152,12 +158,12 @@ namespace TwinHookController
 
             flip(); // really need to overdo this shit
 
-            // If grappling and close to the target, stop grappling
-            //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-            //{
-            //    Debug.Log("grappleStop by proximity");
-            //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
-            //}
+            //If grappling and close to the target, stop grappling
+            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+            {
+                Debug.Log("grappleStop by proximity");
+                grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+            }
 
             // Optional: Lock to 2D axis
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
@@ -177,8 +183,10 @@ namespace TwinHookController
             }
         }
 
-        #region grappling
+        #region Grappling
         private Vector3 grapplingVelocity;
+        private Vector3 lastGrapplingVelocity;
+
 
         public void jumpToPosition(Vector3 targetPosition, float trajectoryHeight)
         {
@@ -186,6 +194,7 @@ namespace TwinHookController
 
             // Calculate launch velocity
             grapplingVelocity = calculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+            lastGrapplingVelocity = grapplingVelocity;
             rb.velocity = grapplingVelocity;
         }
 
@@ -397,25 +406,39 @@ namespace TwinHookController
                 Destroy(activeAnchor);
                 activeAnchor = null;
             }
-
             if (isFrozen)
             {
-                rb.velocity= Vector3.zero;
-                frameVelocity = Vector3.zero;
+                rb.velocity = Vector3.zero;
+                frameVelocity = Vector3.zero; // so we dont accumulate momentum
                 return;
-            }
-
-            if (activeGrapple)
-            {
-                rb.velocity = grapplingVelocity + frameVelocity;
             }
             else
             {
-                rb.velocity = frameVelocity;
+                rb.velocity = grapplingVelocity + frameVelocity;
             }
         }
 
+        private IEnumerator KeepGrapplingMomentum(float duration)
+        {
+            float elapsed = 0f;
+            if (activeGrapple)
+            {
+                yield return null;
+            }
 
+            if (!grounded)
+            {
+                while (elapsed < duration)
+                {
+                    float t = elapsed / duration;
+                    grapplingVelocity = Vector3.Lerp(lastGrapplingVelocity, Vector3.zero, t);
+                    elapsed += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            lastGrapplingVelocity = Vector3.zero;
+            grapplingVelocity = Vector3.zero;
+        }
 
 
 

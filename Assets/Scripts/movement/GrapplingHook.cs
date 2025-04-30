@@ -98,7 +98,7 @@ namespace TwinHookController
 
             pm.jumpToPosition(closest.position, trajectoryHeight);
 
-            Invoke(nameof(stopGrapple), 1f);
+            Invoke(nameof(stopGrapple), pm.stats.grappleDuration);
         }
 
         private void stopGrapple()

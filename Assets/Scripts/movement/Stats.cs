@@ -68,7 +68,13 @@ namespace TwinHookController
         [Tooltip("time until the grapple is executed")]
         public float grappleDelay = .5f;
 
+        [Tooltip("duration the grapple is executed")]
+        public float grappleDuration = .5f;
+
         [Tooltip("how far do we overshoot the anchor")]
         public float overshootY = .5f;
+
+        [Tooltip("how long to keep momentum from grappling")]
+        public float grappleMomentumTimer = .3f;
     }
 }

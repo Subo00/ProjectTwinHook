@@ -33,4 +33,5 @@ MonoBehaviour:
   stopGrapplingAnchorDistance: 1.2
   grappleCooldown: 0.1
   grappleDelay: 0.1
+  grappleDuration: 0.75
   overshootY: 2
