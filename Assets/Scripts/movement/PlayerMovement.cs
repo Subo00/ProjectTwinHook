@@ -21,6 +21,7 @@ namespace TwinHookController
         public Vector3 FrameInput => frameInput.Move;
         public event Action<bool, float> GroundedChanged;
         public event Action Jumped;
+        public bool standStill = false;
 
         #endregion
 
@@ -36,22 +37,31 @@ namespace TwinHookController
         [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundLayer;
 
-     //   public MovementState state;
-      //  public enum MovementState
-      //  {
-      //      freeze,
-      //      walking,
-      //      grappling,
-      //      air
-      //  }
 
-      //  public void StateHandler()
-      //  {
+        [SerializeField] protected string horizontal = "Horizontal";
+        [SerializeField] protected string jump = "Jump";
+        [SerializeField] protected string duck = "Duck";
+        [SerializeField] protected string grapple = "Grapple";
 
-      //  }
+        //   public MovementState state;
+        //  public enum MovementState
+        //  {
+        //      freeze,
+        //      walking,
+        //      grappling,
+        //      air
+        //  }
+
+        //  public void StateHandler()
+        //  {
+
+        //  }
 
 
-
+        protected virtual void Start()
+        {
+            //animationController = GetComponent<PlayerAnimationController>();
+        }
 
 
 
@@ -78,10 +88,11 @@ namespace TwinHookController
         {
             frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
-                JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-                GrappleDown = Input.GetButtonDown("Grapple"),
-                Move = new Vector3(Input.GetAxisRaw("Horizontal 1"), Input.GetAxisRaw("Vertical 1"))
+                JumpDown = Input.GetButtonDown("jump"),
+                JumpHeld = Input.GetButton(jump),
+                DuckHeld = Input.GetButton(duck),
+                GrappleDown = Input.GetButtonDown(grapple),
+                Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
             };
 
             if (stats.snapInput)
@@ -94,6 +105,11 @@ namespace TwinHookController
             {
                 jumpToConsume = true;
                 timeJumpWasPressed = time;
+            }
+
+            if (frameInput.DuckHeld)
+            {
+                standStill = true;
             }
         }
 
@@ -340,6 +356,10 @@ namespace TwinHookController
 
         private void applyMovement() // change grappling stuff here
         {
+            if (standStill)
+            {
+                rb.velocity = Vector3.zero;
+            }
             if (activeGrapple)
             {
                 rb.velocity = grapplingVelocity + frameVelocity;
@@ -367,6 +387,7 @@ namespace TwinHookController
         public bool JumpDown;
         public bool JumpHeld;
         public bool GrappleDown;
+        public bool DuckHeld;
         public Vector3 Move;
     }
 
