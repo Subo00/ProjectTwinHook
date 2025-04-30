@@ -27,12 +27,14 @@ namespace TwinHookController
         private float inputDelayTimer = 0f;
         private bool inRange = false;
         private bool grappling = false;
-        private Transform grapplePoint;
+        private List<Transform> grapplePoints = new List<Transform>();
+        private Transform closest = null;
         private float grappleDelayTime;
 
         [SerializeField] private float grappleCooldown;
         [SerializeField] private float overshootY;
         private float grappleCooldownTimer;
+
 
       
 
@@ -72,46 +74,75 @@ namespace TwinHookController
         void OnTriggerEnter(Collider other)
         {
             inRange = true;
-            Debug.Log("this is colliding with " + other.name);
-            grapplePoint = other.transform; // finding the transform of the grappling hook TODO: handle more grappling hooks, maybe array
 
-            pm.grapplePoint = grapplePoint;
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("hookable"))
+            {
+                Debug.Log("Entered range of anchor: " + other.name);
+                Transform anchor = other.transform;
+                if (!grapplePoints.Contains(anchor))
+                {
+                    grapplePoints.Add(anchor);
+                }
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
             inRange = false;
+            if (other.gameObject.layer == LayerMask.NameToLayer("hookable"))
+            {
+                Debug.Log("Exited range of anchor: " + other.name);
+                Transform anchor = other.transform;
+                grapplePoints.Remove(anchor);
+            }
+        
         }
         // Update is called once per frame
 
         void startGrapple()
         {
-            //pm.isFrozen = true;
-            if (grappleCooldownTimer > 0) return; // return if we just grappled
-            grappling = true;
-            lineRenderer.enabled = true;         // turn on line
+            if (grappleCooldownTimer > 0 || grapplePoints.Count == 0) return; // return if we just grappled
+                                                                              // Clean out null (destroyed) anchors
+            grapplePoints.RemoveAll(p => p == null);
 
+            // Find closest anchor
+            float closestDist = Mathf.Infinity;
 
-            if (inRange)
+            foreach (Transform point in grapplePoints)
             {
+                float dist = Vector3.Distance(transform.position, point.position);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closest = point;
+                }
+            }
+
+            if (closest != null)
+            {
+                grappling = true;
+                lineRenderer.enabled = true; // turn on line
+                lineRenderer.SetPosition(1, closest.position); //endpoint of line
+                pm.grapplePoint = closest;
+
                 Invoke(nameof(executeGrapple), grappleDelayTime); //invoke for delayTime
             }
             else // if there is nothing to grapple
             {
                 Invoke(nameof(stopGrapple), grappleDelayTime); //invoke for delayTime
-
             }
-            lineRenderer.SetPosition(1, grapplePoint.position); //endpoint of line
         }
+
 
         void executeGrapple()
         {
             //pm.isFrozen = false;
-            float displacementY = grapplePoint.position.y - transform.position.y;
+            float displacementY = closest.position.y - transform.position.y;
             float trajectoryHeight = displacementY > 0 ? displacementY + overshootY : overshootY;
 
 
-            pm.jumpToPosition(grapplePoint.position, trajectoryHeight);
+            pm.jumpToPosition(closest.position, trajectoryHeight);
 
 
             Invoke(nameof(stopGrapple), 1f); //change this if we dont want to stop by itself
