@@ -25,10 +25,10 @@ public class CheckPoint : MonoBehaviour, IDataPersistence
 
             if(isOne != null){
                 if(isOne == true) { playerOnePassed = true; Debug.Log("WU");  }
-                else { playerTwoPassed = true; Debug.Log("WO"); }
+                if(isOne == false) { playerTwoPassed = true; Debug.Log("WO"); }
 
                 if(playerOnePassed && playerTwoPassed){
-                    DataPersistenceManager.Instance.SaveGame();
+                    DataPersistenceManager.Instance.SaveCheckPoint(this.transform.position);
                     isSaved = true;
                 }
             }
@@ -37,8 +37,11 @@ public class CheckPoint : MonoBehaviour, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
+        /*
+        if (isSaved) { return;  }
         data.playerPosition = this.transform.position;
         isSaved = true;
         //data.playerRotation = this.transform.rotation;
+        */
     }
 }

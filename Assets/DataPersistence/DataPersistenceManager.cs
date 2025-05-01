@@ -105,4 +105,10 @@ public class DataPersistenceManager : MonoBehaviour
             PlayerTwo.LoadData(gameData);
         }
     }
+
+    public void SaveCheckPoint(Vector3 position)
+    {
+        this.gameData.playerPosition = position;
+        dataHandler.Save(gameData);
+    }
 }
