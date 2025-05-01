@@ -16,5 +16,5 @@ MonoBehaviour:
   portrait: {fileID: 0}
   talkingClip: {fileID: 0}
   dialogue:
-  - Most of the time, it was harmless. It would bounce away, or even grab on to someone's
-    foot for a moment before letting go, and we'd all laugh about it.
+  - Most of the time, it was harmless. It would bounce away, or grab on to someone's
+    foot for a moment before letting go, and we'd all laugh.
