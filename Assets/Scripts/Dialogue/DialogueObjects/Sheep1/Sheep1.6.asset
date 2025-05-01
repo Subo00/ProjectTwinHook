@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sheep
   portrait: {fileID: 0}
-  talkingClip: {fileID: 0}
+  talkingClip: {fileID: 8300000, guid: bc075725a67148c499056b8735c28ac3, type: 3}
   dialogue:
   - Yes!

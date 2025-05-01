@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Axy
   portrait: {fileID: 0}
-  talkingClip: {fileID: 0}
+  talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
   - What's that?
