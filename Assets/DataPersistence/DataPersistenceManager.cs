@@ -15,6 +15,8 @@ public class DataPersistenceManager : MonoBehaviour
     //Create a class by copying the GameData.txt in Data folder
     private GameData gameData; 
     private List<IDataPersistence> dataPersistenceObjects;
+    public IDataPersistence PlayerOne;
+    public IDataPersistence PlayerTwo;
     public static DataPersistenceManager Instance {  get; private set; }
 
     private void Awake(){
@@ -93,5 +95,20 @@ public class DataPersistenceManager : MonoBehaviour
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
         
+    }
+
+    public void LoadPlayerPos(bool isOne){
+        if (isOne){
+            PlayerOne.LoadData(gameData);
+        }
+        else{
+            PlayerTwo.LoadData(gameData);
+        }
+    }
+
+    public void SaveCheckPoint(Vector3 position)
+    {
+        this.gameData.playerPosition = position;
+        dataHandler.Save(gameData);
     }
 }
