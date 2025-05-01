@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   portrait: {fileID: 0}
-  talkingClip: {fileID: 0}
+  talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
   - Most of the time, it was harmless. It would bounce away, or grab on to someone's
     foot for a moment before letting go, and we'd all laugh.

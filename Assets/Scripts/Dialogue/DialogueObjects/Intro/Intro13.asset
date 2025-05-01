@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Qua
   portrait: {fileID: 0}
-  talkingClip: {fileID: 0}
+  talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
   - We shouldn't have to live like this anymore.

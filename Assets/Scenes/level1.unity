@@ -6866,7 +6866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: e39123bdfb9d87f43bc5c1c7c1f5d4c6, type: 2}
-  dialogueManager: {fileID: 0}
+  dialogueManager: {fileID: 1742838609}
 --- !u!65 &1786248276
 BoxCollider:
   m_ObjectHideFlags: 0
