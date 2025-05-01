@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 42cd530f8abf8c243bebdeac125c0b5d, type: 2}
+  tree: {fileID: 11400000, guid: ff853af00df00b041a4d4d2f05a8585c, type: 2}
   dialogueManager: {fileID: 1742838609}
 --- !u!65 &35468528
 BoxCollider:
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 59f257c7ac379e14b97a35cf2d63ff71, type: 2}
+  tree: {fileID: 11400000, guid: a1ac46eca024b0d4e8f6b45f0b88bf37, type: 2}
   dialogueManager: {fileID: 1742838609}
 --- !u!65 &96441715
 BoxCollider:
@@ -3504,7 +3504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: c4344ddba5a0c6940a8fbff3dcffcd36, type: 2}
+  tree: {fileID: 11400000, guid: 0d29a0c4524ae524b99c148e6cba7ab6, type: 2}
   dialogueManager: {fileID: 1742838609}
 --- !u!65 &743026963
 BoxCollider:
@@ -4279,7 +4279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 83d21188cc68b724bb9e1d1986c7046e, type: 2}
+  tree: {fileID: 11400000, guid: 314f56d0ba41baa4896944d332867cc6, type: 2}
   dialogueManager: {fileID: 1742838609}
 --- !u!65 &915358091
 BoxCollider:
@@ -5514,7 +5514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: 053cad7c24905fe41a0e22d0c4c4b674, type: 2}
+  tree: {fileID: 11400000, guid: 68f1f4c46f177154dbdea9baf634fd8c, type: 2}
   dialogueManager: {fileID: 1742838609}
 --- !u!65 &1420857026
 BoxCollider:
@@ -6865,8 +6865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd0bf036d63a48458e3d424764a25a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: e39123bdfb9d87f43bc5c1c7c1f5d4c6, type: 2}
-  dialogueManager: {fileID: 0}
+  tree: {fileID: 11400000, guid: 41edd9528c55bf94f83dcc0f268c1d4d, type: 2}
+  dialogueManager: {fileID: 1742838609}
 --- !u!65 &1786248276
 BoxCollider:
   m_ObjectHideFlags: 0
