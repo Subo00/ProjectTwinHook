@@ -17,6 +17,7 @@ namespace TwinHookController
         //grappleAnchor
         [SerializeField] private GameObject anchorPrefab;
         private GameObject activeAnchor;
+        [SerializeField] private GameObject playerPlattform;
 
         private Rigidbody rb;
         private CapsuleCollider playerCollider;
@@ -41,6 +42,7 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
+        public DialogueManager dialogueManager;
 
         [SerializeField] private LayerMask groundLayer;
 
@@ -92,21 +94,25 @@ namespace TwinHookController
         {
             rb = GetComponent<Rigidbody>();
             playerCollider = GetComponent<CapsuleCollider>();
-
             rb.centerOfMass = new Vector3(0, -transform.localScale.y / 2, 0);
         }
 
         // Update is called once per frame
         void Update()
         {
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            time += Time.deltaTime;
-            if (activeGrappleJustEnded)
-            {
-                activeGrappleJustEnded = false;
-                StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+            if (!dialogueManager.dialogueIsPlaying) {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                time += Time.deltaTime;
+                if (activeGrappleJustEnded) {
+                    activeGrappleJustEnded = false;
+                    StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+                }
+                gatherInput();
             }
-            gatherInput();
+            else {
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+            }
 
         }
 
@@ -148,25 +154,27 @@ namespace TwinHookController
 
         private void FixedUpdate()
         {
+            if (!dialogueManager.dialogueIsPlaying) {
+                checkCollisions();
+                handleJump();
+                handleDirection();
+                handleGravity();
 
-            checkCollisions();
-            handleJump();
-            handleDirection();
-            handleGravity();
+                applyMovement();
 
-            applyMovement();
+                flip(); // really need to overdo this shit
 
-            flip(); // really need to overdo this shit
+                //If grappling and close to the target, stop grappling
+                //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+                //{
+                //    Debug.Log("grappleStop by proximity");
+                //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+                //}
 
-            //If grappling and close to the target, stop grappling
-            if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-            {
-                Debug.Log("grappleStop by proximity");
-                grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+                // Optional: Lock to 2D axis
+                transform.position = new Vector3(transform.position.x, transform.position.y, 0);
             }
-
-            // Optional: Lock to 2D axis
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            
         }
 
         float yRotation = 0f;
@@ -390,22 +398,7 @@ namespace TwinHookController
 
         private void applyMovement() // change grappling stuff here
         {
-            if (standStill && grounded)
-            {
-                rb.velocity = Vector3.zero;
-                if (activeAnchor == null)
-                {
-                    // Spawn anchor slightly below player (or wherever makes sense)
-                    Vector3 spawnPosition = transform.position; // tweak if needed
-                    activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
-                }
-                return;
-            }
-            if (activeAnchor != null)
-            {
-                Destroy(activeAnchor);
-                activeAnchor = null;
-            }
+            ducking();
             if (isFrozen)
             {
                 rb.velocity = Vector3.zero;
@@ -415,6 +408,30 @@ namespace TwinHookController
             else
             {
                 rb.velocity = grapplingVelocity + frameVelocity;
+            }
+        }
+
+        private void ducking()
+        {
+            if (standStill && grounded)
+            {
+                rb.velocity = Vector3.zero;
+                rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                playerPlattform.SetActive(true);
+                if (activeAnchor == null)
+                {
+                    // Spawn anchor slightly below player (or wherever makes sense)
+                    Vector3 spawnPosition = transform.position; // tweak if needed
+                    activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
+                }
+                return;
+            }
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            playerPlattform.SetActive(false);
+            if (activeAnchor != null)
+            {
+                Destroy(activeAnchor);
+                activeAnchor = null;
             }
         }
 

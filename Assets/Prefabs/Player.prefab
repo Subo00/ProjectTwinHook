@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4584714079633021147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3851518907000551667}
+  - component: {fileID: 5567133547621995489}
+  m_Layer: 9
+  m_Name: PlayerPlattform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3851518907000551667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584714079633021147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8151977484675587530}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5567133547621995489
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584714079633021147}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.75, y: 0.1, z: 0.75}
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1 &7125635119414802264
 GameObject:
   m_ObjectHideFlags: 0
@@ -20,7 +73,7 @@ GameObject:
   - component: {fileID: 5807743053139940302}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,6 +93,7 @@ Transform:
   m_Children:
   - {fileID: 608589552765520494}
   - {fileID: 8135523527671857859}
+  - {fileID: 3851518907000551667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4013291127445969949
@@ -178,6 +232,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 84292d12aea88fb479622e44f341adcf, type: 2}
   grapplingHook: {fileID: 8597101168624046670}
   anchorPrefab: {fileID: 0}
+  playerPlattform: {fileID: 0}
   standStill: 0
   isFrozen: 0
   activeGrapple: 0
@@ -205,6 +260,7 @@ MonoBehaviour:
   stats: {fileID: 0}
   grapplingHook: {fileID: 0}
   anchorPrefab: {fileID: 1031044179190579511, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
+  playerPlattform: {fileID: 4584714079633021147}
   standStill: 0
   isFrozen: 0
   activeGrapple: 0
