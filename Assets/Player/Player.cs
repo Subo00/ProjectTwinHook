@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TwinHookController;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace TwinHookController
 {
 
-    public class Player : PlayerMovement
+    public class Player : PlayerMovement, IDataPersistence
     {
         public bool isPlayerOne;
 
@@ -17,9 +18,25 @@ namespace TwinHookController
             jump = isPlayerOne ? "Jump 1" : "Jump 2";
             duck = isPlayerOne ? "Duck 1" : "Duck 2";
             grapple = isPlayerOne ? "Grapple 1" : "Grapple 2";
-            Debug.Log("grapple is: " + grapple);
+            if (isPlayerOne){
+                DataPersistenceManager.Instance.PlayerOne = this;
+            }
+            else{
+                DataPersistenceManager.Instance.PlayerTwo = this;
+            }
         }
 
+        public void LoadData(GameData data)
+        {
+            //controller.enabled = false;
+            this.transform.position = data.playerPosition;
+            //this.transform.rotation = data.playerRotation;
+            //controller.enabled = true;
+        }
 
+        public void SaveData(ref GameData data)
+        {
+           
+        }
     }
 }
