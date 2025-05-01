@@ -8,8 +8,6 @@ public class ButtonController : MonoBehaviour {
     public GameObject door;
     public int raiseDoor = 5;
     public Transform buttonPusher;
-    public Vector3 doorClosedPos;
-    public Vector3 doorOpenedPos;
 
     bool doorOpen = false;
 
@@ -24,9 +22,6 @@ public class ButtonController : MonoBehaviour {
         //set the vectors that will be used to move the door and the button up and down
         moveTo = new Vector3(door.transform.position.x, door.transform.position.y, door.transform.position.z);
         moveButton = new Vector3(0, -0.2f, 0);
-        doorClosedPos = door.transform.position;
-        doorOpenedPos = door.transform.position;
-        doorOpenedPos.y += 5f;
     }
 
     private void Update() {
@@ -63,13 +58,13 @@ public class ButtonController : MonoBehaviour {
     }
 
     private void OpenDoor() {
-        doorOpen = true;
-        moveTo = doorOpenedPos;
+        moveTo.y = door.transform.position.y + raiseDoor;
         door.transform.DOLocalMove(moveTo, 0.5f);
+        doorOpen = true;
     }
 
     private void CloseDoor() {
-        moveTo = doorClosedPos;
+        moveTo.y = door.transform.position.y - raiseDoor;
         door.transform.DOLocalMove(moveTo, 0.5f);
         doorOpen = false;
     }

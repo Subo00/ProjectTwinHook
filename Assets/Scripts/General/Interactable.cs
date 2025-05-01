@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TwinHookController;
 using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour, IMyUpdate
@@ -44,8 +43,8 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
 
     //Make sure that the GO this script is attached to has a Collider
     private void OnTriggerEnter(Collider other){
-        if (other.CompareTag("Player")){
-            bool isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
+        if (other.CompareTag("PlayerInteraction")){
+            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
             SetBool(isOne, true);
 
             //if both players are near, no need to add to updateable twice
@@ -57,9 +56,9 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
     }
 
     private void OnTriggerExit(Collider other){
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("PlayerInteraction")){
             //uiManager.SetInteractPoint();
-            bool isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
+            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
             SetBool(isOne, false);
 
             if (!(isPlayerOneNear || isPlayerTwoNear)){
@@ -68,11 +67,6 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
             uiManager.HideInteraction(); //hide both interactions, because other cam will 
                                          //update interaction on object
         }
-    }
-
-    private void OnDisable()  {
-        UpdateManager.Instance.RemoveUpdatable(this);
-        if(uiManager != null) uiManager.HideInteraction();
     }
 
     private void SetBool(bool isPlayerOne, bool value){
