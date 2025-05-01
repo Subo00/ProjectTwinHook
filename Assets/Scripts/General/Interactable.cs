@@ -70,6 +70,11 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
         }
     }
 
+    private void OnDisable()  {
+        UpdateManager.Instance.RemoveUpdatable(this);
+        if(uiManager != null) uiManager.HideInteraction();
+    }
+
     private void SetBool(bool isPlayerOne, bool value){
         if (isPlayerOne){
             isPlayerOneNear = value;
