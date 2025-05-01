@@ -42,6 +42,7 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
+        public DialogueManager dialogueManager;
 
         [SerializeField] private LayerMask groundLayer;
 
@@ -99,14 +100,19 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            time += Time.deltaTime;
-            if (activeGrappleJustEnded)
-            {
-                activeGrappleJustEnded = false;
-                StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+            if (!dialogueManager.dialogueIsPlaying) {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                time += Time.deltaTime;
+                if (activeGrappleJustEnded) {
+                    activeGrappleJustEnded = false;
+                    StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+                }
+                gatherInput();
             }
-            gatherInput();
+            else {
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+            }
 
         }
 
@@ -148,25 +154,27 @@ namespace TwinHookController
 
         private void FixedUpdate()
         {
+            if (!dialogueManager.dialogueIsPlaying) {
+                checkCollisions();
+                handleJump();
+                handleDirection();
+                handleGravity();
 
-            checkCollisions();
-            handleJump();
-            handleDirection();
-            handleGravity();
+                applyMovement();
 
-            applyMovement();
+                flip(); // really need to overdo this shit
 
-            flip(); // really need to overdo this shit
+                //If grappling and close to the target, stop grappling
+                //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+                //{
+                //    Debug.Log("grappleStop by proximity");
+                //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+                //}
 
-            //If grappling and close to the target, stop grappling
-            //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-            //{
-            //    Debug.Log("grappleStop by proximity");
-            //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
-            //}
-
-            // Optional: Lock to 2D axis
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+                // Optional: Lock to 2D axis
+                transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            }
+            
         }
 
         float yRotation = 0f;
