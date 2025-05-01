@@ -181,6 +181,7 @@ MonoBehaviour:
   standStill: 0
   isFrozen: 0
   activeGrapple: 0
+  activeGrappleJustEnded: 0
   grapplePoint: {fileID: 0}
   groundLayer:
     serializedVersion: 2
@@ -207,6 +208,7 @@ MonoBehaviour:
   standStill: 0
   isFrozen: 0
   activeGrapple: 0
+  activeGrappleJustEnded: 0
   grapplePoint: {fileID: 0}
   groundLayer:
     serializedVersion: 2
@@ -229,7 +231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pm: {fileID: 0}
-  grappleSphere: {fileID: 3614610554184021452}
   grappleRange: 4
   grappleLayer:
     serializedVersion: 2
@@ -237,7 +238,6 @@ MonoBehaviour:
   lineRenderer: {fileID: 5019342418649339088}
   guntip: {fileID: 8135523527671857859}
   grappleCooldown: 0
-  overshootY: 0
 --- !u!114 &5807743053139940302
 MonoBehaviour:
   m_ObjectHideFlags: 0
