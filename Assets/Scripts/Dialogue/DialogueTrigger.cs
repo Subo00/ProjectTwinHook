@@ -6,7 +6,6 @@ using XNode;
 
 public class DialogueTrigger : MonoBehaviour {
     public DialogueGraph tree;
-    public DialogueManager dialogueManager;
 
     bool alreadyPlayed = false;
 
@@ -19,6 +18,6 @@ public class DialogueTrigger : MonoBehaviour {
     }
 
     public void TriggerDialogue() {
-        dialogueManager.StartDialogue(tree.nodes[0]);
+        DialogueManager.Instance.StartDialogue(tree.nodes[0]);
     }
 }

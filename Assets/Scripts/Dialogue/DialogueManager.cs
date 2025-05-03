@@ -7,6 +7,8 @@ using XNode;
 using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour {
+    public static DialogueManager Instance;
+
     public TMP_Text dialogueText;
     public TMP_Text speakerName;
     public Image portrait;
@@ -33,6 +35,14 @@ public class DialogueManager : MonoBehaviour {
         source = GetComponent<AudioSource>();
         canvasGroup = GetComponent<CanvasGroup>();
 
+        if(Instance == null) { 
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void Update() {
