@@ -45,9 +45,15 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    private void Update() {
-        if (dialogueIsPlaying && canContinueToNextLine && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))) {
-            nextButton.onClick.Invoke();
+    private void Update()
+    {
+        if (dialogueIsPlaying && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.U))) {
+            if (canContinueToNextLine)  {
+                nextButton.onClick.Invoke();
+            }
+            else { //just display the sentence that's left to display 
+                SkipRenderSentence();
+            }
         }
     }
 
@@ -104,11 +110,11 @@ public class DialogueManager : MonoBehaviour {
 
         for (int i = 0; i < sentence.Length; i++) {
 
-            if (Input.GetKeyDown(KeyCode.Space)) { //allow for multiple inputs?
+            /*if (Input.GetKeyDown(KeyCode.Space)) { //allow for multiple inputs?
                 dialogueText.maxVisibleCharacters = sentence.Length;
                 break;
             }
-
+            */
             dialogueText.maxVisibleCharacters++;
 
             if (i % 4 == 0) {
@@ -119,6 +125,15 @@ public class DialogueManager : MonoBehaviour {
 
         canContinueToNextLine = true;
         nextButton.gameObject.SetActive(true);
+
+    }
+
+    private void SkipRenderSentence() {
+        StopAllCoroutines();
+        dialogueText.maxVisibleCharacters = dialogueText.text.Length;
+        canContinueToNextLine = true;
+        nextButton.gameObject.SetActive(true);
+        return;
     }
 
     public void DisplayNext() {
