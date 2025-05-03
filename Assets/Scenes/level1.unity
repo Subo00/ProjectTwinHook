@@ -346,7 +346,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: ff853af00df00b041a4d4d2f05a8585c, type: 2}
-  dialogueManager: {fileID: 1742838609}
 --- !u!65 &35468528
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -658,7 +657,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: a1ac46eca024b0d4e8f6b45f0b88bf37, type: 2}
-  dialogueManager: {fileID: 1742838609}
 --- !u!65 &96441715
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4225,7 +4223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 314f56d0ba41baa4896944d332867cc6, type: 2}
-  dialogueManager: {fileID: 1742838609}
 --- !u!65 &915358091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5863,7 +5860,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 68f1f4c46f177154dbdea9baf634fd8c, type: 2}
-  dialogueManager: {fileID: 1742838609}
 --- !u!65 &1420857026
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7205,7 +7201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 41edd9528c55bf94f83dcc0f268c1d4d, type: 2}
-  dialogueManager: {fileID: 1742838609}
 --- !u!65 &1786248276
 BoxCollider:
   m_ObjectHideFlags: 0
