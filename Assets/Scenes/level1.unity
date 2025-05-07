@@ -4990,6 +4990,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7141297843169858719, guid: 36d5b89dbe7567149bc9210ce70c7d35, type: 3}
+      propertyPath: firstSceneName
+      value: level1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7178,10 +7182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcd776fa4bdb724caee0d78b38de610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  currentAnimation: 
-  layerLocked: []
-  layers: 0
 --- !u!4 &1782631479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 454315256957496789, guid: b6714b6be040d744c9927deddb6522c6, type: 3}
