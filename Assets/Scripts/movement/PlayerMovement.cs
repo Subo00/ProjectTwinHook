@@ -177,10 +177,10 @@ namespace TwinHookController
                 flip(); // really need to overdo this shit
 
                 //If grappling and close to the target, stop grappling
-                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
-                    Debug.Log("grappleStop by proximity");
-                    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
-                }
+                //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
+                //    Debug.Log("grappleStop by proximity");
+                //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
+                //}
 
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
