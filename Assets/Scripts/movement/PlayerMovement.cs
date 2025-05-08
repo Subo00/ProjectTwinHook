@@ -111,7 +111,7 @@ namespace TwinHookController
                 gatherInput();
             }
             else {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.constraints = RigidbodyConstraints.FreezePositionX;
             }
         }
 
