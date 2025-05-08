@@ -4,17 +4,12 @@ using UnityEngine;
 
 namespace TwinHookController
 {
-    public class GrapplingAnker : MonoBehaviour
+    public class GrapplingAnker : Interactable
     {
-
-
-        //trigger collider
-        void OnTriggerEnter(Collider other)
+        protected override void OnUpdate()
         {
-            //let it glow here
-            Debug.Log("anchor position: " + this.transform.position);
+            CommonLogic();
         }
-
     }
 
 }

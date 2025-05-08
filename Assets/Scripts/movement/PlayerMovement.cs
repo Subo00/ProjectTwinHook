@@ -21,7 +21,7 @@ namespace TwinHookController
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
         private Vector3 frameVelocity; //2d -> 3d
-
+        private Animator animator;
         #region Interface
 
         public Vector3 FrameInput => frameInput.Move;
@@ -33,7 +33,6 @@ namespace TwinHookController
 
         private float time;
 
-        private float horizontal1;
         private bool isFacingRight = true;
         public bool isFrozen = false;
         public bool activeGrapple = false;
@@ -84,6 +83,12 @@ namespace TwinHookController
                     Debug.LogError("GrapplinHook script not found! Make sure it's on the Player");
                 }
             }
+
+            animator = GetComponentInChildren<Animator>();
+            if (animator == null)
+            {
+                Debug.LogError("Animator is missing! Attache it to the model");
+            }
         }
 
 
@@ -113,6 +118,15 @@ namespace TwinHookController
             else {
                 rb.constraints = RigidbodyConstraints.FreezePositionX;
             }
+
+            if(frameInput.Move.x == 0) {
+                animator.SetBool("isRunning", false);
+            }
+            else  {
+                animator.SetBool("isRunning", true);
+            }
+
+                
         }
 
         private void gatherInput()
@@ -127,8 +141,7 @@ namespace TwinHookController
                 Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
             };
 
-            if (stats.snapInput)
-            {
+            if (stats.snapInput) {
                 frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
                 frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
             }
