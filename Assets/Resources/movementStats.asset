@@ -35,3 +35,4 @@ MonoBehaviour:
   grappleDelay: 0.1
   grappleDuration: 0.75
   overshootY: 2
+  grappleMomentumTimer: 0.3
