@@ -39,7 +39,7 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
-        public DialogueManager dialogueManager;
+        private DialogueManager dialogueManager;
 
 
         [SerializeField] private LayerMask groundLayer;
@@ -67,27 +67,27 @@ namespace TwinHookController
 
         protected virtual void Start()
         {
-            if (stats == null)
-            {
+            if (stats == null) {
                 stats = Resources.Load<Stats>("movementStats");
-                if (stats == null)
-                {
+                if (stats == null) {
                     Debug.LogError("Stats asset not found! Make sure it's at Resources/Stats.cs");
                 }
             }
-            if (grapplingHook == null)
-            {
+            if (grapplingHook == null) {
                 grapplingHook = GetComponent<GrapplingHook>();
-                if (grapplingHook == null)
-                {
+                if (grapplingHook == null) {
                     Debug.LogError("GrapplinHook script not found! Make sure it's on the Player");
                 }
             }
 
             animator = GetComponentInChildren<Animator>();
-            if (animator == null)
-            {
+            if (animator == null) {
                 Debug.LogError("Animator is missing! Attache it to the model");
+            }
+
+            dialogueManager = DialogueManager.Instance;
+            if(dialogueManager == null) {
+                Debug.LogError("DialogueManager is missing in the scene");
             }
         }
 
