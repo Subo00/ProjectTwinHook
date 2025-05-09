@@ -6,8 +6,11 @@ using UnityEngine;
 public class GameData 
 {
 
-    public Vector3 playerPosition;
-    public Vector3 playerRotation;
+    public Vector3 playerOnePosition;
+    public Vector3 playerTwoPosition;
+
+    public SerializableDictionary<int, bool> levels;
+    public SerializableDictionary<int, bool> sheep;
                                  //id     time
     public SerializableDictionary<string, float> sourcesTime;
     //time
@@ -21,7 +24,10 @@ public class GameData
 
     public GameData()
     {
-        playerPosition = Vector3.zero;
+        playerOnePosition = Vector3.zero;
+        playerTwoPosition = Vector3.zero;
+        levels = new SerializableDictionary<int, bool>();
+        sheep = new SerializableDictionary<int, bool>();
         //playerRotation = Vector3.zero;
        /// sourcesTime = new SerializableDictionary<string, float>();
        // itemsStack = new SerializableDictionary<uint, uint>();
