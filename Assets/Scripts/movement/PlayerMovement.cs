@@ -13,6 +13,7 @@ namespace TwinHookController
         [SerializeField] public Stats stats;
         [SerializeField] private GrapplingHook grapplingHook;
 
+        [SerializeField] private GameObject duckedObject;
         //grappleAnchor
         [SerializeField] private GameObject anchorPrefab;
         private GameObject activeAnchor;
@@ -417,12 +418,14 @@ namespace TwinHookController
                     // Spawn anchor slightly below player (or wherever makes sense)
                     Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
+                    duckedObject.SetActive(true);
                 }
                 return;
             }
             if (activeAnchor != null)
             {
                 Destroy(activeAnchor);
+                duckedObject.SetActive(false);
                 activeAnchor = null;
             }
             if (isFrozen)
