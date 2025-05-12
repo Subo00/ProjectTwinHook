@@ -5,24 +5,34 @@ using UnityEngine;
 public class EndDialogueTrigger : MonoBehaviour
 {
     public DialogueGraph tree;
-    public DialogueManager dialogueManager;
 
     bool alreadyPlayed = false;
+    bool onePlayerIn = false;
 
 
     private void OnTriggerEnter(Collider collision) {
-        if (collision.gameObject.tag == "Player" && !alreadyPlayed) {
+        if (collision.gameObject.tag == "Player" && !alreadyPlayed && onePlayerIn) {
             TriggerDialogue();
             alreadyPlayed = true;
+        }
+
+        if (collision.gameObject.tag == "Player" && !onePlayerIn) {
+            onePlayerIn = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.gameObject.tag == "Player" && onePlayerIn) {
+            onePlayerIn = false;
         }
     }
 
     public void TriggerDialogue() {
-        dialogueManager.StartDialogue(tree.nodes[0]);
+        DialogueManager.Instance.StartDialogue(tree.nodes[0]);
     }
 
     private void Update() {
-        if (alreadyPlayed && !dialogueManager.dialogueIsPlaying) {
+        if (alreadyPlayed && !DialogueManager.Instance.dialogueIsPlaying) {
             SceneController.Instance.LoadScene("Main Menu");
         }
     }

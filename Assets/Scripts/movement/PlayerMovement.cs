@@ -117,7 +117,8 @@ namespace TwinHookController
                 gatherInput();
             }
             else {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
             }
 
             if(frameInput.Move.x == 0) {
