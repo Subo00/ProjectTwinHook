@@ -8,7 +8,7 @@ namespace TwinHookController
         [SerializeField] private Player pm;
         [SerializeField] private float grappleRange = 10f;
         [SerializeField] private LayerMask grappleLayer;
-        [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] public LineRenderer lineRenderer;
         [SerializeField] private Transform guntip;
 
         [SerializeField] private float grappleCooldown = 1f;
