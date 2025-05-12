@@ -106,9 +106,14 @@ public class DataPersistenceManager : MonoBehaviour
         }
     }
 
-    public void SaveCheckPoint(Vector3 position)
+    public void SaveCheckPoint(Vector3 position, bool isPlayerOne)
     {
-        this.gameData.playerPosition = position;
+        if (isPlayerOne) {
+            this.gameData.playerOnePosition = position;
+        }
+        else {
+            this.gameData.playerTwoPosition = position;
+        }
         dataHandler.Save(gameData);
     }
 }

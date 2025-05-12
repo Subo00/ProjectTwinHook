@@ -11,8 +11,7 @@ namespace TwinHookController
     {
         public bool isPlayerOne;
 
-        protected override void Start()
-        {
+        protected override void Start() {
             base.Start();
             horizontal = isPlayerOne ? "Horizontal 1" : "Horizontal 2";
             jump = isPlayerOne ? "Jump 1" : "Jump 2";
@@ -26,16 +25,14 @@ namespace TwinHookController
             }
         }
 
-        public void LoadData(GameData data)
-        {
+        public void LoadData(GameData data) {
             //controller.enabled = false;
-            this.transform.position = data.playerPosition;
+            this.transform.position = isPlayerOne ? data.playerOnePosition : data.playerTwoPosition;
             //this.transform.rotation = data.playerRotation;
             //controller.enabled = true;
         }
 
-        public void SaveData(ref GameData data)
-        {
+        public void SaveData(ref GameData data) {
            
         }
     }
