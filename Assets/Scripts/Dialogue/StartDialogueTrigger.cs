@@ -2,28 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EndDialogueTrigger : MonoBehaviour
+public class StartDialogueTrigger : MonoBehaviour
 {
     public DialogueGraph tree;
+    public GameObject platform;
 
     bool alreadyPlayed = false;
-    bool onePlayerIn = false;
 
 
     private void OnTriggerEnter(Collider collision) {
-        if (collision.gameObject.tag == "Player" && !alreadyPlayed && onePlayerIn) {
+        if (collision.gameObject.tag == "Player" && !alreadyPlayed) {
             TriggerDialogue();
             alreadyPlayed = true;
-        }
-
-        if (collision.gameObject.tag == "Player" && !onePlayerIn) {
-            onePlayerIn = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-        if (other.gameObject.tag == "Player" && onePlayerIn) {
-            onePlayerIn = false;
         }
     }
 
@@ -33,8 +23,7 @@ public class EndDialogueTrigger : MonoBehaviour
 
     private void Update() {
         if (alreadyPlayed && !DialogueManager.Instance.dialogueIsPlaying) {
-            SceneController.Instance.LoadScene("Main Menu");
+            platform.SetActive(false);
         }
     }
 }
-
