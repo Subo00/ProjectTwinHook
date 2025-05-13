@@ -3778,7 +3778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4720279569918320, guid: 1d390c0994ed3b4468c969c0d66d0f1e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -14.700001
+      value: -16.55
       objectReference: {fileID: 0}
     - target: {fileID: 4720279569918320, guid: 1d390c0994ed3b4468c969c0d66d0f1e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4104,6 +4104,7 @@ GameObject:
   - component: {fileID: 743026961}
   - component: {fileID: 743026963}
   - component: {fileID: 743026964}
+  - component: {fileID: 743026965}
   m_Layer: 0
   m_Name: EndDialogueTrigger
   m_TagString: Untagged
@@ -4160,6 +4161,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 0d29a0c4524ae524b99c148e6cba7ab6, type: 2}
+--- !u!114 &743026965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743026960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9b2bb73cbdc154ba05e674d5fafa95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  index: 0
 --- !u!4 &744077853 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5675703578828965045, guid: 3979064cb5c5ce349a2fcb63d65eeca9, type: 3}
@@ -7979,7 +7994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4720279569918320, guid: 1d390c0994ed3b4468c969c0d66d0f1e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -14.700001
+      value: -16.55
       objectReference: {fileID: 0}
     - target: {fileID: 4720279569918320, guid: 1d390c0994ed3b4468c969c0d66d0f1e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10273,6 +10288,7 @@ GameObject:
   - component: {fileID: 1786248276}
   - component: {fileID: 1786248275}
   - component: {fileID: 1786248277}
+  - component: {fileID: 1786248278}
   m_Layer: 0
   m_Name: DialogueTrigger
   m_TagString: Untagged
@@ -10343,6 +10359,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 41edd9528c55bf94f83dcc0f268c1d4d, type: 2}
   sheep: {fileID: 1336741752}
+--- !u!114 &1786248278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786248273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9b2bb73cbdc154ba05e674d5fafa95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  index: 0
 --- !u!1 &1788834775
 GameObject:
   m_ObjectHideFlags: 0

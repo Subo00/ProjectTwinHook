@@ -116,4 +116,16 @@ public class DataPersistenceManager : MonoBehaviour
         }
         dataHandler.Save(gameData);
     }
+
+    public void SaveSheep(int index) {
+        this.gameData.sheep[index] = true; 
+        dataHandler.Save(gameData);
+    }
+
+
+    public void SaveLevel(int index) {
+        this.gameData.levels[index] = true;
+        dataHandler.Save(gameData);
+    }
+
 }
