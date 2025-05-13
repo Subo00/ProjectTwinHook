@@ -420,6 +420,7 @@ namespace TwinHookController
                     Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
                     duckedObject.SetActive(true);
+                    playerCollider.enabled = false;
                 }
                 return;
             }
@@ -427,6 +428,7 @@ namespace TwinHookController
             {
                 Destroy(activeAnchor);
                 duckedObject.SetActive(false);
+                playerCollider.enabled = true;
                 activeAnchor = null;
             }
             if (isFrozen)
