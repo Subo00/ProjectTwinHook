@@ -5,12 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class GameData 
 {
-
+    const int NUMBE_OF_LEVELS = 1;
     public Vector3 playerOnePosition;
     public Vector3 playerTwoPosition;
 
-    public SerializableDictionary<int, bool> levels;
-    public SerializableDictionary<int, bool> sheep;
+    public bool[] levels;
+    public bool[] sheep;
+   // public SerializableDictionary<int, bool> levels;
+    //public SerializableDictionary<int, bool> sheep;
                                  //id     time
     public SerializableDictionary<string, float> sourcesTime;
     //time
@@ -26,11 +28,16 @@ public class GameData
     {
         playerOnePosition = Vector3.zero;
         playerTwoPosition = Vector3.zero;
-        levels = new SerializableDictionary<int, bool>();
-        sheep = new SerializableDictionary<int, bool>();
+        levels = new bool[NUMBE_OF_LEVELS];
+        sheep = new bool[NUMBE_OF_LEVELS];
+        for(int i = 0; i < NUMBE_OF_LEVELS; i++)
+        {
+            levels[i] = false;
+            sheep[i] = false;
+        }
         //playerRotation = Vector3.zero;
-       /// sourcesTime = new SerializableDictionary<string, float>();
-       // itemsStack = new SerializableDictionary<uint, uint>();
+        /// sourcesTime = new SerializableDictionary<string, float>();
+        // itemsStack = new SerializableDictionary<uint, uint>();
         //charactersDialog = new SerializableDictionary<string, uint>();
     }
 
