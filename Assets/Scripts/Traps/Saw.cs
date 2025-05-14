@@ -9,9 +9,7 @@ public class Saw : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            bool isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
-
-            DataPersistenceManager.Instance.LoadPlayerPos(isOne);
+            other.GetComponent<Player>().Die();
         }
     }
 }

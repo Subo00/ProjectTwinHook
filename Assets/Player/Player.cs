@@ -1,3 +1,4 @@
+using SmallHedge.SoundManager;
 using System.Collections;
 using System.Collections.Generic;
 using TwinHookController;
@@ -34,6 +35,12 @@ namespace TwinHookController
 
         public void SaveData(ref GameData data) {
            
+        }
+
+        public void Die()
+        {
+            SoundManager.PlaySound(SoundType.DEATH);
+            DataPersistenceManager.Instance.LoadPlayerPos(isPlayerOne);
         }
     }
 }
