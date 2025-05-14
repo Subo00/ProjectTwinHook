@@ -81,7 +81,8 @@ public class DataPersistenceManager : MonoBehaviour
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode){
-        this.dataHandler = new FileDataHandler("C:\\Unity Projects\\Test Save", fileName, useEncryption);
+        //this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);   // <- this is the original
+        this.dataHandler = new FileDataHandler("C:\\Unity Projects\\Test Save", fileName, useEncryption);    // <- this is for testing 
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
