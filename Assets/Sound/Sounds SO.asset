@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7907fc6903a9f1e48b2d1214c33ec628, type: 3}
+  m_Name: Sounds SO
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: WALK
+    volume: 1
+    mixer: {fileID: 0}
+    sounds: []
+  - name: JUMP
+    volume: 1
+    mixer: {fileID: 0}
+    sounds: []
+  - name: HOOK
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 93d36663201ccca489185138abffbe88, type: 3}
+    - {fileID: 8300000, guid: 6587eea51b1edc047b71a9f3f74350e7, type: 3}
+    - {fileID: 8300000, guid: e0fe938ef69eae34e81eefed36eee9d6, type: 3}
+    - {fileID: 8300000, guid: d5983c42f084d604cbc62f1c6a7cfb52, type: 3}
+    - {fileID: 8300000, guid: 7324ab7b30cb97b44b697ba206bb18e4, type: 3}
+    - {fileID: 8300000, guid: e69c0f7beec7d414187658e926f051d6, type: 3}
+  - name: DEATH
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 023c13d428fdb1d449c113da9a2616f3, type: 3}
+    - {fileID: 8300000, guid: 62553a361b1178a4e944b3816cc84ab4, type: 3}
+    - {fileID: 8300000, guid: 8bfad38d06ec078458bc09dd4340f4b2, type: 3}
+    - {fileID: 8300000, guid: 8c9f72a2e78a5a2408ff187cf4faecc6, type: 3}

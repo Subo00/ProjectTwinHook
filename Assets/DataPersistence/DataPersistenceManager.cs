@@ -81,7 +81,8 @@ public class DataPersistenceManager : MonoBehaviour
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode){
-        this.dataHandler = new FileDataHandler("C:\\Unity Projects\\Test Save", fileName, useEncryption);
+        //this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);   // <- this is the original
+        this.dataHandler = new FileDataHandler("C:\\Unity Projects\\Test Save", fileName, useEncryption);    // <- this is for testing 
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
@@ -106,9 +107,26 @@ public class DataPersistenceManager : MonoBehaviour
         }
     }
 
-    public void SaveCheckPoint(Vector3 position)
+    public void SaveCheckPoint(Vector3 position, bool isPlayerOne)
     {
-        this.gameData.playerPosition = position;
+        if (isPlayerOne) {
+            this.gameData.playerOnePosition = position;
+        }
+        else {
+            this.gameData.playerTwoPosition = position;
+        }
         dataHandler.Save(gameData);
     }
+
+    public void SaveSheep(int index) {
+        this.gameData.sheep[index] = true; 
+        dataHandler.Save(gameData);
+    }
+
+
+    public void SaveLevel(int index) {
+        this.gameData.levels[index] = true;
+        dataHandler.Save(gameData);
+    }
+
 }

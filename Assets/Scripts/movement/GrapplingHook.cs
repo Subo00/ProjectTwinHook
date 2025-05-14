@@ -1,3 +1,4 @@
+using SmallHedge.SoundManager;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace TwinHookController
         [SerializeField] private Player pm;
         [SerializeField] private float grappleRange = 10f;
         [SerializeField] private LayerMask grappleLayer;
-        [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] public LineRenderer lineRenderer;
         [SerializeField] private Transform guntip;
 
         [SerializeField] private float grappleCooldown = 1f;
@@ -86,6 +87,7 @@ namespace TwinHookController
             pm.grapplePoint = closest;
             pm.isFrozen = true;
             Invoke(nameof(executeGrapple), pm.stats.grappleDelay);
+            SoundManager.PlaySound(SoundType.HOOK);
         }
 
         private void executeGrapple()

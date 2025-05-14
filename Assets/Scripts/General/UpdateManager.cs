@@ -45,7 +45,7 @@ public class UpdateManager : MonoBehaviour{
         UpdateManager.Instance = this;
     }
 
-    void Update(){
+    void FixedUpdate(){
         RunUpdates();
     }
 }

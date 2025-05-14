@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TwinHookController;
 public abstract class Interactable : MonoBehaviour, IMyUpdate
 {
     protected bool inUse = false;
@@ -43,8 +43,8 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
 
     //Make sure that the GO this script is attached to has a Collider
     private void OnTriggerEnter(Collider other){
-        if (other.CompareTag("PlayerInteraction")){
-            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
+        if (other.CompareTag("Player")){
+            bool isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
             SetBool(isOne, true);
 
             //if both players are near, no need to add to updateable twice
@@ -56,9 +56,8 @@ public abstract class Interactable : MonoBehaviour, IMyUpdate
     }
 
     private void OnTriggerExit(Collider other){
-        if (other.CompareTag("PlayerInteraction")){
-            //uiManager.SetInteractPoint();
-            bool isOne = other.gameObject.GetComponent<PlayerInteractable>().isPlayerOne;
+        if (other.CompareTag("Player")) {
+            bool isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
             SetBool(isOne, false);
 
             if (!(isPlayerOneNear || isPlayerTwoNear)){

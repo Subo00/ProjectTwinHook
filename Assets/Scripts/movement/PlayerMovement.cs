@@ -13,6 +13,7 @@ namespace TwinHookController
         [SerializeField] public Stats stats;
         [SerializeField] private GrapplingHook grapplingHook;
 
+        [SerializeField] private GameObject duckedObject;
         //grappleAnchor
         [SerializeField] private GameObject anchorPrefab;
         private GameObject activeAnchor;
@@ -21,7 +22,7 @@ namespace TwinHookController
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
         private Vector3 frameVelocity; //2d -> 3d
-
+        private Animator animator;
         #region Interface
 
         public Vector3 FrameInput => frameInput.Move;
@@ -33,14 +34,13 @@ namespace TwinHookController
 
         private float time;
 
-        private float horizontal1;
         private bool isFacingRight = true;
         public bool isFrozen = false;
         public bool activeGrapple = false;
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
-        public DialogueManager dialogueManager;
+        private DialogueManager dialogueManager;
 
 
         [SerializeField] private LayerMask groundLayer;
@@ -68,21 +68,27 @@ namespace TwinHookController
 
         protected virtual void Start()
         {
-            if (stats == null)
-            {
+            if (stats == null) {
                 stats = Resources.Load<Stats>("movementStats");
-                if (stats == null)
-                {
+                if (stats == null) {
                     Debug.LogError("Stats asset not found! Make sure it's at Resources/Stats.cs");
                 }
             }
-            if (grapplingHook == null)
-            {
+            if (grapplingHook == null) {
                 grapplingHook = GetComponent<GrapplingHook>();
-                if (grapplingHook == null)
-                {
+                if (grapplingHook == null) {
                     Debug.LogError("GrapplinHook script not found! Make sure it's on the Player");
                 }
+            }
+
+            animator = GetComponentInChildren<Animator>();
+            if (animator == null) {
+                Debug.LogError("Animator is missing! Attache it to the model");
+            }
+
+            dialogueManager = DialogueManager.Instance;
+            if(dialogueManager == null) {
+                Debug.LogError("DialogueManager is missing in the scene");
             }
         }
 
@@ -111,8 +117,18 @@ namespace TwinHookController
                 gatherInput();
             }
             else {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
             }
+
+            if(frameInput.Move.x == 0) {
+                animator.SetBool("isRunning", false);
+            }
+            else  {
+                animator.SetBool("isRunning", true);
+            }
+
+                
         }
 
         private void gatherInput()
@@ -127,8 +143,7 @@ namespace TwinHookController
                 Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
             };
 
-            if (stats.snapInput)
-            {
+            if (stats.snapInput) {
                 frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
                 frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
             }
@@ -163,11 +178,11 @@ namespace TwinHookController
 
                 flip(); // really need to overdo this shit
 
-                ////If grappling and close to the target, stop grappling...... damn this sucks
-                //if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
-                //    Debug.Log("grappleStop by proximity");
-                //    grapplingHook.ForceStopGrapple();  // Let momentum carry you 
-                //}
+                //If grappling and close to the target, stop grappling
+                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
+                    Debug.Log("grappleStop by proximity");
+                    grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
+                }
 
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
@@ -404,12 +419,16 @@ namespace TwinHookController
                     // Spawn anchor slightly below player (or wherever makes sense)
                     Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
+                    duckedObject.SetActive(true);
+                    playerCollider.enabled = false;
                 }
                 return;
             }
             if (activeAnchor != null)
             {
                 Destroy(activeAnchor);
+                duckedObject.SetActive(false);
+                playerCollider.enabled = true;
                 activeAnchor = null;
             }
             if (isFrozen)

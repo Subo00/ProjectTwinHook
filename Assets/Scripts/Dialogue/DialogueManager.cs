@@ -30,19 +30,20 @@ public class DialogueManager : MonoBehaviour {
     AudioSource source;
     AudioClip talkingClip;
 
+    private void Awake() {
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else {
+            Destroy(this.gameObject);
+        }
+    }
+
     private void Start() {
         sentences = new Queue<string>();
         source = GetComponent<AudioSource>();
         canvasGroup = GetComponent<CanvasGroup>();
-
-        if(Instance == null) { 
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
     }
 
     private void Update()

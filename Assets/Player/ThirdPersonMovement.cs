@@ -57,7 +57,7 @@ public class ThirdPersonMovement : MonoBehaviour, IDataPersistence{
     {
 
         controller.enabled = false;
-        this.transform.position = data.playerPosition;
+        //this.transform.position = data.playerPosition;
         //this.transform.rotation = data.playerRotation;
         controller.enabled = true;
 
@@ -65,7 +65,7 @@ public class ThirdPersonMovement : MonoBehaviour, IDataPersistence{
 
     public void SaveData(ref GameData data)
     {
-        data.playerPosition = this.transform.position;
+        //data.playerPosition = this.transform.position;
         //data.playerRotation = this.transform.rotation;
     }
     
