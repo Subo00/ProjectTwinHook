@@ -45,6 +45,9 @@ namespace TwinHookController
 
         [SerializeField] private LayerMask groundLayer;
 
+        [SerializeField] private bool DebugMode;
+
+
 
         [SerializeField] protected string horizontal = "Horizontal 1";
         [SerializeField] protected string jump = "Jump 1";
@@ -86,9 +89,13 @@ namespace TwinHookController
                 Debug.LogError("Animator is missing! Attache it to the model");
             }
 
-            dialogueManager = DialogueManager.Instance;
-            if(dialogueManager == null) {
-                Debug.LogError("DialogueManager is missing in the scene");
+            if (!DebugMode)
+            {
+                dialogueManager = DialogueManager.Instance;
+                if (dialogueManager == null)
+                {
+                    Debug.LogError("DialogueManager is missing in the scene");
+                }
             }
         }
 
@@ -106,19 +113,25 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
-            if (!dialogueManager.dialogueIsPlaying) {
-                rb.constraints = RigidbodyConstraints.None;
-                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                time += Time.deltaTime;
-                if (activeGrappleJustEnded) {
-                    activeGrappleJustEnded = false;
-                    StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+            if(!DebugMode)
+            {
+                if (!dialogueManager.dialogueIsPlaying)
+                {
+                    rb.constraints = RigidbodyConstraints.None;
+                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                    time += Time.deltaTime;
+                    if (activeGrappleJustEnded)
+                    {
+                        activeGrappleJustEnded = false;
+                        StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+                    }
+                    gatherInput();
                 }
-                gatherInput();
-            }
-            else {
-                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
+                else
+                {
+                    rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
+                }
             }
 
             if(frameInput.Move.x == 0) {
@@ -168,7 +181,8 @@ namespace TwinHookController
 
         private void FixedUpdate()
         {
-            if (!dialogueManager.dialogueIsPlaying) {
+            if (DebugMode)
+            {
                 checkCollisions();
                 handleJump();
                 handleDirection();
@@ -179,13 +193,39 @@ namespace TwinHookController
                 flip(); // really need to overdo this shit
 
                 //If grappling and close to the target, stop grappling
-                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
+                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+                {
                     Debug.Log("grappleStop by proximity");
                     grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
                 }
 
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+
+            }
+            else
+            {
+                if (!dialogueManager.dialogueIsPlaying)
+                {
+                    checkCollisions();
+                    handleJump();
+                    handleDirection();
+                    handleGravity();
+
+                    applyMovement();
+
+                    flip(); // really need to overdo this shit
+
+                    //If grappling and close to the target, stop grappling
+                    if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
+                    {
+                        Debug.Log("grappleStop by proximity");
+                        grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
+                    }
+
+                    // Optional: Lock to 2D axis
+                    transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+                }
             }
             
         }
