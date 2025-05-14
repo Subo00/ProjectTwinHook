@@ -1,3 +1,4 @@
+using SmallHedge.SoundManager;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -86,6 +87,7 @@ namespace TwinHookController
             pm.grapplePoint = closest;
             pm.isFrozen = true;
             Invoke(nameof(executeGrapple), pm.stats.grappleDelay);
+            SoundManager.PlaySound(SoundType.HOOK);
         }
 
         private void executeGrapple()
