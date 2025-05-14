@@ -113,7 +113,16 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
-            if(!DebugMode)
+
+            if (grounded && getGroundNormal(out var normal))
+            {
+                Debug.DrawRay(transform.position, normal, Color.green);
+                Debug.Log("groundNormals being displayed");
+            }
+
+
+
+            if (!DebugMode)
             {
                 if (!dialogueManager.dialogueIsPlaying)
                 {
@@ -320,38 +329,50 @@ namespace TwinHookController
 
         private void checkCollisions()
         {
-            Vector3 center = playerCollider.bounds.center;
-            float radius = playerCollider.radius * 0.7f; // Slightly shrink radius to prevent edge misses
-            float height = playerCollider.height;
-            float castDistance = 0.01f; // How far below the capsule to check for ground
+            // Assume not grounded by default at the start of each physics frame
+            grounded = false;
 
-            Vector3 point1 = center + Vector3.up * (height / 2 - radius);
-            Vector3 point2 = center + Vector3.down * ((height / 2 - radius) + castDistance);
+            // Cast origin slightly above player center to avoid starting inside geometry
+            Vector3 origin = transform.position + Vector3.up * 0.1f;
 
+            // How far downward to check for ground
+            float rayLength = stats.grounderDistance;
 
-            grounded = Physics.CheckCapsule(point1, point2, radius, stats.groundLayer, QueryTriggerInteraction.Ignore);
-
-            if (grounded)
+            // Perform a raycast straight down to detect the ground
+            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
             {
-                if (!wasGroundedLastFrame)
+                // Measure angle between the surface normal and straight "up"
+                float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+
+                // If the surface is not too steep (angle within limit), we count it as ground
+                if (slopeAngle <= stats.maxSlope)
                 {
-                    coyoteUsable = true;
-                    bufferedJumpUsable = true;
-                    endedJumpEarly = false;
-                    GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
+                    grounded = true;
+
+                    // Only trigger landing behavior once when transitioning from air → ground
+                    if (!wasGroundedLastFrame)
+                    {
+                        coyoteUsable = true;           // Allow jump buffering/coyote time
+                        bufferedJumpUsable = true;
+                        endedJumpEarly = false;
+
+                        // Notify listeners (e.g. animations, VFX)
+                        GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
+                    }
                 }
             }
-            else
+
+            // If we were grounded last frame but no longer are, record the time we left
+            if (!grounded && wasGroundedLastFrame)
             {
-                if (wasGroundedLastFrame)
-                {
-                    frameLeftGrounded = time;
-                    GroundedChanged?.Invoke(false, 0);
-                }
+                frameLeftGrounded = time;
+                GroundedChanged?.Invoke(false, 0);
             }
 
+            // Update memory of last frame's grounded status
             wasGroundedLastFrame = grounded;
         }
+
 
 
 
@@ -449,21 +470,23 @@ namespace TwinHookController
 
         #endregion
 
-        private void applyMovement() // change grappling stuff here
+        private void applyMovement()
         {
             if (standStill && grounded)
             {
                 rb.velocity = Vector3.zero;
+
                 if (activeAnchor == null)
                 {
-                    // Spawn anchor slightly below player (or wherever makes sense)
-                    Vector3 spawnPosition = transform.position; // tweak if needed
+                    Vector3 spawnPosition = transform.position;
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
                     duckedObject.SetActive(true);
                     playerCollider.enabled = false;
                 }
+
                 return;
             }
+
             if (activeAnchor != null)
             {
                 Destroy(activeAnchor);
@@ -471,17 +494,69 @@ namespace TwinHookController
                 playerCollider.enabled = true;
                 activeAnchor = null;
             }
+
             if (isFrozen)
             {
                 rb.velocity = Vector3.zero;
-                frameVelocity = Vector3.zero; // so we dont accumulate momentum
+                frameVelocity = Vector3.zero;
                 return;
             }
-            else
+
+            Vector3 finalVelocity = Vector3.zero;
+
+            // Get current input-based horizontal movement
+            Vector3 horizontalMove = new Vector3(frameVelocity.x, 0f, 0f);
+
+            // If grounded, adjust horizontal movement to follow the slope
+            if (grounded && getGroundNormal(out Vector3 groundNormal))
             {
-                rb.velocity = grapplingVelocity + frameVelocity;
+                float slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
+
+                if (slopeAngle > stats.maxSlope)
+                {
+                    horizontalMove = Vector3.zero; // too steep — cancel input
+                }
+                else
+                {
+                    // Project the input direction along the slope surface
+                    horizontalMove = Vector3.ProjectOnPlane(horizontalMove, groundNormal);
+                }
             }
+
+            // Build final velocity
+            finalVelocity += horizontalMove;
+            finalVelocity.y = frameVelocity.y; // vertical handled via jump/gravity
+            finalVelocity += grapplingVelocity; // add any current grapple momentum
+
+            // Apply to rigidbody
+            rb.velocity = finalVelocity;
         }
+
+
+
+
+        private bool getGroundNormal(out Vector3 normal)
+        {
+            RaycastHit hit;
+            float castDistance = 0.2f;
+            Vector3 origin = transform.position + Vector3.up * 0.1f; // Slightly above player center
+
+            // Raycast downward to detect the ground beneath the player
+            if (Physics.Raycast(origin, Vector3.down, out hit, castDistance, groundLayer))
+            {
+                normal = hit.normal; // return the surface normal (used for slope angle)
+                return true;
+            }
+
+            // If nothing hit, default to "flat ground"
+            normal = Vector3.up;
+            return false;
+        }
+
+
+
+
+
 
         private IEnumerator KeepGrapplingMomentum(float duration)
         {

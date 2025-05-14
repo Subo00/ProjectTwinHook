@@ -38,6 +38,9 @@ namespace TwinHookController
         [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 3f)]
         public float grounderDistance = 1f;
 
+        [Tooltip("max. degrees the Player can move up a slope"), Range(0f, 90f)]
+        public float maxSlope = 50f;
+
         [Header("JUMP")]
         [Tooltip("The immediate velocity applied when jumping")]
         public float jumpPower = 36;
