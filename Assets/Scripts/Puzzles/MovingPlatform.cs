@@ -7,7 +7,7 @@ public class MovingPlatform : MonoBehaviour
     Vector3 startPos;
     [SerializeField] Vector3 endPos;
 
-    [SerializeField] float speed;
+    [SerializeField] float speed = 10;
 
     [SerializeField] bool isButtonPusher; 
     bool buttonActive = false;
