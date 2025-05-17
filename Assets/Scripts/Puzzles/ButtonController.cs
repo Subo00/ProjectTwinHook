@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class ButtonController : MonoBehaviour, IMyUpdate {
-    public MovingPlatform platform;
+    public MovingPlatform[] platforms;
     
     private MovingPlatform buttonPusher;
     private uint numOfStanders = 0;
@@ -16,7 +16,9 @@ public class ButtonController : MonoBehaviour, IMyUpdate {
     }
 
     void IMyUpdate.MyUpdate() {
-        platform.SetBool(true);
+        for(int i = 0; i < platforms.Length; i++) {
+            platforms[i].SetBool(true);
+        }
     }
    
 
@@ -41,12 +43,16 @@ public class ButtonController : MonoBehaviour, IMyUpdate {
 
     private void MoveButtonDown() {
         UpdateManager.Instance.AddUpdatable(this);
+
         buttonPusher.SetBool(true);
     }
 
     private void MoveButtonUp() {
         UpdateManager.Instance.RemoveUpdatable(this);
+
         buttonPusher.SetBool(false);
-        platform.SetBool(false);
+        for (int i = 0; i < platforms.Length; i++) {
+            platforms[i].SetBool(false);
+        }
     }
 }
