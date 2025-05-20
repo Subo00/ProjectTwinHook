@@ -14,6 +14,7 @@ public class DialogueManager : MonoBehaviour {
     public Image portrait;
 
     public Button nextButton;
+    public TMP_Text spacePrompt;
     public CanvasGroup canvasGroup;
 
     public Vector3 showPanelPos = new Vector3(0, -1, 0);
@@ -29,6 +30,8 @@ public class DialogueManager : MonoBehaviour {
     bool canContinueToNextLine;
     AudioSource source;
     AudioClip talkingClip;
+
+    bool learnedDialogue = false;
 
     private void Awake() {
         if (Instance == null) {
@@ -48,7 +51,7 @@ public class DialogueManager : MonoBehaviour {
 
     private void Update()
     {
-        if (dialogueIsPlaying && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.U))) {
+        if (dialogueIsPlaying && Input.GetKeyDown(KeyCode.Space)) {
             if (canContinueToNextLine)  {
                 nextButton.onClick.Invoke();
             }
@@ -105,6 +108,7 @@ public class DialogueManager : MonoBehaviour {
 
         canContinueToNextLine = false;
         nextButton.gameObject.SetActive(false);
+        spacePrompt.gameObject.SetActive(false);
 
         dialogueText.text = sentence;
         dialogueText.maxVisibleCharacters = 0;
@@ -127,6 +131,10 @@ public class DialogueManager : MonoBehaviour {
         canContinueToNextLine = true;
         nextButton.gameObject.SetActive(true);
 
+        if (!learnedDialogue) {
+            spacePrompt.gameObject.SetActive(true);
+        }
+
     }
 
     private void SkipRenderSentence() {
@@ -134,6 +142,11 @@ public class DialogueManager : MonoBehaviour {
         dialogueText.maxVisibleCharacters = dialogueText.text.Length;
         canContinueToNextLine = true;
         nextButton.gameObject.SetActive(true);
+
+        if (!learnedDialogue) {
+            spacePrompt.gameObject.SetActive(true);
+        }
+        
         return;
     }
 
@@ -149,8 +162,11 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void EndDialogue() {
+        learnedDialogue = true; //the player has now learned how to control the dialogue, we don't need the prompt anymore
+
         canvasGroup.interactable = false;
         nextButton.gameObject.SetActive(false); //ensure that this doesn't get pressed by accident
+        spacePrompt.gameObject.SetActive(false);
         StopAllCoroutines();
         dialogueText.text = ""; //ensure that the old text doesn't show when the panel moves back up
         transform.DOLocalMove(hidePanelPos, panelAnimationTime).OnComplete(() => { dialogueIsPlaying = false; });
