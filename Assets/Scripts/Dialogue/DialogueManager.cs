@@ -50,7 +50,8 @@ public class DialogueManager : MonoBehaviour {
     {
         if (dialogueIsPlaying && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.U))) {
             if (canContinueToNextLine)  {
-                nextButton.onClick.Invoke();
+                //nextButton.onClick.Invoke();
+                DisplayNext(); //Why click the button that calles a function from this object when you can call it from this object
             }
             else { //just display the sentence that's left to display 
                 SkipRenderSentence();
@@ -84,8 +85,9 @@ public class DialogueManager : MonoBehaviour {
 
 
             sentences.Clear();
+            Debug.Log("DIALOG LENGHT: " + dialogue.dialogue.Length);
             for (int i = 0; i < dialogue.dialogue.Length; i++) {
-                sentences.Enqueue(dialogueNode.dialogue.dialogue[i]);
+                sentences.Enqueue(dialogue.dialogue[i]);
             }
 
             //bring up the panel
@@ -138,14 +140,23 @@ public class DialogueManager : MonoBehaviour {
     }
 
     public void DisplayNext() {
-        DialogueNode dialogueNode = currentNode as DialogueNode;
-        NodePort port = dialogueNode.GetOutputPort("nextNode").Connection;
-
-        if (port != null) {
-            currentNode = port.node;
+        //this displays the next sentence
+        
+        if (sentences.Count != 0) {
+            StartCoroutine(RenderSentence(sentences.Dequeue()));
         }
+        else {
+            //this gets the next dialogue 
+            DialogueNode dialogueNode = currentNode as DialogueNode;
+            NodePort port = dialogueNode.GetOutputPort("nextNode").Connection;
 
-        StartDialogue(currentNode);
+            if (port != null) {
+                currentNode = port.node;
+            }
+
+            StartDialogue(currentNode);
+        }
+        
     }
 
     public void EndDialogue() {
