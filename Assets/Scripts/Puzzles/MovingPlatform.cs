@@ -9,26 +9,52 @@ public class MovingPlatform : MonoBehaviour
 
     [SerializeField] float speed = 10;
 
-    [SerializeField] bool isButtonPusher; 
+    [SerializeField] bool isButtonPusher;
+
+    [SerializeField] bool isLever;
+    Quaternion startRot;
+    [SerializeField] Quaternion endRot;
+
     bool buttonActive = false;
 
     // Start is called before the first frame update
     void Start() {
         startPos = transform.position;
-        if(isButtonPusher ) {
+        if(isButtonPusher || isLever) {
             endPos += startPos;
+        }
+
+        if (isLever) {
+            startRot = transform.rotation;
         }
     }
 
     // Update is called once per frame
     void Update() {
         if(buttonActive) {
-            //go towards endPos
-            transform.position = Vector3.MoveTowards(transform.position, endPos, speed * Time.deltaTime);
+
+            
+
+            if (isLever) {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, speed * Time.deltaTime);
+            }
+            else {
+                //go towards endPos
+                transform.position = Vector3.MoveTowards(transform.position, endPos, speed * Time.deltaTime);
+            }
+
         }
         else {
-            //go towards startPos
-            transform.position = Vector3.MoveTowards(transform.position, startPos, speed * Time.deltaTime);
+            
+
+            if (isLever) {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, startRot, speed * Time.deltaTime);
+            }
+            else {
+                //go towards startPos
+                transform.position = Vector3.MoveTowards(transform.position, startPos, speed * Time.deltaTime);
+            }
+   
         }
     }
 
