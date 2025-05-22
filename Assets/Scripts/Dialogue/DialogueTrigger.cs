@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
+[RequireComponent(typeof(BoxCollider))]
 public class DialogueTrigger : MonoBehaviour {
     public DialogueGraph tree;
 
-    bool alreadyPlayed = false;
+    protected bool alreadyPlayed = false;
 
 
-    private void OnTriggerEnter(Collider collision) {
+    protected void OnTriggerEnter(Collider collision) {
+        DoOnEnter(collision);
+    }
+
+    protected virtual void DoOnEnter(Collider collision) {
         if (collision.gameObject.tag == "Player" && !alreadyPlayed) {
             TriggerDialogue();
             alreadyPlayed = true;
