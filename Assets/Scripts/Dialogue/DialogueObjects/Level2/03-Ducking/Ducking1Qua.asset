@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49d3e0cce093488448bef736668dc17c, type: 3}
-  m_Name: DialogueEnd
+  m_Name: Ducking1Qua
   m_EditorClassIdentifier: 
-  name: 
-  portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
-  talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
+  name: Qua
+  portrait: {fileID: 21300000, guid: 9227b70ccdb473b44914b443aa920463, type: 3}
+  talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
-  - anndddd
-  - cut!
+  - 'What is this? '
+  - The wall is too high!
+  - How do we get over it?
