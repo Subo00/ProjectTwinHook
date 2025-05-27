@@ -5,52 +5,58 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ButtonController : MonoBehaviour, IMyUpdate {
+public class LeverController : MonoBehaviour, IMyUpdate {
     public MovingPlatform[] platforms;
-    
-    private MovingPlatform buttonPusher;
+
+    private MovingPlatform leverHandle;
     private uint numOfStanders = 0;
 
+    private bool isPlatformMoved = false;
+
     private void Start() {
-        buttonPusher = GetComponentInChildren<MovingPlatform>();
+        leverHandle = GetComponentInChildren<MovingPlatform>();
     }
 
     void IMyUpdate.MyUpdate() {
-        for(int i = 0; i < platforms.Length; i++) {
+        for (int i = 0; i < platforms.Length; i++) {
             platforms[i].SetBool(true);
         }
     }
-   
+
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
-            numOfStanders++;
-            if(numOfStanders == 1) {
+
+            if (!isPlatformMoved) {
                 MoveButtonDown();
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other) {
-
-        if (other.gameObject.tag == "Player") {
-            numOfStanders--;
-            if (numOfStanders == 0) {
+            else {
                 MoveButtonUp();
             }
+            isPlatformMoved = !isPlatformMoved;  
         }
     }
+
+    //private void OnTriggerExit(Collider other) {
+
+    //    if (other.gameObject.tag == "Player") {
+    //        numOfStanders--;
+    //        if (numOfStanders == 0) {
+    //            MoveButtonUp();
+    //        }
+    //    }
+    //}
 
     private void MoveButtonDown() {
         UpdateManager.Instance.AddUpdatable(this);
 
-        buttonPusher.SetBool(true);
+        leverHandle.SetBool(true);
     }
 
     private void MoveButtonUp() {
         UpdateManager.Instance.RemoveUpdatable(this);
 
-        buttonPusher.SetBool(false);
+        leverHandle.SetBool(false);
         for (int i = 0; i < platforms.Length; i++) {
             platforms[i].SetBool(false);
         }
