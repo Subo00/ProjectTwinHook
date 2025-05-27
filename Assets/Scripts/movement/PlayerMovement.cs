@@ -281,7 +281,7 @@ namespace TwinHookController
         private void checkCollisions()
         {
             Vector3 center = playerCollider.bounds.center;
-            float radius = playerCollider.radius * 0.7f; // Slightly shrink radius to prevent edge misses
+            float radius = playerCollider.radius * 1f; // Slightly shrink radius to prevent edge misses
             float height = playerCollider.height;
             float castDistance = 0.01f; // How far below the capsule to check for ground
 
