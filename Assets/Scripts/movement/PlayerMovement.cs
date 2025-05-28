@@ -329,16 +329,16 @@ namespace TwinHookController
 
         private void OnCollisionStay(Collision collision)
         {
-            Debug.Log("OnCollisionStay with: " + collision.gameObject.name);
+            //Debug.Log("OnCollisionStay with: " + collision.gameObject.name);
 
             if (collision.gameObject.CompareTag("HorizontalMovingPlatform"))
             {
-                Debug.Log("Detected HorizontalMovingPlatform");
+                //Debug.Log("Detected HorizontalMovingPlatform");
 
                 HorizontalMovingPlatform platform = collision.gameObject.GetComponent<HorizontalMovingPlatform>();
                 if (platform != null)
                 {
-                    Debug.Log("Platform velocity: " + platform.GetVelocity());
+                    //Debug.Log("Platform velocity: " + platform.GetVelocity());
                     platformVelocity = platform.GetVelocity();
                 }
             }
@@ -473,7 +473,7 @@ namespace TwinHookController
             }
             else
             {
-                Debug.Log($"FrameVelocity: {frameVelocity}, PlatformVelocity: {platformVelocity}, Total: {grapplingVelocity + frameVelocity + platformVelocity}");
+               // Debug.Log($"FrameVelocity: {frameVelocity}, PlatformVelocity: {platformVelocity}, Total: {grapplingVelocity + frameVelocity + platformVelocity}");
 
                 rb.velocity = grapplingVelocity + frameVelocity + platformVelocity;
             }

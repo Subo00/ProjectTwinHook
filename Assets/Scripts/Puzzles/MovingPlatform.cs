@@ -12,11 +12,6 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] bool isLever;
     Quaternion startRot;
     [SerializeField] Quaternion endRot;
-    [SerializeField] protected bool isButtonPusher;
-    [SerializeField] protected bool isLever;
-
-    protected Quaternion startRot;
-    [SerializeField] protected Quaternion endRot;
 
     protected bool buttonActive = false;
 

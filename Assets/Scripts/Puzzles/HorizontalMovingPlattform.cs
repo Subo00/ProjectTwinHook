@@ -34,12 +34,6 @@ public class HorizontalMovingPlatform : MovingPlatform
     protected void Start()
     {
         base.startPos = transform.position;
-        base.startRot = transform.rotation;
-
-        if (isButtonPusher || isLever)
-        {
-            endPos += startPos; // convert to world-space end position
-        }
 
         previousPosition = transform.position;
     }
