@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TwinHookController;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class PointCollider : MonoBehaviour, IDataPersistence
 {
     public enum PointType { SHEEP, END}
@@ -12,6 +13,11 @@ public class PointCollider : MonoBehaviour, IDataPersistence
 
     bool playerOnePassed = false;
     bool playerTwoPassed = false;
+
+
+    private void Start() {
+     GetComponent<BoxCollider>().isTrigger = true;
+    }
 
     public void LoadData(GameData data)
     {
