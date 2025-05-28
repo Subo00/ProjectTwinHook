@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem.XR;
 
 
 namespace TwinHookController
@@ -23,12 +24,16 @@ namespace TwinHookController
         private FrameInput frameInput;
         private Vector3 frameVelocity; //2d -> 3d
         private Animator animator;
+
         #region Interface
 
         public Vector3 FrameInput => frameInput.Move;
         public event Action<bool, float> GroundedChanged;
         public event Action Jumped;
         public bool standStill = false;
+        private bool wasStickDown;
+        public bool isController;
+
 
         #endregion
 
@@ -40,13 +45,16 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
+
+        //moving plattform
+        private Vector3 platformVelocity;
+        private Vector3 platformAngularVelocity;
+
+
         private DialogueManager dialogueManager;
 
 
         [SerializeField] private LayerMask groundLayer;
-
-        [SerializeField] private bool DebugMode;
-
 
 
         [SerializeField] protected string horizontal = "Horizontal 1";
@@ -89,13 +97,9 @@ namespace TwinHookController
                 Debug.LogError("Animator is missing! Attache it to the model");
             }
 
-            if (!DebugMode)
-            {
-                dialogueManager = DialogueManager.Instance;
-                if (dialogueManager == null)
-                {
-                    Debug.LogError("DialogueManager is missing in the scene");
-                }
+            dialogueManager = DialogueManager.Instance;
+            if(dialogueManager == null) {
+                Debug.LogError("DialogueManager is missing in the scene");
             }
         }
 
@@ -114,33 +118,23 @@ namespace TwinHookController
         void Update()
         {
 
-            if (grounded && getGroundNormal(out var normal))
-            {
-                Debug.DrawRay(transform.position, normal, Color.green);
-                Debug.Log("groundNormals being displayed");
+            
+
+
+
+            if (!dialogueManager.dialogueIsPlaying) {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                time += Time.deltaTime;
+                if (activeGrappleJustEnded) {
+                    activeGrappleJustEnded = false;
+                    StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
+                }
+                gatherInput();
             }
-
-
-
-            if (!DebugMode)
-            {
-                if (!dialogueManager.dialogueIsPlaying)
-                {
-                    rb.constraints = RigidbodyConstraints.None;
-                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                    time += Time.deltaTime;
-                    if (activeGrappleJustEnded)
-                    {
-                        activeGrappleJustEnded = false;
-                        StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
-                    }
-                    gatherInput();
-                }
-                else
-                {
-                    rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
-                }
+            else {
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
             }
 
             if(frameInput.Move.x == 0) {
@@ -155,19 +149,41 @@ namespace TwinHookController
 
         private void gatherInput()
         {
+            float moveAxis = Input.GetAxis(horizontal);
+            bool jumpDown = Input.GetButtonDown(jump);
+            bool jumpHeld = Input.GetButton(jump);
+            bool duckHeld = Input.GetButton(duck);
+            bool duckReleased = Input.GetButtonUp(duck);
+            bool grappleDown = Input.GetButtonDown(grapple);
+            
+            // Handle controller stick duck detection if using controller-based input
+            if (isController)
+            {
+                // Stick ducking support
+                float duckAxis = Input.GetAxis(duck);
+                bool stickDown = duckAxis < -0.5f;
+
+                duckHeld = stickDown;
+
+                // Handle release detection manually
+                duckReleased = wasStickDown && !stickDown;
+                wasStickDown = stickDown;
+                
+            }
+
             frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown(jump),
-                JumpHeld = Input.GetButton(jump),
-                DuckHeld = Input.GetButton(duck),
-                DuckReleased = Input.GetButtonUp(duck),
-                GrappleDown = Input.GetButtonDown(grapple),
-                Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
+                Move = new Vector3(moveAxis, 0),
+                JumpDown = jumpDown,
+                JumpHeld = jumpHeld,
+                DuckHeld = duckHeld,
+                DuckReleased = duckReleased,
+                GrappleDown = grappleDown
             };
 
-            if (stats.snapInput) {
+            if (stats.snapInput)
+            {
                 frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
-                frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
             }
 
             if (frameInput.JumpDown)
@@ -184,14 +200,14 @@ namespace TwinHookController
             {
                 standStill = false;
             }
-
         }
+
 
 
         private void FixedUpdate()
         {
-            if (DebugMode)
-            {
+            if (!dialogueManager.dialogueIsPlaying) {
+
                 checkCollisions();
                 handleJump();
                 handleDirection();
@@ -202,8 +218,7 @@ namespace TwinHookController
                 flip(); // really need to overdo this shit
 
                 //If grappling and close to the target, stop grappling
-                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-                {
+                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
                     Debug.Log("grappleStop by proximity");
                     grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
                 }
@@ -211,32 +226,11 @@ namespace TwinHookController
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 
+                platformVelocity = Vector3.zero;
+                platformAngularVelocity = Vector3.zero;
+
             }
-            else
-            {
-                if (!dialogueManager.dialogueIsPlaying)
-                {
-                    checkCollisions();
-                    handleJump();
-                    handleDirection();
-                    handleGravity();
 
-                    applyMovement();
-
-                    flip(); // really need to overdo this shit
-
-                    //If grappling and close to the target, stop grappling
-                    if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-                    {
-                        Debug.Log("grappleStop by proximity");
-                        grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
-                    }
-
-                    // Optional: Lock to 2D axis
-                    transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-                }
-            }
-            
         }
 
         float yRotation = 0f;
@@ -329,49 +323,60 @@ namespace TwinHookController
 
         private void checkCollisions()
         {
-            // Assume not grounded by default at the start of each physics frame
-            grounded = false;
+            Vector3 center = playerCollider.bounds.center;
+            float radius = playerCollider.radius * 1f; // Slightly shrink radius to prevent edge misses
+            float height = playerCollider.height;
+            float castDistance = 0.01f; // How far below the capsule to check for ground
 
-            // Cast origin slightly above player center to avoid starting inside geometry
-            Vector3 origin = transform.position + Vector3.up * 0.1f;
+            Vector3 point1 = center + Vector3.up * (height / 2 - radius);
+            Vector3 point2 = center + Vector3.down * ((height / 2 - radius) + castDistance);
 
-            // How far downward to check for ground
-            float rayLength = stats.grounderDistance;
 
-            // Perform a raycast straight down to detect the ground
-            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, rayLength, groundLayer))
+            grounded = Physics.CheckCapsule(point1, point2, radius, stats.groundLayer, QueryTriggerInteraction.Ignore);
+
+
+            if (grounded)
             {
-                // Measure angle between the surface normal and straight "up"
-                float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-
-                // If the surface is not too steep (angle within limit), we count it as ground
-                if (slopeAngle <= stats.maxSlope)
+                if (!wasGroundedLastFrame)
                 {
-                    grounded = true;
-
-                    // Only trigger landing behavior once when transitioning from air → ground
-                    if (!wasGroundedLastFrame)
-                    {
-                        coyoteUsable = true;           // Allow jump buffering/coyote time
-                        bufferedJumpUsable = true;
-                        endedJumpEarly = false;
-
-                        // Notify listeners (e.g. animations, VFX)
-                        GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
-                    }
+                    coyoteUsable = true;
+                    bufferedJumpUsable = true;
+                    endedJumpEarly = false;
+                    GroundedChanged?.Invoke(true, Mathf.Abs(frameVelocity.y));
+                }
+            }
+            else
+            {
+                if (wasGroundedLastFrame)
+                {
+                    frameLeftGrounded = time;
+                    GroundedChanged?.Invoke(false, 0);
                 }
             }
 
-            // If we were grounded last frame but no longer are, record the time we left
-            if (!grounded && wasGroundedLastFrame)
-            {
-                frameLeftGrounded = time;
-                GroundedChanged?.Invoke(false, 0);
-            }
-
-            // Update memory of last frame's grounded status
             wasGroundedLastFrame = grounded;
         }
+
+
+
+        private void OnCollisionStay(Collision collision)
+        {
+            //Debug.Log("OnCollisionStay with: " + collision.gameObject.name);
+
+            if (collision.gameObject.CompareTag("HorizontalMovingPlatform"))
+            {
+                //Debug.Log("Detected HorizontalMovingPlatform");
+
+                HorizontalMovingPlatform platform = collision.gameObject.GetComponent<HorizontalMovingPlatform>();
+                if (platform != null)
+                {
+                    //Debug.Log("Platform velocity: " + platform.GetVelocity());
+                    platformVelocity = platform.GetVelocity();
+                }
+            }
+        }
+
+
 
 
 
@@ -470,23 +475,21 @@ namespace TwinHookController
 
         #endregion
 
-        private void applyMovement()
+        private void applyMovement() // change grappling stuff here
         {
             if (standStill && grounded)
             {
                 rb.velocity = Vector3.zero;
-
                 if (activeAnchor == null)
                 {
-                    Vector3 spawnPosition = transform.position;
+                    // Spawn anchor slightly below player (or wherever makes sense)
+                    Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
                     duckedObject.SetActive(true);
                     playerCollider.enabled = false;
                 }
-
                 return;
             }
-
             if (activeAnchor != null)
             {
                 Destroy(activeAnchor);
@@ -494,69 +497,19 @@ namespace TwinHookController
                 playerCollider.enabled = true;
                 activeAnchor = null;
             }
-
             if (isFrozen)
             {
                 rb.velocity = Vector3.zero;
-                frameVelocity = Vector3.zero;
+                frameVelocity = Vector3.zero; // so we dont accumulate momentum
                 return;
             }
-
-            Vector3 finalVelocity = Vector3.zero;
-
-            // Get current input-based horizontal movement
-            Vector3 horizontalMove = new Vector3(frameVelocity.x, 0f, 0f);
-
-            // If grounded, adjust horizontal movement to follow the slope
-            if (grounded && getGroundNormal(out Vector3 groundNormal))
+            else
             {
-                float slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
+               // Debug.Log($"FrameVelocity: {frameVelocity}, PlatformVelocity: {platformVelocity}, Total: {grapplingVelocity + frameVelocity + platformVelocity}");
 
-                if (slopeAngle > stats.maxSlope)
-                {
-                    horizontalMove = Vector3.zero; // too steep — cancel input
-                }
-                else
-                {
-                    // Project the input direction along the slope surface
-                    horizontalMove = Vector3.ProjectOnPlane(horizontalMove, groundNormal);
-                }
+                rb.velocity = grapplingVelocity + frameVelocity + platformVelocity;
             }
-
-            // Build final velocity
-            finalVelocity += horizontalMove;
-            finalVelocity.y = frameVelocity.y; // vertical handled via jump/gravity
-            finalVelocity += grapplingVelocity; // add any current grapple momentum
-
-            // Apply to rigidbody
-            rb.velocity = finalVelocity;
         }
-
-
-
-
-        private bool getGroundNormal(out Vector3 normal)
-        {
-            RaycastHit hit;
-            float castDistance = 0.2f;
-            Vector3 origin = transform.position + Vector3.up * 0.1f; // Slightly above player center
-
-            // Raycast downward to detect the ground beneath the player
-            if (Physics.Raycast(origin, Vector3.down, out hit, castDistance, groundLayer))
-            {
-                normal = hit.normal; // return the surface normal (used for slope angle)
-                return true;
-            }
-
-            // If nothing hit, default to "flat ground"
-            normal = Vector3.up;
-            return false;
-        }
-
-
-
-
-
 
         private IEnumerator KeepGrapplingMomentum(float duration)
         {
