@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem.XR;
 
 
 namespace TwinHookController
@@ -23,12 +24,16 @@ namespace TwinHookController
         private FrameInput frameInput;
         private Vector3 frameVelocity; //2d -> 3d
         private Animator animator;
+
         #region Interface
 
         public Vector3 FrameInput => frameInput.Move;
         public event Action<bool, float> GroundedChanged;
         public event Action Jumped;
         public bool standStill = false;
+        private bool wasStickDown;
+        public bool isController;
+
 
         #endregion
 
@@ -112,6 +117,11 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
+
+            
+
+
+
             if (!dialogueManager.dialogueIsPlaying) {
                 rb.constraints = RigidbodyConstraints.None;
                 rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -139,19 +149,41 @@ namespace TwinHookController
 
         private void gatherInput()
         {
+            float moveAxis = Input.GetAxis(horizontal);
+            bool jumpDown = Input.GetButtonDown(jump);
+            bool jumpHeld = Input.GetButton(jump);
+            bool duckHeld = Input.GetButton(duck);
+            bool duckReleased = Input.GetButtonUp(duck);
+            bool grappleDown = Input.GetButtonDown(grapple);
+            
+            // Handle controller stick duck detection if using controller-based input
+            if (isController)
+            {
+                // Stick ducking support
+                float duckAxis = Input.GetAxis(duck);
+                bool stickDown = duckAxis < -0.5f;
+
+                duckHeld = stickDown;
+
+                // Handle release detection manually
+                duckReleased = wasStickDown && !stickDown;
+                wasStickDown = stickDown;
+                
+            }
+
             frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown(jump),
-                JumpHeld = Input.GetButton(jump),
-                DuckHeld = Input.GetButton(duck),
-                DuckReleased = Input.GetButtonUp(duck),
-                GrappleDown = Input.GetButtonDown(grapple),
-                Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
+                Move = new Vector3(moveAxis, 0),
+                JumpDown = jumpDown,
+                JumpHeld = jumpHeld,
+                DuckHeld = duckHeld,
+                DuckReleased = duckReleased,
+                GrappleDown = grappleDown
             };
 
-            if (stats.snapInput) {
+            if (stats.snapInput)
+            {
                 frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
-                frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
             }
 
             if (frameInput.JumpDown)
@@ -168,8 +200,8 @@ namespace TwinHookController
             {
                 standStill = false;
             }
-
         }
+
 
 
         private void FixedUpdate()

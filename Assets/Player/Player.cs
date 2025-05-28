@@ -18,6 +18,15 @@ namespace TwinHookController
             jump = isPlayerOne ? "Jump 1" : "Jump 2";
             duck = isPlayerOne ? "Duck 1" : "Duck 2";
             grapple = isPlayerOne ? "Grapple 1" : "Grapple 2";
+
+            if (isController)
+            {
+                jump += " (Controller)";
+                horizontal += " (Controller)";
+                duck += " (Controller)";
+                grapple += " (Controller)";
+            }
+
             if (isPlayerOne){
                 DataPersistenceManager.Instance.PlayerOne = this;
             }
