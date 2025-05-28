@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    Vector3 startPos;
-    [SerializeField] Vector3 endPos;
+    // In MovingPlatform.cs
+    protected Vector3 startPos;
+    [SerializeField] protected Vector3 endPos;
 
-    [SerializeField] float speed = 10;
+    [SerializeField] protected float speed = 10;
 
-    [SerializeField] bool isButtonPusher;
+    [SerializeField] protected bool isButtonPusher;
+    [SerializeField] protected bool isLever;
 
-    [SerializeField] bool isLever;
-    Quaternion startRot;
-    [SerializeField] Quaternion endRot;
+    protected Quaternion startRot;
+    [SerializeField] protected Quaternion endRot;
 
-    bool buttonActive = false;
+    protected bool buttonActive = false;
+
+    // Make SetBool overridable
+    public virtual void SetBool(bool isActive)
+    {
+        buttonActive = isActive;
+    }
+
 
     // Start is called before the first frame update
     void Start() {
@@ -58,7 +66,4 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    public void SetBool(bool isActive) {
-        buttonActive = isActive;
-    }
 }

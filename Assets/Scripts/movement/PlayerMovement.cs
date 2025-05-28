@@ -40,6 +40,12 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
+
+        //moving plattform
+        private Vector3 platformVelocity;
+        private Vector3 platformAngularVelocity;
+
+
         private DialogueManager dialogueManager;
 
 
@@ -169,6 +175,7 @@ namespace TwinHookController
         private void FixedUpdate()
         {
             if (!dialogueManager.dialogueIsPlaying) {
+
                 checkCollisions();
                 handleJump();
                 handleDirection();
@@ -186,8 +193,12 @@ namespace TwinHookController
 
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+
+                platformVelocity = Vector3.zero;
+                platformAngularVelocity = Vector3.zero;
+
             }
-            
+
         }
 
         float yRotation = 0f;
@@ -291,6 +302,7 @@ namespace TwinHookController
 
             grounded = Physics.CheckCapsule(point1, point2, radius, stats.groundLayer, QueryTriggerInteraction.Ignore);
 
+
             if (grounded)
             {
                 if (!wasGroundedLastFrame)
@@ -312,6 +324,28 @@ namespace TwinHookController
 
             wasGroundedLastFrame = grounded;
         }
+
+
+
+        private void OnCollisionStay(Collision collision)
+        {
+            Debug.Log("OnCollisionStay with: " + collision.gameObject.name);
+
+            if (collision.gameObject.CompareTag("HorizontalMovingPlatform"))
+            {
+                Debug.Log("Detected HorizontalMovingPlatform");
+
+                HorizontalMovingPlatform platform = collision.gameObject.GetComponent<HorizontalMovingPlatform>();
+                if (platform != null)
+                {
+                    Debug.Log("Platform velocity: " + platform.GetVelocity());
+                    platformVelocity = platform.GetVelocity();
+                }
+            }
+        }
+
+
+
 
 
 
@@ -439,7 +473,9 @@ namespace TwinHookController
             }
             else
             {
-                rb.velocity = grapplingVelocity + frameVelocity;
+                Debug.Log($"FrameVelocity: {frameVelocity}, PlatformVelocity: {platformVelocity}, Total: {grapplingVelocity + frameVelocity + platformVelocity}");
+
+                rb.velocity = grapplingVelocity + frameVelocity + platformVelocity;
             }
         }
 
