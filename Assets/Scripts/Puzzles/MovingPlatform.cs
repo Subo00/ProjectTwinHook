@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    Vector3 startPos;
-    [SerializeField] Vector3 endPos;
+    protected Vector3 startPos;
+    [SerializeField] protected Vector3 endPos;
 
     [SerializeField] float speed = 10;
-
-    [SerializeField] bool isButtonPusher;
 
     [SerializeField] bool isLever;
     Quaternion startRot;
@@ -18,9 +16,9 @@ public class MovingPlatform : MonoBehaviour
     bool buttonActive = false;
 
     // Start is called before the first frame update
-    void Start() {
+    protected virtual void Start() {
         startPos = transform.position;
-        if(isButtonPusher || isLever) {
+        if(isLever) {
             endPos += startPos;
         }
 
