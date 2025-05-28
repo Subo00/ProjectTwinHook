@@ -10,7 +10,9 @@ public class DialogueTrigger : MonoBehaviour {
 
     protected bool alreadyPlayed = false;
 
-
+    private void Start() {
+        GetComponent<BoxCollider>().isTrigger = true;
+    }
     protected void OnTriggerEnter(Collider collision) {
         DoOnEnter(collision);
     }
