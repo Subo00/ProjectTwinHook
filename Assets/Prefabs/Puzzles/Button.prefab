@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 1275536479003928439}
   - component: {fileID: 7410959143746765527}
   - component: {fileID: 731282193343019051}
-  - component: {fileID: 799061173407071807}
+  - component: {fileID: 4816301437108224408}
   m_Layer: 9
   m_Name: ButtonPusher
   m_TagString: Untagged
@@ -175,7 +175,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 2, z: 1.0000004}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940698}
---- !u!114 &799061173407071807
+--- !u!114 &4816301437108224408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,12 +184,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6467935786739552077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e34aa9973628ab4f9d739aff9172078, type: 3}
+  m_Script: {fileID: 11500000, guid: dcafedec138f9dd46a51a3164e88c67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   endPos: {x: 0, y: -0.15, z: 0}
   speed: 10
-  isButtonPusher: 1
+  isLever: 0
+  endRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7678643121019212163
 GameObject:
   m_ObjectHideFlags: 0
