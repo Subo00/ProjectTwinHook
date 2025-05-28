@@ -7,13 +7,25 @@ public class MovingPlatform : MonoBehaviour
     protected Vector3 startPos;
     [SerializeField] protected Vector3 endPos;
 
-    [SerializeField] float speed = 10;
+    [SerializeField] protected float speed = 10;
 
     [SerializeField] bool isLever;
     Quaternion startRot;
     [SerializeField] Quaternion endRot;
+    [SerializeField] protected bool isButtonPusher;
+    [SerializeField] protected bool isLever;
 
-    bool buttonActive = false;
+    protected Quaternion startRot;
+    [SerializeField] protected Quaternion endRot;
+
+    protected bool buttonActive = false;
+
+    // Make SetBool overridable
+    public virtual void SetBool(bool isActive)
+    {
+        buttonActive = isActive;
+    }
+
 
     // Start is called before the first frame update
     protected virtual void Start() {
@@ -56,7 +68,4 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    public void SetBool(bool isActive) {
-        buttonActive = isActive;
-    }
 }
