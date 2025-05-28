@@ -120,3 +120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endPos: {x: 101.65, y: 7.81, z: 0}
   speed: 0.5
+  isButtonPusher: 0
+  isLever: 0
+  endRot: {x: 0, y: 0, z: 0, w: 0}

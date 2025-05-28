@@ -40,13 +40,16 @@ namespace TwinHookController
         public bool activeGrappleJustEnded = false;
         public Transform grapplePoint;
 
+
+        //moving plattform
+        private Vector3 platformVelocity;
+        private Vector3 platformAngularVelocity;
+
+
         private DialogueManager dialogueManager;
 
 
         [SerializeField] private LayerMask groundLayer;
-
-        [SerializeField] private bool DebugMode;
-
 
 
         [SerializeField] protected string horizontal = "Horizontal 1";
@@ -89,13 +92,9 @@ namespace TwinHookController
                 Debug.LogError("Animator is missing! Attache it to the model");
             }
 
-            if (!DebugMode)
-            {
-                dialogueManager = DialogueManager.Instance;
-                if (dialogueManager == null)
-                {
-                    Debug.LogError("DialogueManager is missing in the scene");
-                }
+            dialogueManager = DialogueManager.Instance;
+            if(dialogueManager == null) {
+                Debug.LogError("DialogueManager is missing in the scene");
             }
         }
 
@@ -113,25 +112,19 @@ namespace TwinHookController
         // Update is called once per frame
         void Update()
         {
-            if(!DebugMode)
-            {
-                if (!dialogueManager.dialogueIsPlaying)
-                {
-                    rb.constraints = RigidbodyConstraints.None;
-                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-                    time += Time.deltaTime;
-                    if (activeGrappleJustEnded)
-                    {
-                        activeGrappleJustEnded = false;
-                        StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
-                    }
-                    gatherInput();
+            if (!dialogueManager.dialogueIsPlaying) {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                time += Time.deltaTime;
+                if (activeGrappleJustEnded) {
+                    activeGrappleJustEnded = false;
+                    StartCoroutine(KeepGrapplingMomentum(stats.grappleMomentumTimer));
                 }
-                else
-                {
-                    rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                    rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
-                }
+                gatherInput();
+            }
+            else {
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
             }
 
             if(frameInput.Move.x == 0) {
@@ -181,8 +174,8 @@ namespace TwinHookController
 
         private void FixedUpdate()
         {
-            if (DebugMode)
-            {
+            if (!dialogueManager.dialogueIsPlaying) {
+
                 checkCollisions();
                 handleJump();
                 handleDirection();
@@ -193,8 +186,7 @@ namespace TwinHookController
                 flip(); // really need to overdo this shit
 
                 //If grappling and close to the target, stop grappling
-                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-                {
+                if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
                     Debug.Log("grappleStop by proximity");
                     grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
                 }
@@ -202,32 +194,11 @@ namespace TwinHookController
                 // Optional: Lock to 2D axis
                 transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 
+                platformVelocity = Vector3.zero;
+                platformAngularVelocity = Vector3.zero;
+
             }
-            else
-            {
-                if (!dialogueManager.dialogueIsPlaying)
-                {
-                    checkCollisions();
-                    handleJump();
-                    handleDirection();
-                    handleGravity();
 
-                    applyMovement();
-
-                    flip(); // really need to overdo this shit
-
-                    //If grappling and close to the target, stop grappling
-                    if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance)
-                    {
-                        Debug.Log("grappleStop by proximity");
-                        grapplingHook.lineRenderer.enabled = false;  // Let momentum carry you 
-                    }
-
-                    // Optional: Lock to 2D axis
-                    transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-                }
-            }
-            
         }
 
         float yRotation = 0f;
@@ -321,7 +292,7 @@ namespace TwinHookController
         private void checkCollisions()
         {
             Vector3 center = playerCollider.bounds.center;
-            float radius = playerCollider.radius * 0.7f; // Slightly shrink radius to prevent edge misses
+            float radius = playerCollider.radius * 1f; // Slightly shrink radius to prevent edge misses
             float height = playerCollider.height;
             float castDistance = 0.01f; // How far below the capsule to check for ground
 
@@ -330,6 +301,7 @@ namespace TwinHookController
 
 
             grounded = Physics.CheckCapsule(point1, point2, radius, stats.groundLayer, QueryTriggerInteraction.Ignore);
+
 
             if (grounded)
             {
@@ -352,6 +324,28 @@ namespace TwinHookController
 
             wasGroundedLastFrame = grounded;
         }
+
+
+
+        private void OnCollisionStay(Collision collision)
+        {
+            Debug.Log("OnCollisionStay with: " + collision.gameObject.name);
+
+            if (collision.gameObject.CompareTag("HorizontalMovingPlatform"))
+            {
+                Debug.Log("Detected HorizontalMovingPlatform");
+
+                HorizontalMovingPlatform platform = collision.gameObject.GetComponent<HorizontalMovingPlatform>();
+                if (platform != null)
+                {
+                    Debug.Log("Platform velocity: " + platform.GetVelocity());
+                    platformVelocity = platform.GetVelocity();
+                }
+            }
+        }
+
+
+
 
 
 
@@ -479,7 +473,9 @@ namespace TwinHookController
             }
             else
             {
-                rb.velocity = grapplingVelocity + frameVelocity;
+                Debug.Log($"FrameVelocity: {frameVelocity}, PlatformVelocity: {platformVelocity}, Total: {grapplingVelocity + frameVelocity + platformVelocity}");
+
+                rb.velocity = grapplingVelocity + frameVelocity + platformVelocity;
             }
         }
 
