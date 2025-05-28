@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using TwinHookController;
 
+[RequireComponent(typeof(SphereCollider))]
 public class CheckPoint : MonoBehaviour, IDataPersistence
 {
     bool playerOnePassed = false;
     bool playerTwoPassed = false;
 
-    void IDataPersistence.LoadData(GameData data)
-    {
+    void Start() {
+        GetComponent<SphereCollider>().isTrigger = true;
+    }
+
+    void IDataPersistence.LoadData(GameData data) {
         //throw new System.NotImplementedException();
         return;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (playerOnePassed && playerTwoPassed){
+    private void OnTriggerEnter(Collider other) {
+        if (playerOnePassed && playerTwoPassed) {
             return;
         }
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("Player")) {
             bool? isOne = other.gameObject.GetComponent<Player>().isPlayerOne;
 
             if(isOne != null){

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerController
   - PlayerInteraction
+  - HorizontalMovingPlatform
   layers:
   - Default
   - TransparentFX
