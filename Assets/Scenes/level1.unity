@@ -775,6 +775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: a1ac46eca024b0d4e8f6b45f0b88bf37, type: 2}
   platform: {fileID: 1228092104}
+  musicController: {fileID: 429554675}
 --- !u!1001 &97396895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2375,7 +2376,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: db0498c70ab5f154eb582b10ff90799b, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.102
   m_Pitch: 1
   Loop: 1
