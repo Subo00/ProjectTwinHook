@@ -125,8 +125,14 @@ public class DataPersistenceManager : MonoBehaviour
 
 
     public void SaveLevel(int index) {
-        this.gameData.levels[index] = true;
-        dataHandler.Save(gameData);
+        if(this.gameData.numOfCompletedLevels == index) {
+            this.gameData.numOfCompletedLevels++;
+            dataHandler.Save(gameData);
+        }
+    }
+
+    public GameData getData() {
+        return gameData;
     }
 
 }

@@ -48,7 +48,8 @@ namespace TwinHookController
 
         public void Die() {
             SoundManager.PlaySound(SoundType.DEATH);
-            DataPersistenceManager.Instance.LoadPlayerPos(isPlayerOne);
+            //DataPersistenceManager.Instance.LoadPlayerPos(isPlayerOne);
+            LoadData(DataPersistenceManager.Instance.getData());
         }
     }
 }

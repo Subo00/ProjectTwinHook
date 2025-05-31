@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueTriggerEnd : DialogueTrigger {
     
     uint numOfPlayers = 0;
-
+    [SerializeField] private int levelToLoad = 0;
     protected override void DoOnEnter(Collider collision) {
         if (collision.gameObject.tag == "Player") {
             numOfPlayers++;
@@ -28,7 +28,7 @@ public class DialogueTriggerEnd : DialogueTrigger {
 
     private void Update() {
         if (alreadyPlayed && !DialogueManager.Instance.dialogueIsPlaying) {
-            SceneController.Instance.LoadScene("Main Menu");
+            SceneController.Instance.LoadScene(levelToLoad);
         }
     }
 }
