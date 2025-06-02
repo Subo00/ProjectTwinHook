@@ -147,8 +147,46 @@ namespace TwinHookController
                 
         }
 
+        #region old gatherInput
+        //private void gatherInput()
+        //{
+        //    frameInput = new FrameInput
+        //    {
+        //        JumpDown = Input.GetButtonDown(jump),
+        //        JumpHeld = Input.GetButton(jump),
+        //        DuckHeld = Input.GetButton(duck),
+        //        DuckReleased = Input.GetButtonUp(duck),
+        //        GrappleDown = Input.GetButtonDown(grapple),
+        //        Move = new Vector3(Input.GetAxisRaw(horizontal), 0)
+        //    };
+
+        //    if (stats.snapInput)
+        //    {
+        //        frameInput.Move.x = Mathf.Abs(frameInput.Move.x) < stats.horizontalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.x);
+        //        frameInput.Move.y = Mathf.Abs(frameInput.Move.y) < stats.verticalDeadZoneThreshold ? 0 : Mathf.Sign(frameInput.Move.y);
+        //    }
+
+        //    if (frameInput.JumpDown)
+        //    {
+        //        jumpToConsume = true;
+        //        timeJumpWasPressed = time;
+        //    }
+
+        //    if (frameInput.DuckHeld)
+        //    {
+        //        standStill = true;
+        //    }
+        //    if (frameInput.DuckReleased)
+        //    {
+        //        standStill = false;
+        //    }
+
+        //}
+        #endregion
+
         private void gatherInput()
         {
+
             bool jumpDown = Input.GetButtonDown(jump);
             bool jumpHeld = Input.GetButton(jump);
             bool duckHeld = Input.GetButton(duck);
@@ -158,8 +196,6 @@ namespace TwinHookController
             // Handle controller stick duck detection if using controller-based input
             if (isController)
             {
-                //if it is a controller, use getAxis, esle use button
-                float moveAxis = Input.GetAxis(horizontal);
 
                 // Stick ducking support
                 float duckAxis = Input.GetAxis(duck);
@@ -172,14 +208,10 @@ namespace TwinHookController
                 wasStickDown = stickDown;
 
             }
-            else
-            {
-                bool moveAxis = Input.GetButtonDown(horizontal);
-            }
 
             frameInput = new FrameInput
             {
-                //Move = new Vector3(moveAxis, 0),
+                Move = new Vector3(Input.GetAxisRaw(horizontal), 0),
                 JumpDown = jumpDown,
                 JumpHeld = jumpHeld,
                 DuckHeld = duckHeld,
