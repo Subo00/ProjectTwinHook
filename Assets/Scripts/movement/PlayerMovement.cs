@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem.XR;
+using SmallHedge.SoundManager;
+
 
 
 namespace TwinHookController
@@ -52,6 +54,11 @@ namespace TwinHookController
 
 
         private DialogueManager dialogueManager;
+
+        //audio
+        bool playedFootstep;
+        float footstepTimer = 0f;
+        bool isWalking;
 
 
         [SerializeField] private LayerMask groundLayer;
@@ -192,6 +199,14 @@ namespace TwinHookController
             bool duckHeld = Input.GetButton(duck);
             bool duckReleased = Input.GetButtonUp(duck);
             bool grappleDown = Input.GetButtonDown(grapple);
+
+            //need this for footsteps
+            if (moveAxis == 0) {
+                isWalking = false;
+            }
+            else {
+                isWalking = true;
+            }
             
             // Handle controller stick duck detection if using controller-based input
             if (isController)
@@ -254,6 +269,11 @@ namespace TwinHookController
                 applyMovement();
 
                 flip(); // really need to overdo this shit
+
+                //play footsteps if we're moving and on the ground
+                if (isWalking && grounded) {
+                    PlayFootsteps();
+                }
 
                 //If grappling and close to the target, stop grappling
                 if (activeGrapple && Vector3.Distance(transform.position, grapplePoint.position) < stats.stopGrapplingAnchorDistance) {
@@ -460,6 +480,8 @@ namespace TwinHookController
             bufferedJumpUsable = false;
             coyoteUsable = false;
 
+            SoundManager.PlaySound(SoundType.JUMP);
+
             frameVelocity.y = stats.jumpPower;
             Jumped?.Invoke();
         }
@@ -524,7 +546,7 @@ namespace TwinHookController
                     Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
                     duckedObject.SetActive(true);
-                    playerCollider.enabled = false;
+                    //playerCollider.enabled = false;
                 }
                 return;
             }
@@ -532,7 +554,7 @@ namespace TwinHookController
             {
                 Destroy(activeAnchor);
                 duckedObject.SetActive(false);
-                playerCollider.enabled = true;
+                //playerCollider.enabled = true;
                 activeAnchor = null;
             }
             if (isFrozen)
@@ -571,7 +593,19 @@ namespace TwinHookController
             grapplingVelocity = Vector3.zero;
         }
 
+        private void PlayFootsteps() {
 
+            footstepTimer += 0.01f; //gets called in fixedupdate so it's even
+
+            if (footstepTimer >= 0.1 && !playedFootstep) {
+                SoundManager.PlaySound(SoundType.WALK);
+                playedFootstep = true;
+            }
+            else if (footstepTimer >= 0.2) {
+                footstepTimer = 0;
+                playedFootstep = false;
+            }
+        }
 
 
 #if UNITY_EDITOR  

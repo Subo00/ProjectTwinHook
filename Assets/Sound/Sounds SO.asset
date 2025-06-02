@@ -14,28 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: WALK
-    volume: 1
+    volume: 0.5
     mixer: {fileID: 0}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 3c49ca7e395dbdf49b765da421ce9438, type: 3}
   - name: JUMP
     volume: 1
     mixer: {fileID: 0}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 9221cae3a08521740b540fa6711c57fc, type: 3}
   - name: HOOK
     volume: 1
     mixer: {fileID: 0}
     sounds:
-    - {fileID: 8300000, guid: 93d36663201ccca489185138abffbe88, type: 3}
-    - {fileID: 8300000, guid: 6587eea51b1edc047b71a9f3f74350e7, type: 3}
-    - {fileID: 8300000, guid: e0fe938ef69eae34e81eefed36eee9d6, type: 3}
-    - {fileID: 8300000, guid: d5983c42f084d604cbc62f1c6a7cfb52, type: 3}
-    - {fileID: 8300000, guid: 7324ab7b30cb97b44b697ba206bb18e4, type: 3}
-    - {fileID: 8300000, guid: e69c0f7beec7d414187658e926f051d6, type: 3}
+    - {fileID: 8300000, guid: 61a191ec84d6c434eb98ca47aef6f8df, type: 3}
   - name: DEATH
     volume: 1
     mixer: {fileID: 0}
     sounds:
-    - {fileID: 8300000, guid: 023c13d428fdb1d449c113da9a2616f3, type: 3}
-    - {fileID: 8300000, guid: 62553a361b1178a4e944b3816cc84ab4, type: 3}
-    - {fileID: 8300000, guid: 8bfad38d06ec078458bc09dd4340f4b2, type: 3}
-    - {fileID: 8300000, guid: 8c9f72a2e78a5a2408ff187cf4faecc6, type: 3}
+    - {fileID: 8300000, guid: 2cba4b5542e511445bd2d2608704cf34, type: 3}
