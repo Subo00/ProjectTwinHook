@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
-    private uint numOfCompletedLevels = 0;// Start is called before the first frame update
+    private uint numOfCompletedLevels = 0;
     [SerializeField] private GameObject buttonContainer;
     void Start() {
         numOfCompletedLevels = DataPersistenceManager.Instance.getData().numOfCompletedLevels;
