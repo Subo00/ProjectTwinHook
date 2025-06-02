@@ -149,7 +149,6 @@ namespace TwinHookController
 
         private void gatherInput()
         {
-            float moveAxis = Input.GetAxis(horizontal);
             bool jumpDown = Input.GetButtonDown(jump);
             bool jumpHeld = Input.GetButton(jump);
             bool duckHeld = Input.GetButton(duck);
@@ -159,6 +158,9 @@ namespace TwinHookController
             // Handle controller stick duck detection if using controller-based input
             if (isController)
             {
+                //if it is a controller, use getAxis, esle use button
+                float moveAxis = Input.GetAxis(horizontal);
+
                 // Stick ducking support
                 float duckAxis = Input.GetAxis(duck);
                 bool stickDown = duckAxis < -0.5f;
@@ -168,12 +170,16 @@ namespace TwinHookController
                 // Handle release detection manually
                 duckReleased = wasStickDown && !stickDown;
                 wasStickDown = stickDown;
-                
+
+            }
+            else
+            {
+                bool moveAxis = Input.GetButtonDown(horizontal);
             }
 
             frameInput = new FrameInput
             {
-                Move = new Vector3(moveAxis, 0),
+                //Move = new Vector3(moveAxis, 0),
                 JumpDown = jumpDown,
                 JumpHeld = jumpHeld,
                 DuckHeld = duckHeld,
