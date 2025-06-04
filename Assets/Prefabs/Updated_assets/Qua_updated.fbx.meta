@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Body
-    second: {fileID: 2100000, guid: ff4bbd6117b673344a73496d3e922d34, type: 2}
+    second: {fileID: 2100000, guid: 83594b301fd380946b8c446616773857, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Feetsies
-    second: {fileID: -6544220163184746335, guid: 788b46850da60ac438b79bd5d30751e2, type: 3}
+    second: {fileID: 2100000, guid: 23e8f60158cb1714d9f2b9778235dd38, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
