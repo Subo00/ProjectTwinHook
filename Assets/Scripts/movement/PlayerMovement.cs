@@ -200,14 +200,14 @@ namespace TwinHookController
             bool duckReleased = Input.GetButtonUp(duck);
             bool grappleDown = Input.GetButtonDown(grapple);
 
-            //need this for footsteps
-            if (moveAxis == 0) {
-                isWalking = false;
-            }
-            else {
-                isWalking = true;
-            }
-            
+            ////need this for footsteps
+            //if (moveAxis == 0) {
+            //    isWalking = false;
+            //}
+            //else {
+            //    isWalking = true;
+            //}
+
             // Handle controller stick duck detection if using controller-based input
             if (isController)
             {
