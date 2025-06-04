@@ -28,8 +28,14 @@ MonoBehaviour:
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 61a191ec84d6c434eb98ca47aef6f8df, type: 3}
+    - {fileID: 8300000, guid: eb05db6b5905ac4409c3f7bf77cf7710, type: 3}
+    - {fileID: 8300000, guid: 0f02c4051b3792242a74067b986f7191, type: 3}
+    - {fileID: 8300000, guid: 78acff4e4d683c243aed749e487adf21, type: 3}
   - name: DEATH
     volume: 1
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 2cba4b5542e511445bd2d2608704cf34, type: 3}
+    - {fileID: 8300000, guid: b815fc6ce669e014d898a4bf7007e0a1, type: 3}
+    - {fileID: 8300000, guid: f739aa6c1421e564190554055b801a2a, type: 3}
+    - {fileID: 8300000, guid: 8d47a9843ccd88c4abcb309e93bde935, type: 3}
