@@ -23,6 +23,8 @@ MonoBehaviour:
     mixer: {fileID: 0}
     sounds:
     - {fileID: 8300000, guid: 9221cae3a08521740b540fa6711c57fc, type: 3}
+    - {fileID: 8300000, guid: 3bff1b83506abb544af8a8aeec9a457a, type: 3}
+    - {fileID: 8300000, guid: dbed7769bcb9d0a42a2ba2bf638228f8, type: 3}
   - name: HOOK
     volume: 1
     mixer: {fileID: 0}
