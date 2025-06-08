@@ -607,6 +607,10 @@ namespace TwinHookController
             }
         }
 
+        public void PlayFootstep() {
+            SoundManager.PlaySound(SoundType.WALK);
+        }
+
 
 #if UNITY_EDITOR  
         private void OnValidate()
