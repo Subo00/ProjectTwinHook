@@ -21,6 +21,8 @@ namespace TwinHookController
         [SerializeField] private GameObject anchorPrefab;
         private GameObject activeAnchor;
 
+        [SerializeField] private bool isBackground = false;
+        private float zPos;
         private Rigidbody rb;
         private CapsuleCollider playerCollider;
         private FrameInput frameInput;
@@ -83,9 +85,13 @@ namespace TwinHookController
 
         //  }
 
-
+        
         protected virtual void Start()
         {
+            if(isBackground)
+            {
+                zPos = 2;
+            }
             if (stats == null) {
                 stats = Resources.Load<Stats>("movementStats");
                 if (stats == null) {
@@ -282,7 +288,7 @@ namespace TwinHookController
                 }
 
                 // Optional: Lock to 2D axis
-                transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+                transform.position = new Vector3(transform.position.x, transform.position.y, zPos);
 
                 platformVelocity = Vector3.zero;
                 platformAngularVelocity = Vector3.zero;
@@ -335,7 +341,7 @@ namespace TwinHookController
             float deltaX = endPoint.x - startPoint.x;
             float horizontalVelocity = deltaX / totalTime;
 
-            Debug.Log("the grappling velocity: " + new Vector3(horizontalVelocity *2, verticalVelocity, 0)); //*2 because we want to overshoot this
+            //Debug.Log("the grappling velocity: " + new Vector3(horizontalVelocity *2, verticalVelocity, 0)); //*2 because we want to overshoot this
             return new Vector3(horizontalVelocity, verticalVelocity, 0);
         }
 
@@ -542,7 +548,7 @@ namespace TwinHookController
                 rb.velocity = Vector3.zero;
                 if (activeAnchor == null)
                 {
-                    // Spawn anchor slightly below player (or wherever makes sense)
+                    // Spawn anchor slightly below player
                     Vector3 spawnPosition = transform.position; // tweak if needed
                     activeAnchor = Instantiate(anchorPrefab, spawnPosition, Quaternion.identity);
                     duckedObject.SetActive(true);
