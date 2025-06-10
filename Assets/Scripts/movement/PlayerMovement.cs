@@ -14,7 +14,7 @@ namespace TwinHookController
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         [SerializeField] public Stats stats;
-        [SerializeField] private GrapplingHook grapplingHook;
+        [SerializeField] protected GrapplingHook grapplingHook;
 
         [SerializeField] private GameObject duckedObject;
         //grappleAnchor

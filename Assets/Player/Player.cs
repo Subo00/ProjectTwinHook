@@ -49,7 +49,9 @@ namespace TwinHookController
         public void Die() {
             SoundManager.PlaySound(SoundType.DEATH);
             //DataPersistenceManager.Instance.LoadPlayerPos(isPlayerOne);
+            grapplingHook.ForceStopGrapple();
             LoadData(DataPersistenceManager.Instance.getData());
+            
         }
     }
 }
