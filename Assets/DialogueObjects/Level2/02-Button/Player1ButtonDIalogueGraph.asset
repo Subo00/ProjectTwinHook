@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ded28d1f699b697489545ff67bc8ac45, type: 3}
-  m_Name: Player1ButtonDialogueGraph
+  m_Name: Player1ButtonDIalogueGraph
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 7854687983536268549}

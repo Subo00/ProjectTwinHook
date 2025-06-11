@@ -16,6 +16,5 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9227b70ccdb473b44914b443aa920463, type: 3}
   talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
-  - 'What is this? '
-  - The wall is too high!
-  - How do we get over it?
+  - Whoa, that's a really tall wall!
+  - It might be too high to get over...

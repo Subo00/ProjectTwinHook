@@ -16,10 +16,10 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
-  - Just hold your beak and listen!
-  - 'First: You go next to the wall and crunch down using S.'
-  - 'Second: I jump on top of you and jump on the platform'
-  - 'Third: Then I crunch down using K so that you can graple to me.'
-  - 'Fourth: We are both on the platform'
-  - 'Fifth: Profit!'
-  - 'You got all that? '
+  - ' Okay. So, first, you go stand next to the wall and crouch down using S. '
+  - "Second, I\u2019ll jump on top of you, and then jump onto the platform."
+  - "Third, I\u2019ll crouch down using K, and you can use the claw to grapple on
+    to me."
+  - Fourth, you swing up onto the platform!
+  - Fifth, profit!
+  - Makes sense?

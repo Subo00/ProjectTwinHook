@@ -16,5 +16,5 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 4aebc3878c7f2f645a62a49ad6b2a3bf, type: 3}
   talkingClip: {fileID: 8300000, guid: bc075725a67148c499056b8735c28ac3, type: 3}
   dialogue:
-  - 'Oh hello, I saw you pass by '
-  - I didn't think you'd come baaaack for me
+  - Oh hello, I saw you pass by earlier.
+  - I didn't think you'd come baaaack for me.

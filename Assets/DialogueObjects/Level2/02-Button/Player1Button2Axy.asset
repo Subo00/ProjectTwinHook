@@ -17,6 +17,5 @@ MonoBehaviour:
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
   - What jump?
-  - Don't do anything just yet.
-  - There is a button here, let's see what it does first
-  - And then we can...
+  - "Hold on, don\u2019t do anything yet. There\u2019s a button here."
+  - "Let\u2019s see what it does, and then\u2014"
