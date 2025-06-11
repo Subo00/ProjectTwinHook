@@ -16,7 +16,7 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
-  - 'It''s not a "colorphill", it''s a chlorophyll '
-  - And the awnser is
-  - .....
-  - 'I don''t actually know '
+  - "It\u2019s not colour-phill, it\u2019s chlorophyll."
+  - "And the answer is\u2026"
+  - ...
+  - I don't actually know?

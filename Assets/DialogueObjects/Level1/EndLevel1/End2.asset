@@ -17,3 +17,5 @@ MonoBehaviour:
   talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
   - Axy, we did it!
+  - Just hit this switch up here, and... everyone else is free!
+  - And so are we! Just look at it all!

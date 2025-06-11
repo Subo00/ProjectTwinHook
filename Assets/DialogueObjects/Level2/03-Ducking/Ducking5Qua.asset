@@ -16,5 +16,6 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9227b70ccdb473b44914b443aa920463, type: 3}
   talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
-  - 'Okay so to recap:'
-  - I go and DUCK down using S and later on you DUCK down usink K
+  - I think so... Just to recap...
+  - I go and DUCK down using S, you jump up, then DUCK using K so that I can grapple
+    on to you and swing up.

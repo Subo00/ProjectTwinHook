@@ -16,5 +16,5 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
-  - .... OH!
-  - 'I have an idea! '
+  - Hmm...
+  - Oh! I have an idea!
