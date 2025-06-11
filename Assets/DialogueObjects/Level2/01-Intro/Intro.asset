@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   portrait: {fileID: 21300000, guid: c78f87f7a22a0ce4ebfd334e835f4ab6, type: 3}
-  talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
+  talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
-  - After several hours of traveling and several more of detouring...
-  - Our heros find themselves beneath the next claw machine.
-  - Using the power of newely discovered hooks, they successfully climb to the top!
-  - Pry opening the shaft, they manage to create an opening.
-  - There is nothing more to do but to take a leap of faith into the darkness...
+  - "It took a long time. The world was so big, and overwhelming\u2026"
+  - But we finally got underneath the next machine over. The one just like ours.
+  - There was a loose piece at the bottom we could pry open.
+  - "With the power of the claws, we could get inside\u2026!"
+  - It was pitch black inside the machine.
+  - But we had to get in. We had to climb to the top and free everyone inside.
+  - "Nothing to do but take a leap of faith into the darkness\u2026 "

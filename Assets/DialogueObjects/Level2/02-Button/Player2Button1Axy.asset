@@ -16,7 +16,6 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
-  - 'Hmm this looks dangerous '
-  - I don't think I can make this jump
-  - And there are no anchors to hook to
-  - 'What do you see Qua? '
+  - "Hm, this looks dangerous. I don\u2019t think I can make this jump."
+  - "There\u2019s nothing I can grab with the claw, either\u2026"
+  - What do you see, Qua?
