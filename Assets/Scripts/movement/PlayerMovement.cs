@@ -136,7 +136,7 @@ namespace TwinHookController
 
 
             if (!dialogueManager.dialogueIsPlaying) {
-                rb.constraints = RigidbodyConstraints.None;
+                //rb.constraints = RigidbodyConstraints.None;
                 rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
                 time += Time.deltaTime;
                 if (activeGrappleJustEnded) {

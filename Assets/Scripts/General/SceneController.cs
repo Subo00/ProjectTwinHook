@@ -5,7 +5,7 @@ public class SceneController : MonoBehaviour{
 
     public static SceneController Instance;
 
-    [SerializeField] private string firstSceneName = "TestingScene";
+   // [SerializeField] private string firstSceneName = "TestingScene";
 
     private void Awake(){
 
@@ -39,10 +39,10 @@ public class SceneController : MonoBehaviour{
 
     public void OnNewGameClicked(){
         //DataPersistenceManager.Instance.NewGame();
-        SceneManager.LoadSceneAsync(firstSceneName);
+       // SceneManager.LoadSceneAsync(firstSceneName);
     }
 
     public void OnContinueGameClicked(){
-        SceneManager.LoadSceneAsync(firstSceneName);
+      //  SceneManager.LoadSceneAsync(firstSceneName);
     }
 }

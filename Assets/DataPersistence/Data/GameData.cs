@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class GameData 
 {
-    const int NUM_OF_LEVELS = 2;
+    const int NUM_OF_LEVELS = 4;
     public Vector3 playerOnePosition;
     public Vector3 playerTwoPosition;
 

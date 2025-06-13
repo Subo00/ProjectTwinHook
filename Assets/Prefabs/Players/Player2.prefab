@@ -37,10 +37,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1612654071212802393}
   - {fileID: 1787665692435854600}
   - {fileID: 9143453213400074849}
   - {fileID: 7143671326079273983}
-  - {fileID: 1612654071212802393}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5836552282565926231
@@ -180,6 +180,7 @@ MonoBehaviour:
   grapplingHook: {fileID: 0}
   duckedObject: {fileID: 7379225981992915888}
   anchorPrefab: {fileID: 1031044179190579511, guid: b155b37701beeb44cb80cf163fc46d69, type: 3}
+  isBackground: 0
   standStill: 0
   isController: 0
   isFrozen: 0
@@ -296,8 +297,8 @@ Transform:
   m_GameObject: {fileID: 7379225981992915888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3777, z: 0}
-  m_LocalScale: {x: 1, y: 1.7554393, z: 1}
+  m_LocalPosition: {x: 0, y: 1.38, z: 0}
+  m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5270389856831913853}
