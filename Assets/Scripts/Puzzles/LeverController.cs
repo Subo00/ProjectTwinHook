@@ -12,6 +12,8 @@ public class LeverController : MonoBehaviour, IMyUpdate {
     private uint numOfStanders = 0;
 
     private bool isPlatformMoved = false;
+    public bool setOneTime = false;
+    private bool isOneTime = false;
 
     private void Start() {
         leverHandle = GetComponentInChildren<MovingPlatform>();
@@ -25,12 +27,12 @@ public class LeverController : MonoBehaviour, IMyUpdate {
 
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.tag == "Player" && !isOneTime) {
 
             if (!isPlatformMoved) {
                 MoveButtonDown();
             }
-            else {
+            else{
                 MoveButtonUp();
             }
             isPlatformMoved = !isPlatformMoved;  
@@ -51,6 +53,10 @@ public class LeverController : MonoBehaviour, IMyUpdate {
         UpdateManager.Instance.AddUpdatable(this);
 
         leverHandle.SetBool(true);
+        if(setOneTime)
+        {
+            isOneTime = true;
+        }
     }
 
     private void MoveButtonUp() {
