@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: End5Axy
   m_EditorClassIdentifier: 
   name: Axy
-  portrait: {fileID: 21300000, guid: 9c0a3bd443b14454f92b0af6b4628cec, type: 3}
+  portrait: {fileID: 21300000, guid: 2df54b974f53d9746ae5d4e8a9b31ad3, type: 3}
   talkingClip: {fileID: 8300000, guid: 8b2eaad3e06b735418cc899995c98321, type: 3}
   dialogue:
   - ...
