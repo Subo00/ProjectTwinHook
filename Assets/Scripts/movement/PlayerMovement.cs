@@ -146,8 +146,8 @@ namespace TwinHookController
                 gatherInput();
             }
             else {
-                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; //in theory this should still be on? but in practice they. are not sometimes
+                rb.constraints = RigidbodyConstraints.FreezePosition;
+                rb.constraints = RigidbodyConstraints.FreezeRotation; //in theory this should still be on? but in practice they. are not sometimes
             }
 
             if(frameInput.Move.x == 0) {
@@ -546,6 +546,7 @@ namespace TwinHookController
             if (standStill && grounded)
             {
                 rb.velocity = Vector3.zero;
+                rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
                 if (activeAnchor == null)
                 {
                     // Spawn anchor slightly below player
