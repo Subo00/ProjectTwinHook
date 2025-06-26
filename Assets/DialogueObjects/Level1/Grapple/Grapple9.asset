@@ -16,4 +16,4 @@ MonoBehaviour:
   portrait: {fileID: 21300000, guid: 9227b70ccdb473b44914b443aa920463, type: 3}
   talkingClip: {fileID: 8300000, guid: 82445c4eeab02994a8248778e6fe6dcf, type: 3}
   dialogue:
-  - You can use U, and I'll use E!
+  - You can use Space, and I'll use Left Shift!
