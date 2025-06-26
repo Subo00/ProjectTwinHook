@@ -3332,6 +3332,10 @@ PrefabInstance:
       propertyPath: isBackground
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4283300713694387413, guid: 428ef995114a32941ae56fcaa7e15943, type: 3}
+      propertyPath: isController
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5270389856831913853, guid: 428ef995114a32941ae56fcaa7e15943, type: 3}
       propertyPath: m_LocalPosition.x
       value: -44.25
@@ -31759,6 +31763,10 @@ PrefabInstance:
     - target: {fileID: 7125635119414802264, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7480316464496239991, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
+      propertyPath: isController
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8151977484675587530, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
       propertyPath: m_LocalPosition.x

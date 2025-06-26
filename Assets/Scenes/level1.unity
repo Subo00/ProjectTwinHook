@@ -11013,7 +11013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7480316464496239991, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
       propertyPath: isController
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8151977484675587530, guid: fbfed9f9d891f1746bb6fcd32fa410b4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11434,7 +11434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4283300713694387413, guid: 428ef995114a32941ae56fcaa7e15943, type: 3}
       propertyPath: isController
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4609377767389640717, guid: 428ef995114a32941ae56fcaa7e15943, type: 3}
       propertyPath: m_LocalScale.x
