@@ -11,6 +11,7 @@ namespace TwinHookController
     public class Player : PlayerMovement, IDataPersistence
     {
         public bool isPlayerOne;
+        [SerializeField] private Vector3 startingPos;
 
         protected override void Start() {
             base.Start();
@@ -33,6 +34,8 @@ namespace TwinHookController
             else{
                 DataPersistenceManager.Instance.PlayerTwo = this;
             }
+
+            transform.position = startingPos;
         }
 
         public void LoadData(GameData data) {
